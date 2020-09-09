@@ -1861,6 +1861,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="img\bg_ex_index.jpg" />
+    <Content Include="img\loading.gif" />
     <Content Include="img\st-Jean-de-la-Salle.jpg" />
     <Content Include="Models\Db.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

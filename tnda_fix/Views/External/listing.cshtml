@@ -4,31 +4,33 @@
     Layout = "~/Views/Shared/ExternalLayout.cshtml";
 }
 <script>    
-    var url_string = window.location.href;
-    var url = new URL(url_string);
-    var c = url.searchParams.get("query");
-    console.log(c);    
-    $.ajax({
-        url: "/external/getPersonByQuery",
-        data: { query: c },
-        success: function (result) {
-            console.log(result);
-            if (!$.trim(result)) {
-                $("#notfound").show();
-            }
-            $("#loading").hide();
-            $("#content").show();
-            new Vue({
-                el: "#vue_app",
-                data: {
-                    persons: result
+    $(document).ready(function () {
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        var query = url.searchParams.get("query");
+        console.log(query);
+        $.ajax({
+            url: "/external/getPersonByQuery",
+            data: { query: query },
+            success: function (result) {
+                console.log(result);
+                if (!$.trim(result)) {
+                    $("#notfound").show();
                 }
-            });
-        }
-    });
-
-
+                $("#loading").hide();
+                $("#content").show();
+                new Vue({
+                    el: "#vue_app",
+                    data: {
+                        persons: result,
+                        link: '/external/detail?query=' + query + '&id=',
+                    }
+                });
+            }
+        });
+    })    
 </script>
+<br />
     <div id="vue_app" class="container">
         <div class="row bg-light rounded p-5">
             <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
@@ -61,7 +63,7 @@
                 </thead>
                 <tbody id="loading">
                     <tr >
-                        <td class="text-center" colspan="6"> <img src="https://bestanimations.com/Science/Gears/loadinggears/loading-gears-animation-3.gif" /></td>
+                        <td class="text-center" colspan="6"> <img src="~/img/loading.gif" /></td>
                     </tr>
                 </tbody>
                 <tbody style="display:none" id="content">
@@ -69,9 +71,9 @@
                         <th scope="row">{{p.id}}</th>
                         <td>{{p.ch_name}}</td>
                         <td>{{p.fname}} {{p.name}}</td>
-                        <td>null</td>
-                        <td>null</td>
-                        <td><button class="btn btn-sm btn-info">chi tiết</button></td>
+                        <td>{{p.birth}}</td>
+                        <td>{{p.pclass}}</td>                        
+                        <td><a :href="link+p.id" class="btn btn-sm btn-info">chi tiết</a></td>
                     </tr>                    
                     <tr style="display:none" id="notfound">
                         <td colspan="6" class="text-center">

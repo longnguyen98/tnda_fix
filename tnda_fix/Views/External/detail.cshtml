@@ -3,29 +3,67 @@
     ViewBag.Title = "detail";
     Layout = "~/Views/Shared/ExternalLayout.cshtml";
 }
-
-
-<div @*id="vue_app"*@ class="container">
-    <div class="d-flex justify-content-center row">
+<script>
+    $(document).ready(function () {
+        $('#loading').show();;
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        var query = url.searchParams.get("query");
+        var id = url.searchParams.get("id");
+        console.log(query);
+        console.log(id);
+        $.ajax({
+            url: "/external/getPersonDetail",
+            data: { id:id },
+            success: function (result) {
+                console.log(result);
+                new Vue({
+                    el: '#vue_app',
+                    data: {
+                        backlink: '/external/listing?query=' + query,
+                        detail: result
+                    }
+                });
+                $('#loading').hide();
+                $('#content').addClass("d-flex");
+                $('#content').addClass("justify-content-center");
+                $('#content').addClass("row");
+                $('#content').show();
+            }
+        });
+        
+    });
+</script>
+<br />
+<div id="vue_app" class="container">
+    <div class="d-flex justify-content-center bg-light rounded">
+        <img id="loading" style="display:none" src="~/img/loading.gif" />
+    </div>
+    <div id="content" class="" style="display:none">
         <div class="row" style="width:80%">
             <div class="col-lg-12 col-sm-12 mb-2 d-flex flex-row-reverse">
-                <button class="btn btn-light"><i class="fas fa-long-arrow-alt-left mr-1"></i>Quay lại</button>
+                <a :href="backlink" class="btn btn-secondary"><i class="fas fa-long-arrow-alt-left mr-1"></i>Quay lại</a>
             </div>
         </div>
         <div class="row mb-2" style="width:80%">
             <div class="col-lg-12">
                 <div class="card d-flex">
                     <div class="card-body row d-flex justify-content-center">
-                        <div class="col-lg-3 col-sm-6 mb-2">
+                        <div class="col-lg-2 col-sm-6 mb-2">
                             <img class="card-img-top rounded" src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png" alt="Img" />
                         </div>
-                        <div class="col-lg-9 col-sm-12 mb-2">
-                            <h5 class="card-title">Giuse Nguyễn Văn An</h5>
+                        <div class="col-lg-5 col-sm-12 mb-2">
+                            <h5 class="card-title">{{detail.ch_name}} {{detail.fname}} {{detail.name}}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Thiếu nhi</h6>
-                            <p class="card-text">Ngày sinh: <b>30/02/1998</b></p>
-                            <p class="card-text">Khối: <b>Thêm sức</b></p>
-                            <p class="card-text">Lớp: <b>1A</b></p>
-                            <p class="card-text">Giáo Lý Viên: <b>Giuse Nguyễn Văn Ba</b></p>
+                            <p class="card-text">Ngày sinh: <b>{{detail.birth}}</b></p>
+                            <p class="card-text">Địa chỉ: <b>{{detail.address}}</b></p>
+
+                        </div>
+                        <div class="col-lg-5 col-sm-12 mb-2">
+                            <p class="card-text"></p>
+                            <p class="card-text">Khối:<b>{{detail.grade}}</b></p>
+                            <p class="card-text">Lớp: <b>{{detail.pclass}}</b></p>
+                            <p class="card-text">Giáo Lý Viên: <b>{{detail.glv}}</b></p>
                         </div>
                     </div>
                 </div>
@@ -37,14 +75,14 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6 col-sm-12">
-                                <h5 class="card-title">Giuse Nguyễn Văn Ca</h5>
+                                <h5 class="card-title">{{detail.father.ch_name}} {{detail.father.fname}} {{detail.father.name}}</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">Phụ huynh</h6>
-                                <p class="card-text">Số điện thoại: <b>0909090909</b></p>
+                                <p class="card-text">Số điện thoại: <b>{{detail.father.phone}}</b></p>
                             </div>
                             <div class="col-lg-6 col-sm-12">
-                                <h5 class="card-title">Maria Nguyễn Thị Bi</h5>
+                                <h5 class="card-title">{{detail.mother.ch_name}} {{detail.mother.fname}} {{detail.mother.name}}</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">Phụ huynh</h6>
-                                <p class="card-text">Số điện thoại: <b>0909090909</b></p>
+                                <p class="card-text">Số điện thoại: <b>{{detail.mother.phone}}</b></p>
                             </div>
                         </div>
                     </div>
@@ -55,9 +93,10 @@
             <div class="col-lg-12 col-sm-12 mb-2">
                 <div class="card d-flex">
                     <div class="card-body">
-                        <p class="card-text">Địa chỉ hiện tại: <b>Đường A, Huyện B, Thành phố C</b></p>
+                        Coming soon!
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
