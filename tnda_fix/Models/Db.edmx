@@ -1,0 +1,819 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="tndaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ACC">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nchar" MaxLength="20" />
+          <Property Name="Pwd" Type="nchar" MaxLength="20" />
+          <Property Name="ID_Person" Type="int" />
+        </EntityType>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ClassName" Type="nchar" MaxLength="10" />
+          <Property Name="ID_Grade" Type="int" />
+          <Property Name="Status" Type="bit" />
+        </EntityType>
+        <EntityType Name="Family">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID_Dad" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FamilyInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="img_index" Type="int" />
+          <Property Name="src" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="FamilyLinkInfo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id_family" Type="int" />
+          <Property Name="id_info" Type="int" />
+        </EntityType>
+        <EntityType Name="Grade">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="GradeName" Type="nvarchar" MaxLength="15" />
+          <Property Name="Status" Type="bit" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Birth" Type="date" />
+          <Property Name="Gender" Type="bit" />
+          <Property Name="Address" Type="nvarchar" MaxLength="200" />
+          <Property Name="Phone" Type="varchar" MaxLength="15" />
+          <Property Name="ID_Farmily" Type="int" />
+          <Property Name="ID_role" Type="int" Nullable="false" />
+          <Property Name="Image" Type="varchar(max)" />
+          <Property Name="ID_Class" Type="int" />
+          <Property Name="Status" Type="bit" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="ChristianName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PersonLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID_Per" Type="int" Nullable="false" />
+          <Property Name="CollumName" Type="varchar" MaxLength="50" />
+          <Property Name="OldData" Type="nvarchar(max)" />
+          <Property Name="NewData" Type="nvarchar(max)" />
+          <Property Name="ID_Ad" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Registration">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID_Person" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID_Person" Type="int" Nullable="false" />
+          <Property Name="ID_NewPerson" Type="int" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="famiy">
+          <End Role="Family" Type="Self.Family" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FamilyLinkInfo" Type="Self.FamilyLinkInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Family">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="FamilyLinkInfo">
+              <PropertyRef Name="id_family" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ACC_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="ACC" Type="Self.ACC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ACC">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Class_Grade">
+          <End Role="Grade" Type="Self.Grade" Multiplicity="0..1" />
+          <End Role="Class" Type="Self.Class" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grade">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Class">
+              <PropertyRef Name="ID_Grade" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Family_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Family" Type="Self.Family" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Family">
+              <PropertyRef Name="ID_Dad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="0..1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="ID_Class" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="ID_role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonLog_ACC">
+          <End Role="ACC" Type="Self.ACC" Multiplicity="1" />
+          <End Role="PersonLog" Type="Self.PersonLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACC">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PersonLog">
+              <PropertyRef Name="ID_Ad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonLog_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="PersonLog" Type="Self.PersonLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PersonLog">
+              <PropertyRef Name="ID_Per" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Registration_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Registration" Type="Self.Registration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Registration">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Person1">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="ID_NewPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="info">
+          <End Role="FamilyInfo" Type="Self.FamilyInfo" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FamilyLinkInfo" Type="Self.FamilyLinkInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FamilyInfo">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="FamilyLinkInfo">
+              <PropertyRef Name="id_info" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="tndaModelStoreContainer">
+          <EntitySet Name="ACC" EntityType="Self.ACC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Family" EntityType="Self.Family" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FamilyInfo" EntityType="Self.FamilyInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FamilyLinkInfo" EntityType="Self.FamilyLinkInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Grade" EntityType="Self.Grade" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonLog" EntityType="Self.PersonLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Registration" EntityType="Self.Registration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="famiy" Association="Self.famiy">
+            <End Role="Family" EntitySet="Family" />
+            <End Role="FamilyLinkInfo" EntitySet="FamilyLinkInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ACC_Person" Association="Self.FK_ACC_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="ACC" EntitySet="ACC" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Class_Grade" Association="Self.FK_Class_Grade">
+            <End Role="Grade" EntitySet="Grade" />
+            <End Role="Class" EntitySet="Class" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Family_Person" Association="Self.FK_Family_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Family" EntitySet="Family" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_Class" Association="Self.FK_Person_Class">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_Role" Association="Self.FK_Person_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonLog_ACC" Association="Self.FK_PersonLog_ACC">
+            <End Role="ACC" EntitySet="ACC" />
+            <End Role="PersonLog" EntitySet="PersonLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonLog_Person" Association="Self.FK_PersonLog_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="PersonLog" EntitySet="PersonLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Registration_Person" Association="Self.FK_Registration_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Registration" EntitySet="Registration" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Person" Association="Self.FK_Report_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Person1" Association="Self.FK_Report_Person1">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+          <AssociationSet Name="info" Association="Self.info">
+            <End Role="FamilyInfo" EntitySet="FamilyInfo" />
+            <End Role="FamilyLinkInfo" EntitySet="FamilyLinkInfo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="tndaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ACC">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="Pwd" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="ID_Person" Type="Int32" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_ACC_Person" FromRole="ACC" ToRole="Person" />
+          <NavigationProperty Name="PersonLogs" Relationship="Self.FK_PersonLog_ACC" FromRole="ACC" ToRole="PersonLog" />
+        </EntityType>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ClassName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ID_Grade" Type="Int32" />
+          <Property Name="Status" Type="Boolean" />
+          <NavigationProperty Name="Grade" Relationship="Self.FK_Class_Grade" FromRole="Class" ToRole="Grade" />
+          <NavigationProperty Name="People" Relationship="Self.FK_Person_Class" FromRole="Class" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Family">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID_Dad" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="FamilyLinkInfoes" Relationship="Self.famiy" FromRole="Family" ToRole="FamilyLinkInfo" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Family_Person" FromRole="Family" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="FamilyInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="img_index" Type="Int32" />
+          <Property Name="src" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FamilyLinkInfoes" Relationship="Self.info" FromRole="FamilyInfo" ToRole="FamilyLinkInfo" />
+        </EntityType>
+        <EntityType Name="FamilyLinkInfo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="id_family" Type="Int32" />
+          <Property Name="id_info" Type="Int32" />
+          <NavigationProperty Name="Family" Relationship="Self.famiy" FromRole="FamilyLinkInfo" ToRole="Family" />
+          <NavigationProperty Name="FamilyInfo" Relationship="Self.info" FromRole="FamilyLinkInfo" ToRole="FamilyInfo" />
+        </EntityType>
+        <EntityType Name="Grade">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="GradeName" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" />
+          <NavigationProperty Name="Classes" Relationship="Self.FK_Class_Grade" FromRole="Grade" ToRole="Class" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Birth" Type="DateTime" Precision="0" />
+          <Property Name="Gender" Type="Boolean" />
+          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ID_Farmily" Type="Int32" />
+          <Property Name="ID_role" Type="Int32" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ID_Class" Type="Int32" />
+          <Property Name="Status" Type="Boolean" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="ChristianName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ACCs" Relationship="Self.FK_ACC_Person" FromRole="Person" ToRole="ACC" />
+          <NavigationProperty Name="Class" Relationship="Self.FK_Person_Class" FromRole="Person" ToRole="Class" />
+          <NavigationProperty Name="Families" Relationship="Self.FK_Family_Person" FromRole="Person" ToRole="Family" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_Person_Role" FromRole="Person" ToRole="Role" />
+          <NavigationProperty Name="PersonLogs" Relationship="Self.FK_PersonLog_Person" FromRole="Person" ToRole="PersonLog" />
+          <NavigationProperty Name="Registrations" Relationship="Self.FK_Registration_Person" FromRole="Person" ToRole="Registration" />
+          <NavigationProperty Name="Reports" Relationship="Self.FK_Report_Person" FromRole="Person" ToRole="Report" />
+          <NavigationProperty Name="Reports1" Relationship="Self.FK_Report_Person1" FromRole="Person" ToRole="Report" />
+        </EntityType>
+        <EntityType Name="PersonLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID_Per" Type="Int32" Nullable="false" />
+          <Property Name="CollumName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OldData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NewData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ID_Ad" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ACC" Relationship="Self.FK_PersonLog_ACC" FromRole="PersonLog" ToRole="ACC" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_PersonLog_Person" FromRole="PersonLog" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Registration">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID_Person" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Registration_Person" FromRole="Registration" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID_Person" Type="Int32" Nullable="false" />
+          <Property Name="ID_NewPerson" Type="Int32" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Report_Person" FromRole="Report" ToRole="Person" />
+          <NavigationProperty Name="Person1" Relationship="Self.FK_Report_Person1" FromRole="Report" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="People" Relationship="Self.FK_Person_Role" FromRole="Role" ToRole="Person" />
+        </EntityType>
+        <Association Name="FK_ACC_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="ACC" Type="Self.ACC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ACC">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonLog_ACC">
+          <End Role="ACC" Type="Self.ACC" Multiplicity="1" />
+          <End Role="PersonLog" Type="Self.PersonLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACC">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PersonLog">
+              <PropertyRef Name="ID_Ad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Class_Grade">
+          <End Role="Grade" Type="Self.Grade" Multiplicity="0..1" />
+          <End Role="Class" Type="Self.Class" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grade">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Class">
+              <PropertyRef Name="ID_Grade" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="0..1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="ID_Class" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="famiy">
+          <End Role="Family" Type="Self.Family" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FamilyLinkInfo" Type="Self.FamilyLinkInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Family">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="FamilyLinkInfo">
+              <PropertyRef Name="id_family" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Family_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Family" Type="Self.Family" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Family">
+              <PropertyRef Name="ID_Dad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="info">
+          <End Role="FamilyInfo" Type="Self.FamilyInfo" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FamilyLinkInfo" Type="Self.FamilyLinkInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FamilyInfo">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="FamilyLinkInfo">
+              <PropertyRef Name="id_info" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="ID_role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonLog_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="PersonLog" Type="Self.PersonLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PersonLog">
+              <PropertyRef Name="ID_Per" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Registration_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Registration" Type="Self.Registration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Registration">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Person1">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="ID_NewPerson" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="tndaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ACCs" EntityType="Self.ACC" />
+          <EntitySet Name="Classes" EntityType="Self.Class" />
+          <EntitySet Name="Families" EntityType="Self.Family" />
+          <EntitySet Name="FamilyInfoes" EntityType="Self.FamilyInfo" />
+          <EntitySet Name="FamilyLinkInfoes" EntityType="Self.FamilyLinkInfo" />
+          <EntitySet Name="Grades" EntityType="Self.Grade" />
+          <EntitySet Name="People" EntityType="Self.Person" />
+          <EntitySet Name="PersonLogs" EntityType="Self.PersonLog" />
+          <EntitySet Name="Registrations" EntityType="Self.Registration" />
+          <EntitySet Name="Reports" EntityType="Self.Report" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <AssociationSet Name="FK_ACC_Person" Association="Self.FK_ACC_Person">
+            <End Role="Person" EntitySet="People" />
+            <End Role="ACC" EntitySet="ACCs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonLog_ACC" Association="Self.FK_PersonLog_ACC">
+            <End Role="ACC" EntitySet="ACCs" />
+            <End Role="PersonLog" EntitySet="PersonLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Class_Grade" Association="Self.FK_Class_Grade">
+            <End Role="Grade" EntitySet="Grades" />
+            <End Role="Class" EntitySet="Classes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_Class" Association="Self.FK_Person_Class">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="Person" EntitySet="People" />
+          </AssociationSet>
+          <AssociationSet Name="famiy" Association="Self.famiy">
+            <End Role="Family" EntitySet="Families" />
+            <End Role="FamilyLinkInfo" EntitySet="FamilyLinkInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Family_Person" Association="Self.FK_Family_Person">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Family" EntitySet="Families" />
+          </AssociationSet>
+          <AssociationSet Name="info" Association="Self.info">
+            <End Role="FamilyInfo" EntitySet="FamilyInfoes" />
+            <End Role="FamilyLinkInfo" EntitySet="FamilyLinkInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_Role" Association="Self.FK_Person_Role">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="Person" EntitySet="People" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonLog_Person" Association="Self.FK_PersonLog_Person">
+            <End Role="Person" EntitySet="People" />
+            <End Role="PersonLog" EntitySet="PersonLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Registration_Person" Association="Self.FK_Registration_Person">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Registration" EntitySet="Registrations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Person" Association="Self.FK_Report_Person">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Person1" Association="Self.FK_Report_Person1">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="tndaModelStoreContainer" CdmEntityContainer="tndaEntities">
+          <EntitySetMapping Name="ACCs">
+            <EntityTypeMapping TypeName="tndaModel.ACC">
+              <MappingFragment StoreEntitySet="ACC">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Pwd" ColumnName="Pwd" />
+                <ScalarProperty Name="ID_Person" ColumnName="ID_Person" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Classes">
+            <EntityTypeMapping TypeName="tndaModel.Class">
+              <MappingFragment StoreEntitySet="Class">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="ID_Grade" ColumnName="ID_Grade" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Families">
+            <EntityTypeMapping TypeName="tndaModel.Family">
+              <MappingFragment StoreEntitySet="Family">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_Dad" ColumnName="ID_Dad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FamilyInfoes">
+            <EntityTypeMapping TypeName="tndaModel.FamilyInfo">
+              <MappingFragment StoreEntitySet="FamilyInfo">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="img_index" ColumnName="img_index" />
+                <ScalarProperty Name="src" ColumnName="src" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FamilyLinkInfoes">
+            <EntityTypeMapping TypeName="tndaModel.FamilyLinkInfo">
+              <MappingFragment StoreEntitySet="FamilyLinkInfo">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="id_family" ColumnName="id_family" />
+                <ScalarProperty Name="id_info" ColumnName="id_info" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Grades">
+            <EntityTypeMapping TypeName="tndaModel.Grade">
+              <MappingFragment StoreEntitySet="Grade">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="GradeName" ColumnName="GradeName" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="People">
+            <EntityTypeMapping TypeName="tndaModel.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Birth" ColumnName="Birth" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="ID_Farmily" ColumnName="ID_Farmily" />
+                <ScalarProperty Name="ID_role" ColumnName="ID_role" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="ID_Class" ColumnName="ID_Class" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="ChristianName" ColumnName="ChristianName" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonLogs">
+            <EntityTypeMapping TypeName="tndaModel.PersonLog">
+              <MappingFragment StoreEntitySet="PersonLog">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_Per" ColumnName="ID_Per" />
+                <ScalarProperty Name="CollumName" ColumnName="CollumName" />
+                <ScalarProperty Name="OldData" ColumnName="OldData" />
+                <ScalarProperty Name="NewData" ColumnName="NewData" />
+                <ScalarProperty Name="ID_Ad" ColumnName="ID_Ad" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Registrations">
+            <EntityTypeMapping TypeName="tndaModel.Registration">
+              <MappingFragment StoreEntitySet="Registration">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_Person" ColumnName="ID_Person" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reports">
+            <EntityTypeMapping TypeName="tndaModel.Report">
+              <MappingFragment StoreEntitySet="Report">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_Person" ColumnName="ID_Person" />
+                <ScalarProperty Name="ID_NewPerson" ColumnName="ID_NewPerson" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="tndaModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
