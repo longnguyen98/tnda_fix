@@ -2113,6 +2113,7 @@
     <Content Include="Views\Template\desktop.ini" />
     <Content Include="Views\Template\index.cshtml" />
     <Content Include="Views\Template\landing_index.cshtml" />
+    <Content Include="Views\External\detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -19,20 +19,13 @@ namespace tnda.Controllers
         {
             return View();
         }
-
-
-
-
-        [HttpGet]
-        public JsonResult get()
+        public ActionResult detail()
         {
-
-            tndaEntities db = new tndaEntities();
-            Person p = db.People.Find(1);
-            return Json(p, JsonRequestBehavior.AllowGet);
-
+            return View();
         }
 
+
+        
         public JsonResult getPersonByQuery()
         {
 
