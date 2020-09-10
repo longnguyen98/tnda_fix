@@ -16,19 +16,19 @@
             url: "/external/getPersonDetail",
             data: { id:id },
             success: function (result) {
-                console.log(result);
+                console.log(result);               
+                $('#loading').hide();
+                $('.my-content').addClass("d-flex");
+                $('.my-content').addClass("justify-content-center");
+                $('.my-content').addClass("row");
+                $('.my-content').show();
                 new Vue({
                     el: '#vue_app',
                     data: {
-                        backlink: '/external/listing?query=' + query,
-                        detail: result
+                        detail: result,
+                        glvlink: '/external/detail?query=' + query + '&id=' +result.glv_id
                     }
                 });
-                $('#loading').hide();
-                $('#content').addClass("d-flex");
-                $('#content').addClass("justify-content-center");
-                $('#content').addClass("row");
-                $('#content').show();
             }
         });
         
@@ -39,10 +39,10 @@
     <div class="d-flex justify-content-center bg-light rounded">
         <img id="loading" style="display:none" src="~/img/loading.gif" />
     </div>
-    <div id="content" class="" style="display:none">
+    <div v-if="detail.role_id==3" class="my-content" style="display:none">
         <div class="row" style="width:80%">
             <div class="col-lg-12 col-sm-12 mb-2 d-flex flex-row-reverse">
-                <a :href="backlink" class="btn btn-secondary"><i class="fas fa-long-arrow-alt-left mr-1"></i>Quay lại</a>
+                <button onclick="history.back()" class="btn btn-secondary"><i class="fas fa-long-arrow-alt-left mr-1"></i>Quay lại</button>
             </div>
         </div>
         <div class="row mb-2" style="width:80%">
@@ -54,7 +54,7 @@
                         </div>
                         <div class="col-lg-5 col-sm-12 mb-2">
                             <h5 class="card-title">{{detail.ch_name}} {{detail.fname}} {{detail.name}}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Thiếu nhi</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">{{detail.role}}</h6>
                             <p class="card-text">Ngày sinh: <b>{{detail.birth}}</b></p>
                             <p class="card-text">Địa chỉ: <b>{{detail.address}}</b></p>
 
@@ -63,7 +63,7 @@
                             <p class="card-text"></p>
                             <p class="card-text">Khối:<b>{{detail.grade}}</b></p>
                             <p class="card-text">Lớp: <b>{{detail.pclass}}</b></p>
-                            <p class="card-text">Giáo Lý Viên: <b>{{detail.glv}}</b></p>
+                            <p class="card-text">Giáo Lý Viên: <a :href="glvlink"><b>{{detail.glv}}</b> </a></p>
                         </div>
                     </div>
                 </div>
@@ -89,6 +89,43 @@
                 </div>
             </div>
         </div>
+        <div class="row mb-2" style="width:80%">
+            <div class="col-lg-12 col-sm-12 mb-2">
+                <div class="card d-flex">
+                    <div class="card-body">
+                        Coming soon!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div v-else class="my-content" style="display:none">
+        <div class="row" style="width:80%">
+            <div class="col-lg-12 col-sm-12 mb-2 d-flex flex-row-reverse">
+                <button onclick="history.back()" class="btn btn-secondary"><i class="fas fa-long-arrow-alt-left mr-1"></i>Quay lại</button>
+            </div>
+        </div>
+        <div class="row mb-2" style="width:80%">
+            <div class="col-lg-12">
+                <div class="card d-flex">
+                    <div class="card-body row d-flex justify-content-center">
+                        <div class="col-lg-2 col-sm-6 mb-2">
+                            <img class="card-img-top rounded" src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png" alt="Img" />
+                        </div>
+                        <div class="col-lg-5 col-sm-12 mb-2">
+                            <h5 class="card-title">{{detail.ch_name}} {{detail.fname}} {{detail.name}}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{detail.role}}</h6>                            
+                            <p class="card-text">Số điện thoại: <b>{{detail.phone}}</b></p>
+                        </div>
+                        <div class="col-lg-5 col-sm-12 mb-2">
+                            <p class="card-text"></p>
+                            <p class="card-text">Khối: <b>{{detail.grade}}</b></p>
+                            <p class="card-text">Lớp: <b>{{detail.pclass}}</b></p>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>      
         <div class="row mb-2" style="width:80%">
             <div class="col-lg-12 col-sm-12 mb-2">
                 <div class="card d-flex">

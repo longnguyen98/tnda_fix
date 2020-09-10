@@ -51,7 +51,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">#ID</th>
+                        <th scope="col">#</th>
                         <th scope="col">Tên Thánh</th>
                         <th scope="col">Họ & Tên</th>
                         <th scope="col">Ngày sinh</th>
@@ -68,7 +68,7 @@
                 </tbody>
                 <tbody style="display:none" id="content">
                     <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
-                        <th scope="row">{{p.id}}</th>
+                        <th scope="row">{{p.role}}</th>
                         <td>{{p.ch_name}}</td>
                         <td>{{p.fname}} {{p.name}}</td>
                         <td>{{p.birth}}</td>
