@@ -143,6 +143,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\ExternalController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InternalController.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="Models\FamilyLinkInfo.cs">
       <DependentUpon>Db.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\filters\Auth.cs" />
     <Compile Include="Models\Grade.cs">
       <DependentUpon>Db.tt</DependentUpon>
     </Compile>

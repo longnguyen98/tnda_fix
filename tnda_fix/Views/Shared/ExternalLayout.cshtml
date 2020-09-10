@@ -21,70 +21,84 @@
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
     @*Vue*@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        $.ajax({
+            url: "/auth/getAuthStatus",
+            success: function (result) {
+                console.log(result);
+                console.log('abc');
+                new Vue({
+                    el: '#vue_app_layout',
+                    data: {
+                        status: result
+                    }
+                });
+            }
+        });
+    </script>
 </head>
 <body>
+
     <!-- Navigation -->
     <nav class="navbar navbar-light bg-light static-top">
-        <div class="container">
+        <div id="vue_app_layout" class="container">
             <a class="navbar-brand" href="~/external/index"><i class="fas fa-church mr-1"></i>Thiếu nhi Giáo xứ Dĩ An</a>
-            <button data-toggle="modal" data-target="#login_modal" class="btn btn-primary font-weight-bold">Đăng nhập GLV</button>
+            <button v-if="!status" data-toggle="modal" data-target="#login_modal" class="btn btn-primary font-weight-bold">Đăng nhập GLV</button>
         </div>
     </nav>
     <section class="features-icons bg-info" style="padding-top:0px;padding-bottom:2%">
         @RenderBody()
-    </section>    
-        <!-- Footer -->
-        <footer class="footer bg-light">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-6 h-100 text-center text-lg-left my-auto">
-                        <p class="text-muted small mb-4 mb-lg-0"></p>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-6 h-100 text-center text-lg-right my-auto">
-                        <ul class="list-inline mb-0">
-                            <li class="list-inline-item mr-3">
-                                <p class="text-muted small mb-4 mb-lg-0">Nhà thờ Giáo xứ Dĩ An</p><lead class="text-muted small mb-4 mb-lg-0">368 Trần Hưng Đạo, Dĩ An, Bình Dương</lead>
-                            </li>
-                            <li class="list-inline-item mr-3">
-                                <a href="https://www.facebook.com/Thi%E1%BA%BFu-Nhi-Gi%C3%A1o-X%E1%BB%A9-D%C4%A9-An-102533327790422">
-                                    <i class="fab fa-facebook fa-2x fa-fw"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+    </section>
+    <!-- Footer -->
+    <footer class="footer bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-6 h-100 text-center text-lg-left my-auto">
+                    <p class="text-muted small mb-4 mb-lg-0"></p>
                 </div>
-            </div>
-        </footer>
-        <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Đăng nhập GLV</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form>
-                        <div class="modal-body">
-
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Tài khoản</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="...">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">Mật khẩu</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="***">
-                            </div>
-
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="w-100 btn btn-primary">Đăng nhập</button>
-                        </div>
-                    </form>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-6 h-100 text-center text-lg-right my-auto">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item mr-3">
+                            <p class="text-muted small mb-4 mb-lg-0">Nhà thờ Giáo xứ Dĩ An</p><lead class="text-muted small mb-4 mb-lg-0">368 Trần Hưng Đạo, Dĩ An, Bình Dương</lead>
+                        </li>
+                        <li class="list-inline-item mr-3">
+                            <a href="https://www.facebook.com/Thi%E1%BA%BFu-Nhi-Gi%C3%A1o-X%E1%BB%A9-D%C4%A9-An-102533327790422">
+                                <i class="fab fa-facebook fa-2x fa-fw"></i>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
+    </footer>
+    <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Đăng nhập GLV</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/Auth/login" method="post">
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label>Tài khoản</label>
+                            <input type="text" name="username" class="form-control" placeholder="username">
+                        </div>
+                        <div class="form-group">
+                            <label>Mật khẩu</label>
+                            <input type="password" name="password" class="form-control" placeholder="password">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="w-100 btn btn-primary">Đăng nhập</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 </body>
 
