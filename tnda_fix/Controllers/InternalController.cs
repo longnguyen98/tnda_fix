@@ -7,12 +7,16 @@ using tnda_fix.Models.filters;
 
 namespace tnda.Controllers
 {
-    
+    [Auth]
     public class InternalController : Controller
     {
         // GET: Internal
-        [Auth]
+        
         public ActionResult Index()
+        {
+            return View();
+        }
+        public ActionResult listByClass()
         {
             return View();
         }

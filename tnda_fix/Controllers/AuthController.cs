@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+using tnda.Controllers;
 using tnda_fix.Models;
 
 namespace tnda_fix.Controllers
@@ -10,6 +11,12 @@ namespace tnda_fix.Controllers
         {
             bool login = Session["accountName"] != null;
             return Json(login, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getPersonFromSession()
+        {
+            int person_id = (int)Session["personId"];
+            ExternalController ex = new ExternalController();
+            return ex.getPersonDetailWithArg(person_id);
         }
         [HttpPost]
         public ActionResult login()
@@ -22,7 +29,7 @@ namespace tnda_fix.Controllers
                 Session.Add("accountName", username);
 
             }
-            return Redirect("~/internal/index");
+            return Redirect("~/external/index");
         }
         public ActionResult logout()
         {
@@ -38,6 +45,8 @@ namespace tnda_fix.Controllers
             {
                 if (account.Pwd.Trim().Equals(password))
                 {
+                    Person p = account.Person;
+                    Session.Add("personId", p.ID);
                     return true;
                 }
                 else

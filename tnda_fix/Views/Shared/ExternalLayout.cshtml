@@ -21,29 +21,51 @@
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
     @*Vue*@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script>
+    <script>        
+
         $.ajax({
             url: "/auth/getAuthStatus",
             success: function (result) {
-                console.log(result);
-                console.log('abc');
-                new Vue({
-                    el: '#vue_app_layout',
-                    data: {
-                        status: result
-                    }
-                });
+                console.log(result);                
+                if (result == true) {
+                    $.ajax({
+                        url: "/auth/getPersonFromSession",
+                        success: function (person) {
+                            console.log(person);
+                            new Vue({
+                                el: '#vue_app_layout',
+                                data: {
+                                    status: result,
+                                    person: person
+                                }
+                            });
+                            $('#glv_name').css("display", "inline");
+                        }
+                    });
+                } else {
+                    new Vue({
+                        el: '#vue_app_layout',
+                        data: {
+                            status: result
+                        }
+                    });
+                    $('#glv_name').css("display", "inline");
+                }
+                
             }
         });
+        
     </script>
 </head>
 <body>
-
     <!-- Navigation -->
     <nav class="navbar navbar-light bg-light static-top">
         <div id="vue_app_layout" class="container">
             <a class="navbar-brand" href="~/external/index"><i class="fas fa-church mr-1"></i>Thiếu nhi Giáo xứ Dĩ An</a>
-            <button v-if="!status" data-toggle="modal" data-target="#login_modal" class="btn btn-primary font-weight-bold">Đăng nhập GLV</button>
+            <button v-if="!status" data-toggle="modal" data-target="#login_modal" class="btn btn-primary font-weight-bold">
+                Đăng nhập GLV
+            </button>
+            <a class="navbar-brand" v-if="status">Xin chào <b style="display:none" id="glv_name">{{person.ch_name}} {{person.fname}} {{person.name}}</b></a>
         </div>
     </nav>
     <section class="features-icons bg-info" style="padding-top:0px;padding-bottom:2%">
