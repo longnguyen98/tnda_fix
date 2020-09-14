@@ -201,6 +201,7 @@
     <Compile Include="Models\Role.cs">
       <DependentUpon>Db.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Tools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

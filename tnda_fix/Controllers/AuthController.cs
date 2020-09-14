@@ -15,8 +15,8 @@ namespace tnda_fix.Controllers
         public JsonResult getPersonFromSession()
         {
             int person_id = (int)Session["personId"];
-            ExternalController ex = new ExternalController();
-            return ex.getPersonDetailWithArg(person_id);
+            PersonController personController = new PersonController();
+            return personController.getPersonDetailWithArg(person_id);
         }
         [HttpPost]
         public ActionResult login()

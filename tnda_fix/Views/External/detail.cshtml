@@ -13,7 +13,7 @@
         console.log(query);
         console.log(id);
         $.ajax({
-            url: "/external/getPersonDetail",
+            url: "/person/getPersonDetail",
             data: { id:id },
             success: function (result) {
                 console.log(result);               

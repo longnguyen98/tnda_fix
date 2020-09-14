@@ -10,7 +10,7 @@
         var query = url.searchParams.get("query");
         console.log(query);
         $.ajax({
-            url: "/external/getPersonByQuery",
+            url: "/Person/getPersonByQuery",
             data: { query: query },
             success: function (result) {
                 console.log(result);
