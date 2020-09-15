@@ -105,30 +105,36 @@ namespace tnda_fix.Controllers
             }
             return Json(objects, JsonRequestBehavior.AllowGet);
         }
-        public void AddPerson()
+        [HttpPost]
+        public JsonResult AddPerson(FormCollection form)
         {
             tndaEntities db = new tndaEntities();
+            //Dictionary<string, object> map = new Dictionary<string, object>();
+
             Person p = new Person
             {
-                ChristianName = "",
-                FirstName = "",
-                Name = "",
-                Birth = DateTime.Now, //
-                Address = "",
-                ID_Class = 1,
-                ID_Farmily = 1,
+                ChristianName = form["child-ch-name"],
+                FirstName = form["fa-fname"],
+                Name = form["fa-name"],
+                Birth = Convert.ToDateTime(form["child-birth"]), //
+                Address = form["child-address"],
+                ID_Class = int.Parse(form["child-class"]),
+                //ID_Farmily = form["child-address"],
                 ID_role = 1,
-                Image = "",
+                //Image = "",
                 Note = "",
                 Phone = "",
                 Status = true,
-                Gender = true,
+                Gender = bool.Parse(form["child-gender"]),
                 CreateDate = DateTime.Now
             };
-            db.People.Add(p);
-            db.SaveChanges();
+
+            return Json(form["child-class"], JsonRequestBehavior.AllowGet);
+            //db.People.Add(p);
+            //db.SaveChanges();
         }
         //Edit Person
+        [HttpPost]
         public void EditPerson(int id)
         {
             tndaEntities db = new tndaEntities();
@@ -144,97 +150,214 @@ namespace tnda_fix.Controllers
                 }
             }
         }
-        public void EditName(Person p, string name)
+        [HttpPost]
+        public void EditName()
         {
             tndaEntities db = new tndaEntities();
-            //List<Person> list = db.People.ToList();
-            p.Name = name;
-            db.SaveChanges();
-        }
-        public void EditFistName(Person p, string name)
-        {
-            tndaEntities db = new tndaEntities();
-            p.FirstName = name;
-            db.SaveChanges();
-        }
-        public void EditGender(Person p, bool gender)
-        {
-            tndaEntities db = new tndaEntities();
-            p.Gender = gender;
-            db.SaveChanges();
-        }
-        public void EditClass(Person p, int c)
-        {
-            tndaEntities db = new tndaEntities();
-            p.ID_Class = c;
-            db.SaveChanges();
-        }
-        public void EditFamily(Person p, int c)
-        {
-            tndaEntities db = new tndaEntities();
-            p.ID_Farmily = c;
-            db.SaveChanges();
-        }
-        public void EditImage(Person p, string img)
-        {
-            tndaEntities db = new tndaEntities();
-            p.Image = img;
-            db.SaveChanges();
-        }
-        public void EditRole(Person p, int c)
-        {
-            tndaEntities db = new tndaEntities();
-            p.ID_role = c;
-            db.SaveChanges();
-        }
-        public void EditAddress(Person p, string adr)
-        {
-            tndaEntities db = new tndaEntities();
-            p.Address = adr;
-            db.SaveChanges();
-        }
-        public void EditBirth(Person p, DateTime dt)
-        {
-            tndaEntities db = new tndaEntities();
-            p.Birth = dt;
-            db.SaveChanges();
-        }
-        public void EditChristianName(Person p, string cn)
-        {
-            tndaEntities db = new tndaEntities();
-            p.Image = cn;
-            db.SaveChanges();
-        }
-        public void EditNote(Person p, string note)
-        {
-            tndaEntities db = new tndaEntities();
-            p.Note = note;
-            db.SaveChanges();
-        }
-        public void EditName(int id, string name)
-        {
-            tndaEntities db = new tndaEntities();
-            Person p = new Person();
             List<Person> list = db.People.ToList();
-            foreach (Person ps in list)
+            string id = Request.QueryString["query"];
+            string name = Request.QueryString["query"];
+            foreach (Person p in list)
             {
-                if (ps.ID == id)
+                if (p.ID == int.Parse(id))
                 {
-                    ps.Name = name;
+                    p.Name = name;
+                    db.SaveChanges();
+                }
+            }
+        }
+        [HttpPost]
+        public void EditFistName()
+        {
+            tndaEntities db = new tndaEntities();
+            List<Person> list = db.People.ToList();
+            string id = Request.QueryString["query"];
+            string fname = Request.QueryString["query"];
+            foreach (Person p in list)
+            {
+                if (p.ID == int.Parse(id))
+                {
+                    p.FirstName = fname;
+                    db.SaveChanges();
+                }
+            }
+        }
+        [HttpPost]
+        public void EditGender()
+        {
+            tndaEntities db = new tndaEntities();
+            List<Person> list = db.People.ToList();
+            string id = Request.QueryString["query"];
+            bool gender = bool.Parse(Request.QueryString["query"]);
+            foreach (Person p in list)
+            {
+                if (p.ID == int.Parse(id))
+                {
+                    p.Gender = gender;
+                    db.SaveChanges();
+                }
+            }
+        }
+        [HttpPost]
+        public void EditClass()
+        {
+            tndaEntities db = new tndaEntities();
+            List<Person> list = db.People.ToList();
+            string id = Request.QueryString["query"];
+            int c = int.Parse( Request.QueryString["query"]);
+            foreach (Person p in list)
+            {
+                if (p.ID == int.Parse(id))
+                {
+                    p.ID_Class = c;
+                    db.SaveChanges();
+                }
+            }
+        }
+        [HttpPost]
+        public void EditFamily()
+        {
+            tndaEntities db = new tndaEntities();
+            List<Person> list = db.People.ToList();
+            string id = Request.QueryString["query"];
+            int idF = int.Parse( Request.QueryString["query"]);
+            foreach (Person p in list)
+            {
+                if (p.ID == int.Parse(id))
+                {
+                    p.ID_Farmily = idF;
+                    db.SaveChanges();
+                }
+            }
+        }
+        [HttpPost]
+        public void EditImage()
+        {
+            tndaEntities db = new tndaEntities();
+            List<Person> list = db.People.ToList();
+            string id = Request.QueryString["query"];
+            string img = Request.QueryString["query"];
+            foreach (Person p in list)
+            {
+                if (p.ID == int.Parse(id))
+                {
+                    p.Image = img;
+                    db.SaveChanges();
+                }
+            }
+        }
+        [HttpPost]
+        public void EditRole()
+        {
+            tndaEntities db = new tndaEntities();
+            List<Person> list = db.People.ToList();
+            string id = Request.QueryString["query"];
+            int role = int.Parse(Request.QueryString["query"]);
+            foreach (Person p in list)
+            {
+                if (p.ID == int.Parse(id))
+                {
+                    p.ID_role = role;
+                    db.SaveChanges();
+                }
+            }
+        }
+        [HttpPost]
+        public void EditAddress()
+        {
+            tndaEntities db = new tndaEntities();
+            List<Person> list = db.People.ToList();
+            string id = Request.QueryString["query"];
+            string adr = Request.QueryString["query"];
+            foreach (Person p in list)
+            {
+                if (p.ID == int.Parse(id))
+                {
+                    p.Address = adr;
+                    db.SaveChanges();
+                }
+            }
+        }
+        [HttpPost]
+        public void EditBirth()
+        {
+            tndaEntities db = new tndaEntities();
+            List<Person> list = db.People.ToList();
+            string id = Request.QueryString["query"];
+            DateTime date = DateTime.Parse( Request.QueryString["query"]);
+            foreach (Person p in list)
+            {
+                if (p.ID == int.Parse(id))
+                {
+                    p.Birth = date;
+                    db.SaveChanges();
+                }
+            }
+        }
+        [HttpPost]
+        public void EditChristianName()
+        {
+            tndaEntities db = new tndaEntities();
+            List<Person> list = db.People.ToList();
+            string id = Request.QueryString["query"];
+            string Cname = Request.QueryString["query"];
+            foreach (Person p in list)
+            {
+                if (p.ID == int.Parse(id))
+                {
+                    p.ChristianName = Cname;
+                    db.SaveChanges();
+                }
+            }
+        }
+        [HttpPost]
+        public void EditNote()
+        {
+            tndaEntities db = new tndaEntities();
+            List<Person> list = db.People.ToList();
+            string id = Request.QueryString["query"];
+            string note = Request.QueryString["query"];
+            foreach (Person p in list)
+            {
+                if (p.ID == int.Parse(id))
+                {
+                    p.Note = note;
                     db.SaveChanges();
                 }
             }
         }
         //Report
-        public bool ReportPerson(int idOldPerson)
+        [HttpPost]
+        public bool ReportPerson(FormCollection form)
         {
+            int idOldPerson = int.Parse(Request.QueryString["query"]);
             tndaEntities db = new tndaEntities();
-            Person ps = new Person();
-            db.People.Add(ps);
+            Person p = new Person
+            {
+                ChristianName = form["child-ch-name"],
+                FirstName = form["fa-fname"],
+                Name = form["fa-name"],
+                Birth = Convert.ToDateTime(form["child-birth"]), //
+                Address = form["child-address"],
+                ID_Class = int.Parse(form["child-class"]),
+                //ID_Farmily = form["child-address"],
+                ID_role = 1,
+                //Image = "",
+                Note = "",
+                Phone = "",
+                Status = true,
+                Gender = bool.Parse(form["child-gender"]),
+                CreateDate = DateTime.Now
+            };
+            db.People.Add(p);
+            //return Json(form["child-class"], JsonRequestBehavior.AllowGet);
+            //db.People.Add(p);
+            //db.SaveChanges();
+
             Report rp = new Report
             {
                 ID_Person = idOldPerson,
-                ID_NewPerson = ps.ID,
+                ID_NewPerson = p.ID,
                 Date = DateTime.Now,
                 Status = 0
             };
@@ -242,6 +365,7 @@ namespace tnda_fix.Controllers
             db.SaveChanges();
             return true;
         }
+        [HttpPost]
         public bool DelPerson(int id)
         {
             tndaEntities db = new tndaEntities();
@@ -251,7 +375,7 @@ namespace tnda_fix.Controllers
             {
                 if (p.ID == id)
                 {
-                    db.People.Remove(p);
+                    p.Status = false;
                     db.SaveChanges();
                 }
             }
