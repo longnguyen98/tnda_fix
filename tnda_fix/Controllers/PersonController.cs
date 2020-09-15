@@ -15,7 +15,7 @@ namespace tnda_fix.Controllers
             tndaEntities db = new tndaEntities();
             Person child = db.People.Find(id);
             //
-            if (child.ID_role == 3)
+            if (child.ID_role == 4)
             {
                 Family family = db.Families.Find(child.ID_Farmily);
                 //
@@ -91,7 +91,7 @@ namespace tnda_fix.Controllers
                 bool cfn = (cname + " " + fname + " " + name).Trim().Equals(query);
                 bool cn = (cname + " " + name).Trim().Equals(query);
                 bool fn = (fname + " " + name).Trim().Equals(query);
-                bool role = p.ID_role == 3 || p.ID_role == 1 || p.ID_role == 2;
+                bool role = p.ID_role == 4 || p.ID_role == 1 || p.ID_role == 2;
                 if (role)
                 {
                     if (Tools.convert(p.ChristianName.ToUpper()).Equals(query) || Tools.convert(p.FirstName.ToUpper()).Equals(query) || Tools.convert(p.Name.ToUpper()).Equals(query) || cfn || cn || fn)
@@ -105,37 +105,109 @@ namespace tnda_fix.Controllers
             }
             return Json(objects, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
-<<<<<<< HEAD
         public JsonResult AddPerson(FormCollection form)
-=======
-        public void AddPerson()
->>>>>>> c259996974faf61b8ed0f40fc1fc101cfcc2109b
+
         {
             tndaEntities db = new tndaEntities();
+            int id_family_lead = -1;
+            int id_family = -1;
+            Person dad = null;
+            Person mom = null;
             //Dictionary<string, object> map = new Dictionary<string, object>();
+            if (!(form["fa-ch-name"].ToString().Length == 0 && form["fa-fname"].ToString().Length == 0 && form["fa-name"].ToString().Length == 0))
+            {
+                dad = new Person
+                {
+                    ChristianName = form.Get("fa-ch-name"),
+                    FirstName = form.Get("fa-fname"),
+                    Name = form.Get("fa-name"),
+                    Phone = form.Get("fa-phone"),
+                    ID_role = 3
+                };
+                db.People.Add(dad);
+                db.SaveChanges();
+                int dad_id = dad.ID;
 
+            }
+            if (!(form["mo-ch-name"].ToString().Length == 0 && form["mo-fname"].ToString().Length == 0 && form["mo-name"].ToString().Length == 0))
+            {
+                mom = new Person
+                {
+                    ChristianName = form.Get("mo-ch-name"),
+                    FirstName = form.Get("mo-fname"),
+                    Name = form.Get("mo-name"),
+                    Phone = form.Get("mo-phone"),
+                    ID_role = 3
+                };
+                db.People.Add(mom);
+                db.SaveChanges();
+                int mom_id = mom.ID;
+            }
+            //
+            if (dad == null)
+            {
+                id_family_lead = mom.ID;
+            }
+            else id_family_lead = dad.ID;
+            //
+            if (id_family_lead != -1)
+            {
+                Family fl = new Family
+                {
+                    ID_Dad = id_family_lead,
+                };
+                db.Families.Add(fl);
+                db.SaveChanges();
+                id_family = fl.ID;
+                if (dad != null)
+                {
+                    dad.ID_Farmily = id_family;
+                    db.SaveChanges();
+                }
+                if (mom != null)
+                {
+                    mom.ID_Farmily = id_family;
+                    db.SaveChanges();
+                }
+            }
+            //
+
+            //
             Person p = new Person
             {
                 ChristianName = form["child-ch-name"],
-                FirstName = form["fa-fname"],
-                Name = form["fa-name"],
+                FirstName = form["child-fname"],
+                Name = form["child-name"],
                 Birth = Convert.ToDateTime(form["child-birth"]), //
                 Address = form["child-address"],
                 ID_Class = int.Parse(form["child-class"]),
-                //ID_Farmily = form["child-address"],
-                ID_role = 1,
+                //set later ID_Farmily = id_family,
+                ID_role = 4,
                 //Image = "",
-                Note = "",
-                Phone = "",
+                //Note = "",
+                //Phone = "",
                 Status = true,
                 Gender = bool.Parse(form["child-gender"]),
                 CreateDate = DateTime.Now
             };
+            if (id_family != -1)
+            {
+                p.ID_Farmily = id_family;
+            }
+            if (dad != null)
+            {
+                dad.Address = p.Address;
+            }
+            if (mom != null)
+            {
+                mom.Address = p.Address;
+            }
+            db.People.Add(p);
+            db.SaveChanges();
+            return Json("added" + p.ID, JsonRequestBehavior.AllowGet);
 
-            return Json(form["child-class"], JsonRequestBehavior.AllowGet);
-            //db.People.Add(p);
-            //db.SaveChanges();
         }
         //Edit Person
         [HttpPost]
@@ -208,7 +280,7 @@ namespace tnda_fix.Controllers
             tndaEntities db = new tndaEntities();
             List<Person> list = db.People.ToList();
             string id = Request.QueryString["query"];
-            int c = int.Parse( Request.QueryString["query"]);
+            int c = int.Parse(Request.QueryString["query"]);
             foreach (Person p in list)
             {
                 if (p.ID == int.Parse(id))
@@ -224,7 +296,7 @@ namespace tnda_fix.Controllers
             tndaEntities db = new tndaEntities();
             List<Person> list = db.People.ToList();
             string id = Request.QueryString["query"];
-            int idF = int.Parse( Request.QueryString["query"]);
+            int idF = int.Parse(Request.QueryString["query"]);
             foreach (Person p in list)
             {
                 if (p.ID == int.Parse(id))
@@ -288,7 +360,7 @@ namespace tnda_fix.Controllers
             tndaEntities db = new tndaEntities();
             List<Person> list = db.People.ToList();
             string id = Request.QueryString["query"];
-            DateTime date = DateTime.Parse( Request.QueryString["query"]);
+            DateTime date = DateTime.Parse(Request.QueryString["query"]);
             foreach (Person p in list)
             {
                 if (p.ID == int.Parse(id))
@@ -394,7 +466,7 @@ namespace tnda_fix.Controllers
             foreach (string key in keys)
             {
                 map.Add(key, form[key]);
-            }            
+            }
             return Json(map, JsonRequestBehavior.AllowGet);
         }
     }
