@@ -105,38 +105,6 @@ namespace tnda_fix.Controllers
             }
             return Json(objects, JsonRequestBehavior.AllowGet);
         }
-        [HttpPost]
-<<<<<<< HEAD
-        public JsonResult AddPerson(FormCollection form)
-=======
-        public void AddPerson()
->>>>>>> c259996974faf61b8ed0f40fc1fc101cfcc2109b
-        {
-            tndaEntities db = new tndaEntities();
-            //Dictionary<string, object> map = new Dictionary<string, object>();
-
-            Person p = new Person
-            {
-                ChristianName = form["child-ch-name"],
-                FirstName = form["fa-fname"],
-                Name = form["fa-name"],
-                Birth = Convert.ToDateTime(form["child-birth"]), //
-                Address = form["child-address"],
-                ID_Class = int.Parse(form["child-class"]),
-                //ID_Farmily = form["child-address"],
-                ID_role = 1,
-                //Image = "",
-                Note = "",
-                Phone = "",
-                Status = true,
-                Gender = bool.Parse(form["child-gender"]),
-                CreateDate = DateTime.Now
-            };
-
-            return Json(form["child-class"], JsonRequestBehavior.AllowGet);
-            //db.People.Add(p);
-            //db.SaveChanges();
-        }
         //Edit Person
         [HttpPost]
         public void EditPerson(int id)
