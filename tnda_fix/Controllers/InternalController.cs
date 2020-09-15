@@ -7,7 +7,7 @@ using tnda_fix.Models.filters;
 
 namespace tnda.Controllers
 {
-    [Auth]
+    //[Auth]
     public class InternalController : Controller
     {
         // GET: Internal
@@ -17,6 +17,10 @@ namespace tnda.Controllers
             return View();
         }
         public ActionResult listByClass()
+        {
+            return View();
+        }
+        public ActionResult addPerson()
         {
             return View();
         }

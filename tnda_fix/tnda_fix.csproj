@@ -2120,6 +2120,7 @@
     <Content Include="Views\Template\landing_index.cshtml" />
     <Content Include="Views\External\detail.cshtml" />
     <Content Include="Views\Internal\listByClass.cshtml" />
+    <Content Include="Views\Internal\addPerson.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
