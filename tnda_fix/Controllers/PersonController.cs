@@ -105,6 +105,7 @@ namespace tnda_fix.Controllers
             }
             return Json(objects, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
         public void AddPerson()
         {
             tndaEntities db = new tndaEntities();
