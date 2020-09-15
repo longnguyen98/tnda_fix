@@ -143,6 +143,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\GradeAndClassController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\ExternalController.cs" />
@@ -2125,6 +2126,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Account\" />
+    <Folder Include="Views\GradeAndClass\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

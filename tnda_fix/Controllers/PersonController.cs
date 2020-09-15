@@ -106,7 +106,11 @@ namespace tnda_fix.Controllers
             return Json(objects, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
+<<<<<<< HEAD
         public JsonResult AddPerson(FormCollection form)
+=======
+        public void AddPerson()
+>>>>>>> c259996974faf61b8ed0f40fc1fc101cfcc2109b
         {
             tndaEntities db = new tndaEntities();
             //Dictionary<string, object> map = new Dictionary<string, object>();

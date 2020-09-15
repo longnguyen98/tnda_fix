@@ -3,7 +3,51 @@
     ViewBag.Title = "addPerson";
     Layout = "~/Views/Shared/InternalLayout.cshtml";
 }
+<script>
 
+    function getClasses() {
+
+        var grade_id = $('#grades').val();
+        $('#classes').html('');
+        $.ajax({
+            url: "/GradeAndClass/getClassByGrade",
+            data: { id: grade_id },
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#classes").append(new Option(result[i].className, result[i].ID));
+                }
+            }
+        });
+    }
+    $(document).ready(function () {
+        $.ajax({
+            url: "/GradeAndClass/getAllGrades",
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#grades").append(new Option(result[i].gradeName, result[i].ID));
+                }
+            }
+        });
+        $.ajax({
+            url: "/GradeAndClass/getClassByGrade",
+            data: { id: 1 },
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#classes").append(new Option(result[i].className, result[i].ID));
+                }
+            }
+        });
+    });
+
+
+
+
+
+
+
+
+
+</script>
 <h2>addPerson</h2>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-modal">Add modal</button>
 
@@ -21,7 +65,7 @@
                 </div>
                 <div class="form-group">
                     <label>Tên</label>
-                    <input type="text" class="form-control" placeholder="A"name="child-name">
+                    <input type="text" class="form-control" placeholder="A" name="child-name">
                 </div>
                 <div class="form-group">
                     <label>Ngày tháng năm sinh</label>
@@ -30,12 +74,18 @@
                 <div class="form-group">
                     <label>Giới tính</label>
                     <select class="form-control" name="child-gender">
+<<<<<<< HEAD
                         <option value="true">Nam</option>
                         <option value="false">Nữ</option>
+=======
+                        <option value="1">Nam</option>
+                        <option value="0">Nữ</option>
+>>>>>>> c259996974faf61b8ed0f40fc1fc101cfcc2109b
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Khối</label>
+<<<<<<< HEAD
                     <select  class="form-control" name="child-grade"></select>
                 </div>
                 <div class="form-group">
@@ -46,6 +96,13 @@
 
 
                     </select>
+=======
+                    <select id="grades" onchange="getClasses()" class="form-control" name="child-grade"></select>
+                </div>
+                <div class="form-group">
+                    <label>Lớp</label>
+                    <select id="classes" class="form-control" value="1" name="child-class"></select>
+>>>>>>> c259996974faf61b8ed0f40fc1fc101cfcc2109b
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ</label>
