@@ -27,9 +27,10 @@ namespace tnda_fix.Controllers
             if (auth(username, password))
             {
                 Session.Add("accountName", username);
+                Session.Timeout = 1440;
 
             }
-            return Redirect("~/external/index");
+            return Redirect("~/internal/index");
         }
         public ActionResult logout()
         {

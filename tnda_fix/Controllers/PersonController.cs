@@ -60,13 +60,13 @@ namespace tnda_fix.Controllers
                 //
                 var fatherJson = new { ch_name = father.ChristianName, fname = father.FirstName, name = father.Name, role = father.Role.RoleName, phone = father.Phone };
                 var motherJson = new { ch_name = mother.ChristianName, fname = mother.FirstName, name = mother.Name, role = mother.Role.RoleName, phone = mother.Phone, role_id = child.ID_role };
-                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, role = child.Role.RoleName, glv = glv_name, birth = child.Birth.Value.ToShortDateString(), address = child.Address, father = fatherJson, mother = motherJson, role_id = child.ID_role, glv_id = glv.ID };
+                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, role = child.Role.RoleName, glv = glv_name, id_class = child.ID_Class, birth = child.Birth.Value.ToShortDateString(), address = child.Address, father = fatherJson, mother = motherJson, role_id = child.ID_role, glv_id = glv.ID };
                 //
                 return Json(json, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, role = child.Role.RoleName, birth = child.Birth.Value.ToShortDateString(), address = child.Address, phone = child.Phone, role_id = child.ID_role };
+                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, id_class = child.ID_Class, role = child.Role.RoleName, birth = child.Birth.Value.ToShortDateString(), address = child.Address, phone = child.Phone, role_id = child.ID_role };
 
 
                 return Json(json, JsonRequestBehavior.AllowGet);
@@ -105,16 +105,37 @@ namespace tnda_fix.Controllers
             }
             return Json(objects, JsonRequestBehavior.AllowGet);
         }
-
+        public JsonResult getPersonByClass()
+        {
+            int id_class = int.Parse(Request.QueryString["id_class"]);
+            tndaEntities db = new tndaEntities();
+            List<object> json = new List<object>();
+            List<Person> people = db.People.Where(p => p.ID_role == 4 && p.ID_Class == id_class).ToList();
+            foreach(Person p in people)
+            {
+                var ob = new { id = p.ID, ch_name = p.ChristianName, fname = p.FirstName, name = p.Name, pclass = p.Class.Grade.GradeName + " " + p.Class.ClassName, birth = p.Birth.Value.ToShortDateString(), role = p.Role.RoleName };
+                //
+                json.Add(ob);
+            }
+            return Json(json, JsonRequestBehavior.AllowGet);       
+        }
+        
+        
+        
+        
+        
+        
+        
+        //
         [HttpPost]
-        public JsonResult AddPerson(FormCollection form)
+        public ActionResult AddPerson(FormCollection form)
 
         {
             tndaEntities db = new tndaEntities();
             int id_family_lead = -1;
             int id_family = -1;
             Person dad = null;
-            Person mom = null;           
+            Person mom = null;
             if (!(form["fa-ch-name"].ToString().Length == 0 && form["fa-fname"].ToString().Length == 0 && form["fa-name"].ToString().Length == 0))
             {
                 dad = new Person
@@ -149,7 +170,10 @@ namespace tnda_fix.Controllers
             {
                 id_family_lead = mom.ID;
             }
-            else id_family_lead = dad.ID;
+            else
+            {
+                id_family_lead = dad.ID;
+            }
             //
             if (id_family_lead != -1)
             {
@@ -205,8 +229,7 @@ namespace tnda_fix.Controllers
             }
             db.People.Add(p);
             db.SaveChanges();
-            return Json("added" + p.ID, JsonRequestBehavior.AllowGet);
-
+            return Redirect(form["current_location"].ToString());
         }
         //Edit Person
         [HttpPost]

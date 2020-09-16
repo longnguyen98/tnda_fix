@@ -214,6 +214,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\dashboard.css" />
     <Content Include="Content\datatables\dataTables.bootstrap4.css" />
     <Content Include="Content\datatables\dataTables.bootstrap4.js" />
     <Content Include="Content\datatables\dataTables.bootstrap4.min.css" />
@@ -1958,6 +1959,7 @@
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\dashboard.js" />
     <Content Include="Scripts\desktop.ini" />
     <Content Include="Scripts\esm\desktop.ini" />
     <Content Include="Scripts\esm\popper-utils.js.map" />
@@ -2122,6 +2124,7 @@
     <Content Include="Views\External\detail.cshtml" />
     <Content Include="Views\Internal\listByClass.cshtml" />
     <Content Include="Views\Internal\addPerson.cshtml" />
+    <Content Include="Views\Internal\detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
