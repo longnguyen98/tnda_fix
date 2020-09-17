@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
-using tnda.Controllers;
 using tnda_fix.Models;
 
 namespace tnda_fix.Controllers
@@ -30,7 +29,7 @@ namespace tnda_fix.Controllers
                 Session.Timeout = 1440;
 
             }
-            return Redirect("~/internal/index");
+            return Redirect("~/internal/index?id=" + (int)Session["personId"]);
         }
         public ActionResult logout()
         {

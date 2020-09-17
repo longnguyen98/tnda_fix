@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using ImageProcessor;
+using System;
+using System.IO;
 using System.Web;
 
 namespace tnda_fix.Models
@@ -36,6 +36,29 @@ namespace tnda_fix.Models
                 }
             }
             return str;
+        }
+        public static string getUniqueNum()
+        {
+            string s = DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + DateTime.Now.Millisecond.ToString();
+            return s;
+        }
+        public static string uploadAndResizeImg(HttpPostedFileBase file, string _path, string _filename)
+        {
+            Stream outStream = new FileStream(_path, FileMode.Create, FileAccess.ReadWrite);
+            //
+            ImageFactory imf = new ImageFactory
+            {
+                PreserveExifData = true
+            };
+            imf.Load(file.InputStream);
+            int h, w;
+            h = imf.Image.Height / 10;
+            w = imf.Image.Width / 10;
+            //
+            imf.Resize(new System.Drawing.Size(w, h));
+            imf.Save(outStream);
+            //
+            return "/img/upload/" + _filename;
         }
     }
 }

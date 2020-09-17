@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewBag.Title = "addPerson";
+    Layout = "~/Views/Shared/InternalLayout.cshtml";
+}
+<script>
+    function getClasses() {
+        var grade_id = $('#grades').val();
+        $('#classes').html('');
+        $.ajax({
+            url: "/GradeAndClass/getClassByGrade",
+            data: { id: grade_id },
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#classes").append(new Option(result[i].className, result[i].ID));
+                }
+            }
+        });
+    }
+    $(document).ready(function () {
+        $.ajax({
+            url: "/GradeAndClass/getAllGrades",
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#grades").append(new Option(result[i].gradeName, result[i].ID));
+                }
+            }
+        });
+        $.ajax({
+            url: "/GradeAndClass/getClassByGrade",
+            data: { id: 1 },
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#classes").append(new Option(result[i].className, result[i].ID));
+                }
+            }
+        });
+    });
+</script>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-modal">Add modal</button>
+
+<div class="modal fade bd-example-modal-lg" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">       
+        <div class="modal-content p-5">
+            <form action="/person/AddPerson" method="post">
+                <div class="form-group">
+                    <label>Tên thánh</label>
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="child-ch-name">
+                </div>
+                <div class="form-group">
+                    <label>Họ và đệm</label>
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="child-fname">
+                </div>
+                <div class="form-group">
+                    <label>Tên</label>
+                    <input type="text" class="form-control" placeholder="A" name="child-name">
+                </div>
+                <div class="form-group">
+                    <label>Ngày tháng năm sinh</label>
+                    <input type="date" class="form-control" name="child-birth">
+                </div>
+                <div class="form-group">
+                    <label>Giới tính</label>
+                    <select class="form-control" name="child-gender">
+
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Khối</label>
+                    <select id="grades" onchange="getClasses()" class="form-control" name="child-grade"></select>
+                </div>
+                <div class="form-group">
+                    <label>Lớp</label>
+                    <select id="classes" class="form-control" value="1" name="child-class"></select>
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ</label>
+                    <input type="text" class="form-control" placeholder="Địa chỉ" name="child-address">
+                </div>
+                <br />
+                <h4 class="font-weight-bold">Bố</h4>
+                <div class="form-group">
+                    <label>Tên Thánh</label>
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="fa-ch-name">
+                </div>
+                <div class="form-group">
+                    <label>Họ và đệm</label>
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="fa-fname">
+                </div>
+                <div class="form-group">
+                    <label>Tên</label>
+                    <input type="text" class="form-control" placeholder="A" name="fa-name">
+                </div>
+                <div class="form-group">
+                    <label>SDT</label>
+                    <input type="number" class="form-control" placeholder="Số điện thoại" name="fa-phone">
+                </div>
+                <br />
+                <h4 class="font-weight-bold">Mẹ</h4>
+                <div class="form-group">
+                    <label>Tên Thánh</label>
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="mo-ch-name">
+                </div>
+                <div class="form-group">
+                    <label>Họ và đệm</label>
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="mo-fname">
+                </div>
+                <div class="form-group">
+                    <label>Tên</label>
+                    <input type="text" class="form-control" placeholder="A" name="mo-name">
+                </div>
+                <div class="form-group">
+                    <label>SDT</label>
+                    <input type="number" class="form-control" placeholder="Số điện thoại" name="mo-phone">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Submit.</button>
+            </form>
+        </div>
+    </div>
+</div>
+

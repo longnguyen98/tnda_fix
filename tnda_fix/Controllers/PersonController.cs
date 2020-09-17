@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web;
 using tnda_fix.Models;
+using System.IO;
 
 namespace tnda_fix.Controllers
 {
@@ -12,38 +14,11 @@ namespace tnda_fix.Controllers
         {
             string s_id = Request.QueryString["id"];
             int id = int.Parse(s_id);
-            tndaEntities db = new tndaEntities();
-            Person child = db.People.Find(id);
-            //
-            if (child.ID_role == 4)
-            {
-                Family family = db.Families.Find(child.ID_Farmily);
-                //
-                Person father = db.People.Find(family.ID_Dad);
-                //            
-                Person mother = db.People.Where(p => p.ID_Farmily == family.ID && p.ID != father.ID && p.ID != child.ID).FirstOrDefault();
-                //
-                Person glv = db.People.Where(p => p.ID_Class == child.ID_Class && (p.ID_role == 1 || p.ID_role == 2)).FirstOrDefault();
-                string glv_name = glv.ChristianName + " " + glv.FirstName + " " + glv.Name;
-                //
-                var fatherJson = new { ch_name = father.ChristianName, fname = father.FirstName, name = father.Name, role = father.Role.RoleName, phone = father.Phone };
-                var motherJson = new { ch_name = mother.ChristianName, fname = mother.FirstName, name = mother.Name, role = mother.Role.RoleName, phone = mother.Phone, role_id = child.ID_role };
-                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, role = child.Role.RoleName, glv = glv_name, birth = child.Birth.Value.ToShortDateString(), address = child.Address, father = fatherJson, mother = motherJson, role_id = child.ID_role, glv_id = glv.ID };
-                //
-                return Json(json, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, role = child.Role.RoleName, birth = child.Birth.Value.ToShortDateString(), address = child.Address, phone = child.Phone, role_id = child.ID_role };
-
-
-                return Json(json, JsonRequestBehavior.AllowGet);
-            }
+            return getPersonDetailWithArg(id);
 
         }
-        public JsonResult getPersonDetailWithArg(int idd)
+        public JsonResult getPersonDetailWithArg(int id)
         {
-            int id = idd;
             tndaEntities db = new tndaEntities();
             Person child = db.People.Find(id);
             //
@@ -57,18 +32,26 @@ namespace tnda_fix.Controllers
                 //
                 Person glv = db.People.Where(p => p.ID_Class == child.ID_Class && (p.ID_role == 1 || p.ID_role == 2)).FirstOrDefault();
                 string glv_name = glv.ChristianName + " " + glv.FirstName + " " + glv.Name;
+                string img = child.Image;
+                if (string.IsNullOrEmpty(img))
+                {
+                    img = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
+                }
                 //
                 var fatherJson = new { ch_name = father.ChristianName, fname = father.FirstName, name = father.Name, role = father.Role.RoleName, phone = father.Phone };
                 var motherJson = new { ch_name = mother.ChristianName, fname = mother.FirstName, name = mother.Name, role = mother.Role.RoleName, phone = mother.Phone, role_id = child.ID_role };
-                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, role = child.Role.RoleName, glv = glv_name, id_class = child.ID_Class, birth = child.Birth.Value.ToShortDateString(), address = child.Address, father = fatherJson, mother = motherJson, role_id = child.ID_role, glv_id = glv.ID };
+                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, role = child.Role.RoleName, glv = glv_name, id_class = child.ID_Class, birth = child.Birth.Value.ToString("dd.MM.yyy"), address = child.Address, father = fatherJson, mother = motherJson, role_id = child.ID_role, glv_id = glv.ID, img = img };
                 //
                 return Json(json, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, id_class = child.ID_Class, role = child.Role.RoleName, birth = child.Birth.Value.ToShortDateString(), address = child.Address, phone = child.Phone, role_id = child.ID_role };
-
-
+                string img = child.Image;
+                if (string.IsNullOrEmpty(img))
+                {
+                    img = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
+                }
+                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, id_class = child.ID_Class, role = child.Role.RoleName, birth = child.Birth.Value.ToString("dd.MM.yyy"), address = child.Address, phone = child.Phone, role_id = child.ID_role, img = img };
                 return Json(json, JsonRequestBehavior.AllowGet);
             }
 
@@ -96,7 +79,7 @@ namespace tnda_fix.Controllers
                 {
                     if (Tools.convert(p.ChristianName.ToUpper()).Equals(query) || Tools.convert(p.FirstName.ToUpper()).Equals(query) || Tools.convert(p.Name.ToUpper()).Equals(query) || cfn || cn || fn)
                     {
-                        var ob = new { id = p.ID, ch_name = p.ChristianName, fname = p.FirstName, name = p.Name, pclass = p.Class.Grade.GradeName + " " + p.Class.ClassName, birth = p.Birth.Value.ToShortDateString(), role = p.Role.RoleName };
+                        var ob = new { id = p.ID, ch_name = p.ChristianName, fname = p.FirstName, name = p.Name, pclass = p.Class.Grade.GradeName + " " + p.Class.ClassName, birth = p.Birth.Value.ToString("dd.MM.yyy"), role = p.Role.RoleName };
                         //
                         objects.Add(ob);
                     }
@@ -111,21 +94,43 @@ namespace tnda_fix.Controllers
             tndaEntities db = new tndaEntities();
             List<object> json = new List<object>();
             List<Person> people = db.People.Where(p => p.ID_role == 4 && p.ID_Class == id_class).ToList();
-            foreach(Person p in people)
+            foreach (Person p in people)
             {
                 var ob = new { id = p.ID, ch_name = p.ChristianName, fname = p.FirstName, name = p.Name, pclass = p.Class.Grade.GradeName + " " + p.Class.ClassName, birth = p.Birth.Value.ToShortDateString(), role = p.Role.RoleName };
                 //
                 json.Add(ob);
             }
-            return Json(json, JsonRequestBehavior.AllowGet);       
+            return Json(json, JsonRequestBehavior.AllowGet);
         }
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+        [HttpPost]
+        public ActionResult setImg(FormCollection form, HttpPostedFileBase file)
+        {
+            int id = int.Parse(form["id"]);
+            //
+            string _FileName = Tools.getUniqueNum() + Path.GetExtension(file.FileName);
+            string _path = Path.Combine(Server.MapPath("~/img/upload"), _FileName);
+            string result = Tools.uploadAndResizeImg(file, _path, _FileName);
+            //
+            tndaEntities db = new tndaEntities();
+            db.People.Find(id).Image = result;
+            db.SaveChanges();
+            //
+
+
+
+            return Redirect("~/internal/index?id="+id);
+        }
+
+
+
+
+
+
+
         //
         [HttpPost]
         public ActionResult AddPerson(FormCollection form)

@@ -1,0 +1,211 @@
+﻿
+@{
+    ViewBag.Title = "listByClass";
+    Layout = "~/Views/Shared/InternalLayout.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        var url_string = window.location.href;
+        console.log(url_string);
+        var url = new URL(url_string);
+        console.log(url);
+        var id_class = url.searchParams.get("id_class");
+        $('#current_location').val(url_string);
+        //
+        $.ajax({
+            url: '/gradeAndClass/getClassbyId',
+            data: { id_class: id_class },
+            success: function (result) {
+                var glv_name = result.glv_name;
+                var class_name = result.className;
+                new Vue({
+                    el: '#class_info',
+                    data: {
+                        glv_name: glv_name,
+                        class_name: class_name
+                    }
+                })
+            }
+
+        });
+        $.ajax({
+            url: "/Person/getPersonByClass",
+            data: { id_class: id_class },
+            success: function (result) {
+                console.log(result);
+                if (!$.trim(result)) {
+                    $("#notfound").show();
+                }
+                $("#loading").hide();
+                $("#content").show();
+                new Vue({
+                    el: "#vue_app",
+                    data: {
+                        persons: result,
+                        link: '/internal/detail?id='
+                    }
+                });
+            }
+        });
+    });
+</script>
+<script>
+    function getClasses() {
+        var grade_id = $('#grades').val();
+        $('#classes').html('');
+        $.ajax({
+            url: "/GradeAndClass/getClassByGrade",
+            data: { id: grade_id },
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#classes").append(new Option(result[i].className, result[i].ID));
+                }
+            }
+        });
+    }
+    $(document).ready(function () {
+        $.ajax({
+            url: "/GradeAndClass/getAllGrades",
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#grades").append(new Option(result[i].gradeName, result[i].ID));
+                }
+            }
+        });
+        $.ajax({
+            url: "/GradeAndClass/getClassByGrade",
+            data: { id: 1 },
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#classes").append(new Option(result[i].className, result[i].ID));
+                }
+            }
+        });
+    });
+</script>
+<br />
+<div class="container bg-info">
+    <div class="row bg-light rounded p-3">
+        <div id="class_info" class="col-lg-6 col-sm-6 mb-2 d-flex flex-row">
+            <h4>{{class_name}} <span class="lead ml-5">GLV: {{glv_name}}</span></h4>
+        </div>
+        <div class="col-lg-6 col-sm-6 mb-2 d-flex flex-row-reverse">
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#add-modal"><i class="fa fa-plus mr-2"></i> Thêm thiếu nhi</button>
+        </div>
+    </div>
+    <div id="vue_app" class="row bg-light rounded p-3">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Tên Thánh</th>
+                    <th scope="col">Họ & Tên</th>
+                    <th scope="col">Ngày sinh</th>
+                    <th scope="col">Chi tiết</th>
+                </tr>
+            </thead>
+            <tbody id="loading">
+                <tr>
+                    <td class="text-center" colspan="6"> <img src="~/img/loading.gif" /></td>
+                </tr>
+            </tbody>
+            <tbody style="display:none" id="content">
+                <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
+                    <th scope="row">{{p.id}}</th>
+                    <td>{{p.ch_name}}</td>
+                    <td>{{p.fname}} {{p.name}}</td>
+                    <td>{{p.birth}}</td>
+                    <td><a :href="link+p.id" class="btn btn-sm btn-info">chi tiết</a></td>
+                </tr>
+                <tr style="display:none" id="notfound">
+                    <td colspan="6" class="text-center">
+                        <h3>Không có dữ liệu!</h3>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content p-5">
+            <form action="/person/AddPerson" method="post">
+                <input hidden name="current_location" id="current_location" type="text" />
+                <div class="form-group">
+                    <label>Tên thánh</label>
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="child-ch-name">
+                </div>
+                <div class="form-group">
+                    <label>Họ và đệm</label>
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="child-fname">
+                </div>
+                <div class="form-group">
+                    <label>Tên</label>
+                    <input type="text" class="form-control" placeholder="A" name="child-name">
+                </div>
+                <div class="form-group">
+                    <label>Ngày tháng năm sinh</label>
+                    <input type="date" class="form-control" name="child-birth">
+                </div>
+                <div class="form-group">
+                    <label>Giới tính</label>
+                    <select class="form-control" name="child-gender">
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Khối</label>
+                    <select id="grades" onchange="getClasses()" class="form-control" name="child-grade"></select>
+                </div>
+                <div class="form-group">
+                    <label>Lớp</label>
+                    <select id="classes" class="form-control" value="1" name="child-class"></select>
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ</label>
+                    <input type="text" class="form-control" placeholder="Địa chỉ" name="child-address">
+                </div>
+                <br />
+                <h4 class="font-weight-bold">Bố</h4>
+                <div class="form-group">
+                    <label>Tên Thánh</label>
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="fa-ch-name">
+                </div>
+                <div class="form-group">
+                    <label>Họ và đệm</label>
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="fa-fname">
+                </div>
+                <div class="form-group">
+                    <label>Tên</label>
+                    <input type="text" class="form-control" placeholder="A" name="fa-name">
+                </div>
+                <div class="form-group">
+                    <label>SDT</label>
+                    <input type="number" class="form-control" placeholder="Số điện thoại" name="fa-phone">
+                </div>
+                <br />
+                <h4 class="font-weight-bold">Mẹ</h4>
+                <div class="form-group">
+                    <label>Tên Thánh</label>
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="mo-ch-name">
+                </div>
+                <div class="form-group">
+                    <label>Họ và đệm</label>
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="mo-fname">
+                </div>
+                <div class="form-group">
+                    <label>Tên</label>
+                    <input type="text" class="form-control" placeholder="A" name="mo-name">
+                </div>
+                <div class="form-group">
+                    <label>SDT</label>
+                    <input type="number" class="form-control" placeholder="Số điện thoại" name="mo-phone">
+                </div>
+                <button type="submit" class="btn btn-info w-100">Thêm</button>
+                <button type="submit" data-dismiss="modal" class="btn btn-danger w-100 mt-2">Hủy</button>
+            </form>
+        </div>
+    </div>
+</div>
+

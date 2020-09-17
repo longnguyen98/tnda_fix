@@ -1,8 +1,5 @@
-
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Web;
 using System.Web.Mvc;
 using tnda_fix.Models;
 
@@ -29,11 +26,16 @@ namespace tnda.Controllers
         public ActionResult detail()
         {
             return View();
-        }              
-       
-        
+        }
+        [HttpPost]
+        public JsonResult upload(HttpPostedFileBase file)
+        {
+            string _FileName = Tools.getUniqueNum() + Path.GetExtension(file.FileName);
+            string _path = Path.Combine(Server.MapPath("~/img/upload"), _FileName);
+            string result = Tools.uploadAndResizeImg(file, _path, _FileName);
+            //
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
 
-        
-       
     }
 }

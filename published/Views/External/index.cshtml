@@ -1,0 +1,75 @@
+﻿@{
+    Layout = "~/Views/Shared/ExternalLayout.cshtml";
+}
+<!-- Masthead -->
+<header class="masthead text-white text-center" style="background:url('../img/bg_ex_index.jpg');background-size:cover;">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12 mx-auto">
+                <h1 class="mb-5" style="text-shadow: 5px 5px 10px black;">Cổng thông tin<br /> thiếu nhi Giáo xứ Dĩ An</h1>
+            </div>
+            <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+                <form action="~/External/listingWithQuery">
+                    <div class="form-row">
+                        <div class="col-12 col-md-9 mb-2 mb-md-0">
+                            <input type="text" required name="query" class="form-control form-control-lg" placeholder="Tra cứu thông tin">
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <button type="submit" class="btn btn-block btn-lg btn-danger">Tìm kiếm</button>
+                        </div>                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- section -->
+<section class="features-icons bg-info">
+    <div class="container">
+        <div class="row bg-light rounded p-5">
+            <div class="col-lg-6 col-sm-8 col-md-8 d-flex">
+                <div class="justify-content-center align-self-center">
+                    <h3 class="text-center">Đăng ký học Giáo Lý</h3>
+                    <br />
+                    <img class="img-fluid rounded" src="~/img/st-Jean-de-la-Salle.jpg" />
+                    <p class="font-italic text-center">Thánh Gioan La San - Quan thầy ngành nhà giáo</p>
+                    <p class="font-italic text-left">Gioan La San (tiếng Pháp: Jean-Baptiste de La Salle; 30 tháng 4 năm 1651 - 7 tháng 4 năm 1719) là một linh mục, nhà cải cách giáo dục, và là người sáng lập ra Dòng Sư Huynh Các Trường Công giáo hay còn gọi là Dòng La San. Ông được Giáo hội Công giáo Rôma tôn làm thánh và quan thầy của các giáo viên, giáo chức. Ông cũng được coi là người sáng lập ra mô hình trường trung học Công giáo đầu tiên.</p>
+                </div>  
+            </div>
+            <div class="col-lg-6 col-sm-8 col-md-8">
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+
+            </div>
+
+
+        </div>
+    </div>
+</section>
