@@ -22,7 +22,7 @@ namespace tnda_fix.Controllers
             tndaEntities db = new tndaEntities();
             Person child = db.People.Find(id);
             //
-            if (child.ID_role == 3)
+            if (child.ID_role == 4)
             {
                 Family family = db.Families.Find(child.ID_Farmily);
                 //
@@ -46,12 +46,12 @@ namespace tnda_fix.Controllers
             }
             else
             {
-                string img = child.Image;
-                if (string.IsNullOrEmpty(img))
+                string image = child.Image;
+                if (string.IsNullOrEmpty(image))
                 {
-                    img = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
+                    image = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                 }
-                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, id_class = child.ID_Class, role = child.Role.RoleName, birth = child.Birth.Value.ToString("dd.MM.yyy"), address = child.Address, phone = child.Phone, role_id = child.ID_role, img = img };
+                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, id_class = child.ID_Class, role = child.Role.RoleName, birth = child.Birth.Value.ToString("dd.MM.yyyy"), address = child.Address, phone = child.Phone, role_id = child.ID_role, img = image};
                 return Json(json, JsonRequestBehavior.AllowGet);
             }
 
@@ -202,7 +202,7 @@ namespace tnda_fix.Controllers
             //
 
             //
-            Person p = new Person
+            Person p = new Person 
             {
                 ChristianName = form["child-ch-name"],
                 FirstName = form["child-fname"],
@@ -233,7 +233,8 @@ namespace tnda_fix.Controllers
             }
             db.People.Add(p);
             db.SaveChanges();
-            return Redirect(form["current_location"].ToString());
+            //
+            return Redirect(form["current-location"].ToString());
         }
         //Edit Person
         [HttpPost]
