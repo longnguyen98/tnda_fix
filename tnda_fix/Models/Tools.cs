@@ -52,8 +52,8 @@ namespace tnda_fix.Models
             };
             imf.Load(file.InputStream);
             int h, w;
-            h = imf.Image.Height / 10;
-            w = imf.Image.Width / 10;
+            h = 400;
+            w = 300;
             //
             imf.Resize(new System.Drawing.Size(w, h));
             imf.Save(outStream);

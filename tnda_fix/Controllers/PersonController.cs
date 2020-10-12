@@ -134,7 +134,6 @@ namespace tnda_fix.Controllers
         //
         [HttpPost]
         public ActionResult AddPerson(FormCollection form)
-
         {
             tndaEntities db = new tndaEntities();
             int id_family_lead = -1;
