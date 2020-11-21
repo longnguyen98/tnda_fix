@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "listing";
+    Layout = "~/Views/Shared/ExternalLayout.cshtml";
+}
+<script>    
+    $(document).ready(function () {
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        var query = url.searchParams.get("query");
+        console.log(query);
+        $.ajax({
+            url: "/Person/getPersonByQuery",
+            data: { query: query },
+            success: function (result) {
+                console.log(result);
+                if (!$.trim(result)) {
+                    $("#notfound").show();
+                }
+                $("#loading").hide();
+                $("#content").show();
+                new Vue({
+                    el: "#vue_app",
+                    data: {
+                        persons: result,
+                        link: '/external/detail?query=' + query + '&id=',
+                    }
+                });
+            }
+        });
+    })    
+</script>
+<br />
+    <div id="vue_app" class="container">
+        <div class="row bg-light rounded p-5">
+            <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+                <form action="~/External/listingWithQuery">
+                    <div class="form-row">
+                        <div class="col-12 col-md-9 mb-2 mb-md-0">
+                            <input type="text" required name="query" class="form-control form-control-lg" placeholder="Tra cứu thông tin">
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <button type="submit" class="btn btn-block btn-lg btn-danger">Tìm kiếm</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+        <div class="row bg-light rounded p-3">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Tên Thánh</th>
+                        <th scope="col">Họ & Tên</th>
+                        <th scope="col">Ngày sinh</th>
+                        <th scope="col">Lớp</th>
+                        <th scope="col">Chi tiết</th>
+
+                    </tr>
+
+                </thead>
+                <tbody id="loading">
+                    <tr >
+                        <td class="text-center" colspan="6"> <img src="~/img/loading.gif" /></td>
+                    </tr>
+                </tbody>
+                <tbody style="display:none" id="content">
+                    <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
+                        <th scope="row">{{p.role}}</th>
+                        <td>{{p.ch_name}}</td>
+                        <td>{{p.fname}} {{p.name}}</td>
+                        <td>{{p.birth}}</td>
+                        <td>{{p.pclass}}</td>                        
+                        <td><a :href="link+p.id" class="btn btn-sm btn-info">chi tiết</a></td>
+                    </tr>                    
+                    <tr style="display:none" id="notfound">
+                        <td colspan="6" class="text-center">
+                            <h3>Không có dữ liệu!</h3>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+

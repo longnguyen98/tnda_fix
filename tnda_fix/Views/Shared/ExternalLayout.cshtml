@@ -11,7 +11,7 @@
     <!-- Bootstrap core CSS -->
     <link href="~/Content/bootstrap.min.css" rel="stylesheet">
     <!-- Custom fonts for this template -->
-    <link href="~/Content/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="~/Content/landing-page.min.css" rel="stylesheet">
@@ -22,7 +22,6 @@
     @*Vue*@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>        
-
         $.ajax({
             url: "/auth/getAuthStatus",
             success: function (result) {
@@ -49,7 +48,7 @@
                             status: result
                         }
                     });
-                    $('#glv_name').css("display", "inline");
+                    $('#login_btn').css("display", "inline");
                 }
                 
             }
@@ -62,10 +61,10 @@
     <nav class="navbar navbar-light bg-light static-top">
         <div id="vue_app_layout" class="container">
             <a class="navbar-brand" href="~/external/index"><i class="fas fa-church mr-1"></i>Thiếu nhi Giáo xứ Dĩ An</a>
-            <button v-if="!status" data-toggle="modal" data-target="#login_modal" class="btn btn-primary font-weight-bold">
+            <button id="login_btn" v-if="!status" style="display:none" data-toggle="modal" data-target="#login_modal" class="btn btn-primary font-weight-bold">
                 Đăng nhập GLV
             </button>
-            <a class="navbar-brand" v-if="status">Xin chào <b style="display:none" id="glv_name">{{person.ch_name}} {{person.fname}} {{person.name}}</b></a>
+            <a href="/internal/index" id="glv_name" style="display:none" v-if="status">Xin chào <b>{{person.ch_name}} {{person.fname}} {{person.name}}</b></a>
         </div>
     </nav>
     <section class="features-icons bg-info" style="padding-top:0px;padding-bottom:2%">
