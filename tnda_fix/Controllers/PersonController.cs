@@ -22,7 +22,7 @@ namespace tnda_fix.Controllers
             tndaEntities db = new tndaEntities();
             Person child = db.People.Find(id);
             //
-            if (child.ID_role == 3)
+            if (child.ID_role == 4)
             {
                 Family family = db.Families.Find(child.ID_Farmily);
                 //

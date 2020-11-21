@@ -28,5 +28,9 @@ namespace tnda.Controllers
         {
             return View();
         }
+        public ActionResult allClasses()
+        {
+            return View();
+        }
     }
 }

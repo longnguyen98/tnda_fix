@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "allClasses";
+    Layout = "~/Views/Shared/InternalLayout.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "/gradeAndClass/getAllClasses",            
+            success: function (result) {
+                console.log(result);
+                new Vue({
+                    el: '#vue_app',
+                    data: {
+                        list: result
+                    }
+                });
+            }
+        });
+    });
+</script>
+<div id="vue_app" class="container">
+    <div class="row">
+        <div v-for="cl in list" class="col-5 m-1">
+            <a class="btn font-weight-bold w-100 text-white" v-bind:style="'background-color:' + cl.color" :href="'/internal/listByClass?id_class='+cl.id" v-html="cl.name"></a>
+        </div>
+    </div>
+</div>
+

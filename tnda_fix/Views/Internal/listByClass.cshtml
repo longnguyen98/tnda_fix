@@ -39,12 +39,17 @@
                 $("#loading").hide();
                 $("#content").show();
                 new Vue({
-                    el: "#vue_app",
+                    el: "#vue_app"
+                    ,
                     data: {
                         persons: result,
                         link: '/internal/detail?id='
                     }
+                    , mounted: function () {
+                        $('#table').DataTable();
+                    }
                 });
+
             }
         });
     });
@@ -94,7 +99,10 @@
         </div>
     </div>
     <div id="vue_app" class="row bg-light rounded p-3">
-        <table class="table table-striped">
+        <div class="w-100" id="loading">
+            <img src="~/img/loading.gif" />
+        </div>
+        <table id="table" class="table table-striped" style="width:100%">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
@@ -104,11 +112,7 @@
                     <th scope="col">Chi tiết</th>
                 </tr>
             </thead>
-            <tbody id="loading">
-                <tr>
-                    <td class="text-center" colspan="6"> <img src="~/img/loading.gif" /></td>
-                </tr>
-            </tbody>
+
             <tbody style="display:none" id="content">
                 <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
                     <th scope="row">{{p.id}}</th>
@@ -117,13 +121,12 @@
                     <td>{{p.birth}}</td>
                     <td><a :href="link+p.id" class="btn btn-sm btn-info">chi tiết</a></td>
                 </tr>
-                <tr style="display:none" id="notfound">
-                    <td colspan="6" class="text-center">
-                        <h3>Không có dữ liệu!</h3>
-                    </td>
-                </tr>
+
             </tbody>
         </table>
+        <div style="display:none" id="notfound">            
+                <h3>Không có dữ liệu!</h3>            
+        </div>
     </div>
 </div>
 <div class="modal fade bd-example-modal-lg" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

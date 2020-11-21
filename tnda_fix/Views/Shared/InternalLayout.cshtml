@@ -20,6 +20,11 @@
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
     @*Vue*@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    @*Datatables*@
+    <link href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    
+
     <script>
         var glv_name;
         var glv;
@@ -67,6 +72,11 @@
                         <li class="nav-item m-2">
                             <a class="btn btn-info font-weight-bold w-100 text-left" :href="'/internal/listbyclass?id_class=' + glv.id_class">
                                 <i class="fa fa-list mr-2"></i>Danh sách thiếu nhi
+                            </a>
+                        </li>
+                        <li class="nav-item m-2">
+                            <a class="btn btn-info font-weight-bold w-100 text-left" href="/internal/allClasses">
+                                <i class="fa fa-list mr-2"></i>Tất cả các lớp
                             </a>
                         </li>
                         <li class="nav-item m-2">

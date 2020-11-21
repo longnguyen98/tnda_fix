@@ -43,6 +43,36 @@ namespace tnda_fix.Controllers
             var json = new { className = g.GradeName + " " + c.ClassName, glv_name = glv_name };
             return Json(json, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult getAllClasses()
+        {
+            tndaEntities db = new tndaEntities();
+            List<object> list = new List<object>();
+            foreach (Class cl in db.Classes.ToList())
+            {
+                string name = cl.Grade.GradeName + " " + cl.ClassName;
+                string color = "";
+                switch (cl.ID_Grade)
+                {
+                    case 1:
+                        color = "#EEB0AC";
+                        break;
+                    case 2:
+                        color = "#9BF14F";
+                        break;
+                    case 3:
+                        color = "#7BA6EF";
+                        break;
+                    case 4:
+                        color = "#ECC100";
+                        break;
+
+                }
+
+                var ob = new { name = name.Trim(), id = cl.ID, color = color };
+                list.Add(ob);
+            }
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
 
     }
 }
