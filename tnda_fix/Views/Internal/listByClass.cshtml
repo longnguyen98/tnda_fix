@@ -114,8 +114,8 @@
                     <th scope="row">{{p.id}}</th>
                     <td>{{p.ch_name}}</td>
                     <td>{{p.fname}} {{p.name}}</td>
-                    <td>{{p.birth}}</td>
-                    <td><a :href="link+p.id" class="btn btn-sm btn-info">chi tiết</a></td>
+                    <td>{{p.birth}}</td>    
+                    <td><a :href="link+p.id" class="btn btn-sm btn-info">Chi tiết</a></td>
                 </tr>
                 <tr style="display:none" id="notfound">
                     <td colspan="6" class="text-center">
@@ -166,6 +166,9 @@
                     <label>Địa chỉ</label>
                     <input type="text" class="form-control" placeholder="Địa chỉ" name="child-address">
                 </div>
+                <div class="form-group">
+                    <input hidden type="text" class="form-control" name="child-status" value="true">
+                </div>
                 <br />
                 <h4 class="font-weight-bold">Bố</h4>
                 <div class="form-group">
@@ -208,4 +211,5 @@
         </div>
     </div>
 </div>
+
 

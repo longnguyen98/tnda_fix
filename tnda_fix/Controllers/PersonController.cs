@@ -15,7 +15,6 @@ namespace tnda_fix.Controllers
             string s_id = Request.QueryString["id"];
             int id = int.Parse(s_id);
             return getPersonDetailWithArg(id);
-
         }
         public JsonResult getPersonDetailWithArg(int id)
         {
@@ -38,8 +37,8 @@ namespace tnda_fix.Controllers
                     img = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                 }
                 //
-                var fatherJson = new { ch_name = father.ChristianName, fname = father.FirstName, name = father.Name, role = father.Role.RoleName, phone = father.Phone };
-                var motherJson = new { ch_name = mother.ChristianName, fname = mother.FirstName, name = mother.Name, role = mother.Role.RoleName, phone = mother.Phone, role_id = child.ID_role };
+                var fatherJson = new { fa_id = father.ID, ch_name = father.ChristianName, fname = father.FirstName, name = father.Name, role = father.Role.RoleName, phone = father.Phone };
+                var motherJson = new { mo_id = mother.ID, ch_name = mother.ChristianName, fname = mother.FirstName, name = mother.Name, role = mother.Role.RoleName, phone = mother.Phone, role_id = child.ID_role };
                 var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, role = child.Role.RoleName, glv = glv_name, id_class = child.ID_Class, birth = child.Birth.Value.ToString("dd.MM.yyy"), address = child.Address, father = fatherJson, mother = motherJson, role_id = child.ID_role, glv_id = glv.ID, img = img };
                 //
                 return Json(json, JsonRequestBehavior.AllowGet);
@@ -124,13 +123,7 @@ namespace tnda_fix.Controllers
 
             return Redirect("~/internal/index?id="+id);
         }
-
-
-
-
-
-
-
+        
         //
         [HttpPost]
         public ActionResult AddPerson(FormCollection form)
@@ -215,7 +208,7 @@ namespace tnda_fix.Controllers
                 //Image = "",
                 //Note = "",
                 //Phone = "",
-                Status = true,
+                Status =bool.Parse(form["child-status"]),
                 Gender = bool.Parse(form["child-gender"]),
                 CreateDate = DateTime.Now
             };
@@ -238,19 +231,64 @@ namespace tnda_fix.Controllers
         }
         //Edit Person
         [HttpPost]
-        public void EditPerson(int id)
+        public ActionResult EditPerson(FormCollection form)
         {
             tndaEntities db = new tndaEntities();
             List<Person> list = db.People.ToList();
+            int id = int.Parse(form["child-id"]);
+            int fa_id = int.Parse(form["fa-id"]);
+            int mo_id = int.Parse(form["mo-id"]);
             foreach (Person p in list)
             {
                 if (p.ID == id)
                 {
-                    int idTemp = p.ID;
-                    db.People.Remove(p);
-                    list[id].ID = idTemp;
+                    p.Name = form.Get("child-name");
+                    p.ChristianName = form.Get("child-ch-name");
+                    p.Birth = DateTime.Parse(form["child-birth"]);
+                    p.FirstName = form.Get("child-fname"); 
+                    p.Address = form.Get("child-address");
+                    p.Gender = bool.Parse(form["child-gender"]);
+                    p.ID_Class = int.Parse(form["child-class"]);
                     db.SaveChanges();
                 }
+                else if(p.ID == fa_id)
+                {
+                    p.ChristianName = form.Get("fa-ch-name");
+                    p.FirstName = form.Get("fa-fname");
+                    p.Name = form.Get("fa-name");
+                    p.Phone = form.Get("fa-phone");
+                    db.SaveChanges();
+                }
+                else if(p.ID == mo_id)
+                {
+                    p.ChristianName = form.Get("mo-ch-name");
+                    p.FirstName = form.Get("mo-fname");
+                    p.Name = form.Get("mo-name");
+                    p.Phone = form.Get("mo-phone");
+                    db.SaveChanges();
+                }
+            }
+            return Redirect(form["current-location"].ToString());
+        }
+        [HttpPost]
+        public void SetStatus()
+        {
+            tndaEntities db = new tndaEntities();
+            List<Person> list = db.People.ToList();
+            int id =int.Parse(Request.QueryString["query"]);
+            //bool status = Request.QueryString["query"];
+            foreach (Person p in list)
+            {
+                if (p.ID == id )
+                    if(p.Status == false)
+                    {
+                    p.Status = true;
+                    db.SaveChanges();
+                    }
+                    else {
+                        p.Status = false;
+                        db.SaveChanges();
+                    }
             }
         }
         [HttpPost]

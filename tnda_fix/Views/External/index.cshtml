@@ -65,6 +65,7 @@
                         <label class="form-check-label" for="exampleCheck1">Check me out</label>
                     </div>
                     <button disabled type="submit" class="btn btn-primary">Đang phát triển...</button>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#add-modal"><i class="fa fa-plus mr-2"></i> Thêm thiếu nhi</button>
                 </form>            
                 <form action="/external/uploadxlsasync" method="post" enctype="multipart/form-data">
                     <input name="id" value="1122" />
@@ -72,8 +73,88 @@
                     <button type="submit">upload</button>
                 </form>
             </div>
-
-
         </div>
     </div>
 </section>
+<div class="modal fade bd-example-modal-lg" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content p-5">
+            <form action="/person/AddPerson" method="post">
+                <input hidden name="current_location" id="current_location" type="text" />
+                <div class="form-group">
+                    <label>Tên thánh</label>
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="child-ch-name">
+                </div>
+                <div class="form-group">
+                    <label>Họ và đệm</label>
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="child-fname">
+                </div>
+                <div class="form-group">
+                    <label>Tên</label>
+                    <input type="text" class="form-control" placeholder="A" name="child-name">
+                </div>
+                <div class="form-group">
+                    <label>Ngày tháng năm sinh</label>
+                    <input type="date" class="form-control" name="child-birth">
+                </div>
+                <div class="form-group">
+                    <label>Giới tính</label>
+                    <select class="form-control" name="child-gender">
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input hidden type="text" class="form-control" name="child-status" value="false">
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ</label>
+                    <input type="text" class="form-control" placeholder="Địa chỉ" name="child-address">
+                </div>
+                <div class="form-group">
+                    <h6>Ghi chú</h6>
+                    <label>Đang học giáo lý ở giáo xứ khác?</label>
+                    <input type="checkbox" class="form-control" name="child-note">
+                </div>
+                <br/>
+                <h4 class="font-weight-bold">Bố</h4>
+                <div class="form-group">
+                    <label>Tên Thánh</label>
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="fa-ch-name">
+                </div>
+                <div class="form-group">
+                    <label>Họ và đệm</label>
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="fa-fname">
+                </div>
+                <div class="form-group">
+                    <label>Tên</label>
+                    <input type="text" class="form-control" placeholder="A" name="fa-name">
+                </div>
+                <div class="form-group">
+                    <label>SDT</label>
+                    <input type="number" class="form-control" placeholder="Số điện thoại" name="fa-phone">
+                </div>
+                <br />
+                <h4 class="font-weight-bold">Mẹ</h4>
+                <div class="form-group">
+                    <label>Tên Thánh</label>
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="mo-ch-name">
+                </div>
+                <div class="form-group">
+                    <label>Họ và đệm</label>
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="mo-fname">
+                </div>
+                <div class="form-group">
+                    <label>Tên</label>
+                    <input type="text" class="form-control" placeholder="A" name="mo-name">
+                </div>
+                <div class="form-group">
+                    <label>SDT</label>
+                    <input type="number" class="form-control" placeholder="Số điện thoại" name="mo-phone">
+                </div>
+                <button type="submit" class="btn btn-info w-100">Thêm</button>
+                <button type="submit" data-dismiss="modal" class="btn btn-danger w-100 mt-2">Hủy</button>
+            </form>
+        </div>
+    </div>
+</div>
