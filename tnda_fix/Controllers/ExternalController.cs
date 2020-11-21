@@ -32,6 +32,7 @@ namespace tnda.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public JsonResult upload(HttpPostedFileBase file)
         {
@@ -136,8 +137,8 @@ namespace tnda.Controllers
             string protocol = System.Web.HttpContext.Current.Request.Url.Scheme;
             string host = System.Web.HttpContext.Current.Request.Url.Host;
             string port = System.Web.HttpContext.Current.Request.Url.Port.ToString();
-            string controller = "external";
-            string method = "testPost";
+            string controller = "Person";
+            string method = "addPerson";
             string post_request = protocol + "://" + host + ":" + port + "/" + controller + "/" + method;
             HttpClient client = new HttpClient();
 
@@ -146,9 +147,32 @@ namespace tnda.Controllers
             {
                 WorkBook wb = WorkBook.Load(temp_path);
                 WorkSheet ws = wb.WorkSheets.First();
+                List<string> keys = new List<string>();
+                keys.Add("child-ch-name");
+                keys.Add("child-fname");
+                keys.Add("child-name");
+                keys.Add("child-birth");
+                keys.Add("child-gender");
+                keys.Add("child-class");
+                keys.Add("child-address");
+                keys.Add("fa-ch-name");
+                keys.Add("fa-fname");
+                keys.Add("fa-name");
+                keys.Add("fa-phone");
+                keys.Add("mo-ch-name");
+                keys.Add("mo-fname");
+                keys.Add("mo-name");
+                keys.Add("mo-phone");
                 //
+                int count = 0;
+                bool firstRow = true;
                 foreach (RangeRow row in ws.Rows)
                 {
+                    if (firstRow)
+                    {
+                        firstRow = false;
+                        continue;
+                    }
                     foreach (RangeColumn col in row.Columns)
                     {
                         //logging for error
@@ -156,17 +180,16 @@ namespace tnda.Controllers
 
                         //add value to form
                         read_data += col.RangeAddressAsString + ": " + col.StringValue + "\t";
-
-
-
-
-                        //call service
-                        FormUrlEncodedContent content = new FormUrlEncodedContent(form);
-                        HttpResponseMessage response = await client.PostAsync(post_request, content);
-
-                        //clear before add new record
-                        form.Clear();
+                        form.Add(keys[count], col.StringValue);
+                        count++;
                     }
+                    //call service
+                    FormUrlEncodedContent content = new FormUrlEncodedContent(form);
+                    HttpResponseMessage response = await client.PostAsync(post_request, content);
+
+                    //clear before add new record
+                    count = 0;
+                    form.Clear();
 
                 }
             }
