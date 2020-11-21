@@ -208,7 +208,7 @@ namespace tnda_fix.Controllers
                 //Image = "",
                 //Note = "",
                 //Phone = "",
-                Status =bool.Parse(form["child-status"]),
+                Status = bool.Parse(form["child-status"]),
                 Gender = bool.Parse(form["child-gender"]),
                 CreateDate = DateTime.Now
             };

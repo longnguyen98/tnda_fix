@@ -17,7 +17,7 @@
                         </div>
                         <div class="col-12 col-md-3">
                             <button type="submit" class="btn btn-block btn-lg btn-danger">Tìm kiếm</button>
-                        </div>                        
+                        </div>
                     </div>
                 </form>
             </div>
@@ -35,7 +35,7 @@
                     <img class="img-fluid rounded" src="~/img/st-Jean-de-la-Salle.jpg" />
                     <p class="font-italic text-center">Thánh Gioan La San - Quan thầy ngành nhà giáo</p>
                     <p class="font-italic text-left">Gioan La San (tiếng Pháp: Jean-Baptiste de La Salle; 30 tháng 4 năm 1651 - 7 tháng 4 năm 1719) là một linh mục, nhà cải cách giáo dục, và là người sáng lập ra Dòng Sư Huynh Các Trường Công giáo hay còn gọi là Dòng La San. Ông được Giáo hội Công giáo Rôma tôn làm thánh và quan thầy của các giáo viên, giáo chức. Ông cũng được coi là người sáng lập ra mô hình trường trung học Công giáo đầu tiên.</p>
-                </div>  
+                </div>
             </div>
             <div class="col-lg-6 col-sm-8 col-md-8">
                 <form>
@@ -61,12 +61,12 @@
                         <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                     </div>
                     <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <input type="checkbox" class="form-check-input" id="check-box">
                         <label class="form-check-label" for="exampleCheck1">Check me out</label>
                     </div>
                     <button disabled type="submit" class="btn btn-primary">Đang phát triển...</button>
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#add-modal"><i class="fa fa-plus mr-2"></i> Thêm thiếu nhi</button>
-                </form>            
+                </form>
                 <form action="/external/uploadxlsasync" method="post" enctype="multipart/form-data">
                     <input name="id" value="1122" />
                     <input type="file" name="file" />
@@ -111,12 +111,35 @@
                     <label>Địa chỉ</label>
                     <input type="text" class="form-control" placeholder="Địa chỉ" name="child-address">
                 </div>
-                <div class="form-group">
-                    <h6>Ghi chú</h6>
-                    <label>Đang học giáo lý ở giáo xứ khác?</label>
-                    <input type="checkbox" class="form-control" name="child-note">
-                </div>
                 <br/>
+                <div class="form-check">
+                    <input class="form-check-input mr-2" onclick="myShow()" type="checkbox" checked value="">
+                    <label class="form-check-label" for="defaultCheck1">
+                        Đang học Giáo lý ở xứ khác
+                    </label>
+                </div>
+                <br />
+                <div id="to-show">
+                    <div class="form-group">
+                        <label>Khối hiện tại</label>
+                        <select class="form-control" name="child-grade">
+                            <option value="KT">Khai tâm</option>
+                            <option value="RL">Rước lễ</option>
+                            <option value="TS">Thêm sức</option>
+                            <option value="SD">Sống đạo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Lớp hiện tại</label>
+                        <select class="form-control" name="child-class">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <br />
                 <h4 class="font-weight-bold">Bố</h4>
                 <div class="form-group">
                     <label>Tên Thánh</label>
@@ -158,3 +181,21 @@
         </div>
     </div>
 </div>
+<script>
+    function myShow() {
+        // Get the checkbox
+        var checkBox = document.getElementById("check-box");
+        // Get the output text
+        var toShow= document.getElementById("to-show");
+        // If the checkbox is checked, display the output text
+        if (toShow.style.display == "none") {
+            toShow.style.display = "block";
+        } else {
+            toShow.style.display = "none";
+        }
+       
+    }
+
+
+
+</script>
