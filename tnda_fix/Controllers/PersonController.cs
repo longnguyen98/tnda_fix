@@ -128,6 +128,11 @@ namespace tnda_fix.Controllers
         [HttpPost]
         public ActionResult AddPerson(FormCollection form)
         {
+            //List<Object> objects = new List<object>();
+            //foreach (String key in form.AllKeys)
+            //{
+            //    objects.Add(form.Get(key));
+            //}
             tndaEntities db = new tndaEntities();
             int id_family_lead = -1;
             int id_family = -1;
@@ -192,9 +197,6 @@ namespace tnda_fix.Controllers
                     db.SaveChanges();
                 }
             }
-            //
-
-            //
             Person p = new Person 
             {
                 ChristianName = form["child-ch-name"],
@@ -203,11 +205,7 @@ namespace tnda_fix.Controllers
                 Birth = Convert.ToDateTime(form["child-birth"]), //
                 Address = form["child-address"],
                 ID_Class = int.Parse(form["child-class"]),
-                //set later ID_Farmily = id_family,
                 ID_role = 4,
-                //Image = "",
-                //Note = "",
-                //Phone = "",
                 Status = bool.Parse(form["child-status"]),
                 Gender = bool.Parse(form["child-gender"]),
                 CreateDate = DateTime.Now
@@ -224,10 +222,12 @@ namespace tnda_fix.Controllers
             {
                 mom.Address = p.Address;
             }
+            if (form["check-box"] == "true")
+                p.Note = form["child-gp"] + " " + form["child-gx"] + " " + form["child-gx"] + " " + form["child-grade"] + " " + form["child-class"];
             db.People.Add(p);
             db.SaveChanges();
-            //
-            return Redirect(form["current-location"].ToString());
+            return View();
+            //return Redirect(form["current-location"].ToString());
         }
         //Edit Person
         [HttpPost]
