@@ -143,6 +143,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\GradeAndClassController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\ExternalController.cs" />
@@ -201,6 +202,7 @@
     <Compile Include="Models\Role.cs">
       <DependentUpon>Db.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Tools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2119,10 +2121,12 @@
     <Content Include="Views\Template\landing_index.cshtml" />
     <Content Include="Views\External\detail.cshtml" />
     <Content Include="Views\Internal\listByClass.cshtml" />
+    <Content Include="Views\Internal\addPerson.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Account\" />
+    <Folder Include="Views\GradeAndClass\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
