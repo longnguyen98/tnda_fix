@@ -36,10 +36,12 @@ namespace tnda_fix.Controllers
                 {
                     img = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                 }
+                string birthString = child.Birth != null ? child.Birth.Value.ToString("dd.MM.yyy") : "";
+                string classString = child.Class != null ? (child.Class.Grade.GradeName + " " + child.Class.ClassName) : "";
                 //
                 var fatherJson = new { fa_id = father.ID, ch_name = father.ChristianName, fname = father.FirstName, name = father.Name, role = father.Role.RoleName, phone = father.Phone };
                 var motherJson = new { mo_id = mother.ID, ch_name = mother.ChristianName, fname = mother.FirstName, name = mother.Name, role = mother.Role.RoleName, phone = mother.Phone, role_id = child.ID_role };
-                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName.Trim(), role = child.Role.RoleName, glv = glv_name, id_class = child.ID_Class, birth = child.Birth.Value.ToString("dd.MM.yyy"), address = child.Address, father = fatherJson, mother = motherJson, role_id = child.ID_role, glv_id = glv.ID, img = img };
+                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name,  pclass = classString, role = child.Role.RoleName, glv = glv_name, id_class = child.ID_Class, birth = birthString, address = child.Address, father = fatherJson, mother = motherJson, role_id = child.ID_role, glv_id = glv.ID, img = img };
                 //
                 return Json(json, JsonRequestBehavior.AllowGet);
             }
@@ -50,7 +52,9 @@ namespace tnda_fix.Controllers
                 {
                     image = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                 }
-                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName.Trim(), id_class = child.ID_Class, role = child.Role.RoleName, birth = child.Birth.Value.ToString("dd.MM.yyyy"), address = child.Address, phone = child.Phone, role_id = child.ID_role, img = image };
+                string birthString = child.Birth != null ? child.Birth.Value.ToString("dd.MM.yyy") : "";
+                string classString = child.Class != null ? (child.Class.Grade.GradeName + " " + child.Class.ClassName) : "";
+                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name,  pclass = classString, id_class = child.ID_Class, role = child.Role.RoleName, birth = birthString, address = child.Address, phone = child.Phone, role_id = child.ID_role, img = image };
                 return Json(json, JsonRequestBehavior.AllowGet);
             }
 
