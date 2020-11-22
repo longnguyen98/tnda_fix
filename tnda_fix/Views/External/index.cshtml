@@ -19,13 +19,17 @@
                             <button type="submit" class="btn btn-block btn-lg btn-danger">Tìm kiếm</button>
                         </div>
                     </div>
+                    <br/>
+                    <div>
+                        <button type="button" class="btn btn-info btn btn-lg btn-block" data-toggle="modal" data-target="#add-modal">Đăng ký học</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </header>
 <!-- section -->
-<section class="features-icons bg-info">
+@*<section class="features-icons bg-info">
     <div class="container">
         <div class="row bg-light rounded p-5">
             <div class="col-lg-6 col-sm-8 col-md-8 d-flex">
@@ -75,7 +79,7 @@
             </div>
         </div>
     </div>
-</section>
+</section>*@
 <div class="modal fade bd-example-modal-lg" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content p-5">
@@ -113,13 +117,21 @@
                 </div>
                 <br/>
                 <div class="form-check">
-                    <input class="form-check-input mr-2" onclick="myShow()" type="checkbox" checked value="">
+                    <input id="check-box" class="form-check-input mr-2" onclick="myShow()" type="checkbox" name="check-box" checked value="true">
                     <label class="form-check-label" for="defaultCheck1">
                         Đang học Giáo lý ở xứ khác
                     </label>
                 </div>
                 <br />
                 <div id="to-show">
+                    <div class="form-group">
+                        <label>Giáo phận</label>
+                        <input type="text" class="form-control" placeholder="Giáo phận" name="child-gp">
+                    </div>
+                    <div class="form-group">
+                        <label>Giáo xứ</label>
+                        <input type="text" class="form-control" placeholder="Giáo xứ" name="child-gx">
+                    </div>
                     <div class="form-group">
                         <label>Khối hiện tại</label>
                         <select class="form-control" name="child-grade">
@@ -138,7 +150,9 @@
                         </select>
                     </div>
                 </div>
-                
+                <div class="form-group">
+                    <label>Phụ huynh vui lòng mang theo Sổ gia đình công giáo và giấy xác nhận học giáo lý (nếu có) vào 8h45 sáng Chúa Nhật.</label>
+                </div>
                 <br />
                 <h4 class="font-weight-bold">Bố</h4>
                 <div class="form-group">
@@ -155,7 +169,7 @@
                 </div>
                 <div class="form-group">
                     <label>SDT</label>
-                    <input type="number" class="form-control" placeholder="Số điện thoại" name="fa-phone">
+                    <input type="text" class="form-control" placeholder="Số điện thoại" name="fa-phone">
                 </div>
                 <br />
                 <h4 class="font-weight-bold">Mẹ</h4>
@@ -173,9 +187,9 @@
                 </div>
                 <div class="form-group">
                     <label>SDT</label>
-                    <input type="number" class="form-control" placeholder="Số điện thoại" name="mo-phone">
+                    <input type="text" class="form-control" placeholder="Số điện thoại" name="mo-phone">
                 </div>
-                <button type="submit" class="btn btn-info w-100">Thêm</button>
+                <button type="submit" class="btn btn-info w-100">Xác nhận</button>
                 <button type="submit" data-dismiss="modal" class="btn btn-danger w-100 mt-2">Hủy</button>
             </form>
         </div>
@@ -192,10 +206,6 @@
             toShow.style.display = "block";
         } else {
             toShow.style.display = "none";
-        }
-       
+        }      
     }
-
-
-
 </script>
