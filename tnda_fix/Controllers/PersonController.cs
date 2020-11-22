@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using System.Web;
-using tnda_fix.Models;
 using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using tnda_fix.Models;
 
 namespace tnda_fix.Controllers
 {
@@ -39,7 +39,7 @@ namespace tnda_fix.Controllers
                 //
                 var fatherJson = new { fa_id = father.ID, ch_name = father.ChristianName, fname = father.FirstName, name = father.Name, role = father.Role.RoleName, phone = father.Phone };
                 var motherJson = new { mo_id = mother.ID, ch_name = mother.ChristianName, fname = mother.FirstName, name = mother.Name, role = mother.Role.RoleName, phone = mother.Phone, role_id = child.ID_role };
-                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, role = child.Role.RoleName, glv = glv_name, id_class = child.ID_Class, birth = child.Birth.Value.ToString("dd.MM.yyy"), address = child.Address, father = fatherJson, mother = motherJson, role_id = child.ID_role, glv_id = glv.ID, img = img };
+                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName.Trim(), role = child.Role.RoleName, glv = glv_name, id_class = child.ID_Class, birth = child.Birth.Value.ToString("dd.MM.yyy"), address = child.Address, father = fatherJson, mother = motherJson, role_id = child.ID_role, glv_id = glv.ID, img = img };
                 //
                 return Json(json, JsonRequestBehavior.AllowGet);
             }
@@ -50,7 +50,7 @@ namespace tnda_fix.Controllers
                 {
                     image = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                 }
-                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, id_class = child.ID_Class, role = child.Role.RoleName, birth = child.Birth.Value.ToString("dd.MM.yyyy"), address = child.Address, phone = child.Phone, role_id = child.ID_role, img = image};
+                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName.Trim(), id_class = child.ID_Class, role = child.Role.RoleName, birth = child.Birth.Value.ToString("dd.MM.yyyy"), address = child.Address, phone = child.Phone, role_id = child.ID_role, img = image };
                 return Json(json, JsonRequestBehavior.AllowGet);
             }
 
@@ -78,7 +78,9 @@ namespace tnda_fix.Controllers
                 {
                     if (Tools.convert(p.ChristianName.ToUpper()).Equals(query) || Tools.convert(p.FirstName.ToUpper()).Equals(query) || Tools.convert(p.Name.ToUpper()).Equals(query) || cfn || cn || fn)
                     {
-                        var ob = new { id = p.ID, ch_name = p.ChristianName, fname = p.FirstName, name = p.Name, pclass = p.Class.Grade.GradeName + " " + p.Class.ClassName, birth = p.Birth.Value.ToString("dd.MM.yyy"), role = p.Role.RoleName };
+                        string birthString = p.Birth != null ? p.Birth.Value.ToString("dd.MM.yyy") : "";
+                        string classString = p.Class != null ? (p.Class.Grade.GradeName + " " + p.Class.ClassName) : "";
+                        var ob = new { id = p.ID, ch_name = p.ChristianName, fname = p.FirstName, name = p.Name, pclass = classString, birth = birthString, role = p.Role.RoleName };
                         //
                         objects.Add(ob);
                     }
@@ -121,9 +123,9 @@ namespace tnda_fix.Controllers
 
 
 
-            return Redirect("~/internal/index?id="+id);
+            return Redirect("~/internal/index?id=" + id);
         }
-        
+
         //
         [HttpPost]
         public ActionResult AddPerson(FormCollection form)
@@ -195,7 +197,7 @@ namespace tnda_fix.Controllers
             //
 
             //
-            Person p = new Person 
+            Person p = new Person
             {
                 ChristianName = form["child-ch-name"],
                 FirstName = form["child-fname"],
@@ -245,13 +247,13 @@ namespace tnda_fix.Controllers
                     p.Name = form.Get("child-name");
                     p.ChristianName = form.Get("child-ch-name");
                     p.Birth = DateTime.Parse(form["child-birth"]);
-                    p.FirstName = form.Get("child-fname"); 
+                    p.FirstName = form.Get("child-fname");
                     p.Address = form.Get("child-address");
                     p.Gender = bool.Parse(form["child-gender"]);
                     p.ID_Class = int.Parse(form["child-class"]);
                     db.SaveChanges();
                 }
-                else if(p.ID == fa_id)
+                else if (p.ID == fa_id)
                 {
                     p.ChristianName = form.Get("fa-ch-name");
                     p.FirstName = form.Get("fa-fname");
@@ -259,7 +261,7 @@ namespace tnda_fix.Controllers
                     p.Phone = form.Get("fa-phone");
                     db.SaveChanges();
                 }
-                else if(p.ID == mo_id)
+                else if (p.ID == mo_id)
                 {
                     p.ChristianName = form.Get("mo-ch-name");
                     p.FirstName = form.Get("mo-fname");
@@ -275,20 +277,23 @@ namespace tnda_fix.Controllers
         {
             tndaEntities db = new tndaEntities();
             List<Person> list = db.People.ToList();
-            int id =int.Parse(Request.QueryString["query"]);
+            int id = int.Parse(Request.QueryString["query"]);
             //bool status = Request.QueryString["query"];
             foreach (Person p in list)
             {
-                if (p.ID == id )
-                    if(p.Status == false)
+                if (p.ID == id)
+                {
+                    if (p.Status == false)
                     {
-                    p.Status = true;
-                    db.SaveChanges();
+                        p.Status = true;
+                        db.SaveChanges();
                     }
-                    else {
+                    else
+                    {
                         p.Status = false;
                         db.SaveChanges();
                     }
+                }
             }
         }
         [HttpPost]
