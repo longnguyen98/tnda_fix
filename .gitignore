@@ -259,3 +259,10 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/tnda_fix/temp_xls/desktop.ini
+/tnda_fix/temp_xls/957New Microsoft Excel Worksheet.xlsx
+/tnda_fix/temp_xls/78DS GIAO LY VIEN (DA).xls
+/tnda_fix/temp_xls/633New Microsoft Excel Worksheet.xlsx
+/tnda_fix/temp_xls/496New Microsoft Excel Worksheet.xlsx
+/tnda_fix/temp_xls/397New Microsoft Excel Worksheet.xlsx
+/tnda_fix/temp_xls/30DS GIAO LY VIEN (DA).xls
