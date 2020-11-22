@@ -19,13 +19,16 @@
     <!-- Bootstrap core JavaScript -->
     <script src="~/Scripts/jquery-3.5.1.min.js"></script>
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    @*Datatable*@
+    <link href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     @*Vue*@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script>        
+    <script>
         $.ajax({
             url: "/auth/getAuthStatus",
             success: function (result) {
-                console.log(result);                
+                console.log(result);
                 if (result == true) {
                     $.ajax({
                         url: "/auth/getPersonFromSession",
@@ -50,10 +53,10 @@
                     });
                     $('#login_btn').css("display", "inline");
                 }
-                
+
             }
         });
-        
+
     </script>
 </head>
 <body>
@@ -71,27 +74,33 @@
         @RenderBody()
     </section>
     <!-- Footer -->
-    <footer class="footer bg-light">
-        <div class="container">
+    <footer class="page-footer container font-small blue pt-4">
+        <div class="container-fluid text-center text-md-left">
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-6 h-100 text-center text-lg-left my-auto">
-                    <p class="text-muted small mb-4 mb-lg-0"></p>
+                <div class="col-md-6 mt-md-0 mt-3">
+                    <h5 class="text-uppercase">Nhà thờ Giáo xứ Dĩ An</h5>
+                    <p>368 Trần Hưng Đạo, Dĩ An, Bình Dương</p>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-6 h-100 text-center text-lg-right my-auto">
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item mr-3">
-                            <p class="text-muted small mb-4 mb-lg-0">Nhà thờ Giáo xứ Dĩ An</p><lead class="text-muted small mb-4 mb-lg-0">368 Trần Hưng Đạo, Dĩ An, Bình Dương</lead>
-                        </li>
-                        <li class="list-inline-item mr-3">
+                <hr class="clearfix w-100 d-md-none pb-3">
+                <div class="col-md-3 mb-md-0 mb-3">
+                </div>
+                <div class="col-md-3 mb-md-0 mb-3">
+                    <ul class="list-unstyled font-weight-bold">
+                        <li>
                             <a href="https://www.facebook.com/Thi%E1%BA%BFu-Nhi-Gi%C3%A1o-X%E1%BB%A9-D%C4%A9-An-102533327790422">
-                                <i class="fab fa-facebook fa-2x fa-fw"></i>
+                                <span>Trang Facebook <i class="fab fa-facebook-square"></i></span>
                             </a>
                         </li>
                     </ul>
+
                 </div>
             </div>
         </div>
     </footer>
+    <div class="footer-copyright text-center py-3 bg-secondary text-white font-weight-bold">
+        2020 Developed by Long & Tuan <i class="fas fa-laptop-code"></i>
+    </div>
+    <!-- Footer -->
     <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

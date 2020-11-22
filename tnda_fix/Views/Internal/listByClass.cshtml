@@ -49,7 +49,24 @@
                         $('#table').DataTable();
                     }
                 });
-
+                $('#table_wrapper').addClass("w-100");
+            }
+        });
+        $.ajax({
+            url: "/GradeAndClass/getAllGrades",
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#grades").append(new Option(result[i].gradeName, result[i].ID));
+                }
+            }
+        });
+        $.ajax({
+            url: "/GradeAndClass/getClassByGrade",
+            data: { id: 1 },
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#classes").append(new Option(result[i].className, result[i].ID));
+                }
             }
         });
     });
@@ -69,23 +86,7 @@
         });
     }
     $(document).ready(function () {
-        $.ajax({
-            url: "/GradeAndClass/getAllGrades",
-            success: function (result) {
-                for (var i = 0; i < result.length; i++) {
-                    $("#grades").append(new Option(result[i].gradeName, result[i].ID));
-                }
-            }
-        });
-        $.ajax({
-            url: "/GradeAndClass/getClassByGrade",
-            data: { id: 1 },
-            success: function (result) {
-                for (var i = 0; i < result.length; i++) {
-                    $("#classes").append(new Option(result[i].className, result[i].ID));
-                }
-            }
-        });
+       
     });
 </script>
 <br />
@@ -121,7 +122,6 @@
                     <td>{{p.birth}}</td>    
                     <td><a :href="link+p.id" class="btn btn-sm btn-info">Chi tiết</a></td>
                 </tr>
-
             </tbody>
         </table>
         <div style="display:none" id="notfound">            

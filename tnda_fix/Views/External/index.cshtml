@@ -21,7 +21,7 @@
                     </div>
                     <br/>
                     <div>
-                        <button type="button" class="btn btn-info btn btn-lg btn-block" data-toggle="modal" data-target="#add-modal">Đăng ký học</button>
+                        <button type="button" class="btn btn-success btn btn-lg btn-block font-weight-bold" data-toggle="modal" data-target="#add-modal">Đăng ký học Giáo Lý</button>
                     </div>
                 </form>
             </div>
@@ -32,6 +32,8 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content p-5">
             <form action="/person/AddPerson" method="post">
+                <h4 class="font-weight-bold">Thiếu nhi</h4>
+                <br />
                 <input hidden name="current_location" id="current_location" type="text" />
                 <div class="form-group">
                     <label>Tên thánh</label>
@@ -63,7 +65,7 @@
                     <label>Địa chỉ</label>
                     <input type="text" class="form-control" placeholder="Địa chỉ" name="child-address">
                 </div>
-                <br/>
+                <br />
                 <div class="form-check">
                     <input id="check-box" class="form-check-input mr-2" onclick="myShow()" type="checkbox" name="check-box" checked value="true">
                     <label class="form-check-label" for="defaultCheck1">
