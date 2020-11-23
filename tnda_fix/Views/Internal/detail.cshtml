@@ -55,6 +55,16 @@
 
                     }
                 });
+                new Vue({
+                    el: '#edit-class-modal',
+                    data: {
+                        detail: result,
+                        glvlink: '/external/detail?id=' + result.glv_id
+                    },
+                    mounted: function () {
+
+                    }
+                });
             }
         });
     });
@@ -93,7 +103,6 @@
                         </div>
                         <div class="col-lg-5 col-sm-12 mb-2">
                             <p class="card-text"></p>
-                            <p class="card-text">Khối:<b>{{detail.grade}}</b></p>
                             <p class="card-text">Lớp: <b>{{detail.pclass}}</b></p>
                             <p class="card-text">Giáo Lý Viên: <b>{{detail.glv}}</b></p>
                         </div>
@@ -127,7 +136,8 @@
             <div class="col-lg-12 col-sm-12 mb-2">
                 <div class="card d-flex">
                     <div class="card-body">
-                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#edit-modal">Sửa</button>
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#edit-modal">Sửa thông tin</button>
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#edit-class-modal">Sửa lớp</button>
                     </div>
                 </div>
             </div>
@@ -166,12 +176,9 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Khối hiện tại: <b>{{detail.grade}}</b></label>
-                    <select id="grades" onchange="getClasses()" class="form-control" name="child-grade"></select>
-                </div>
-                <div class="form-group">
-                    <label>Lớp hiện tại: <b>{{detail.pclass}}</b></label>
-                    <select id="classes" class="form-control" name="child-class"></select>
+                    <label>Lớp hiện tại</label>
+                    <input type="text" class="form-control" :value=detail.pclass >
+                    @*<select id="classes" class="form-control" name="child-class"></select>*@
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ</label>
@@ -214,6 +221,30 @@
                 <div class="form-group">
                     <label>SDT</label>
                     <input type="text" class="form-control" :value=detail.mother.phone name="mo-phone">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Lưu</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg vue-app" id="edit-class-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content p-5">
+            <form action="/person/EditClass" method="post">
+                <input name="current_location" id="current_location" type="hidden" />
+                <div class="form-group">
+                    <input hidden type="text" class="form-control" :value=detail.id name="child-id">
+                </div>
+                <div class="form-group">
+                    <h3>{{detail.ch_name}} {{detail.fname}} {{detail.name}}</h3>
+                </div>
+                <div class="form-group">
+                    <label>Khối</label>
+                    <select id="grades" onchange="getClasses()" class="form-control" name="child-grade"></select>
+                </div>
+                <div class="form-group">
+                    <label>Lớp</label>
+                    <select id="classes" class="form-control" name="child-class"></select>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Lưu</button>
             </form>

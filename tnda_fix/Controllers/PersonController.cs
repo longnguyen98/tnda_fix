@@ -255,7 +255,7 @@ namespace tnda_fix.Controllers
                     p.FirstName = form.Get("child-fname");
                     p.Address = form.Get("child-address");
                     p.Gender = bool.Parse(form["child-gender"]);
-                    p.ID_Class = int.Parse(form["child-class"]);
+                    //p.ID_Class = int.Parse(form["child-class"]);
                     db.SaveChanges();
                 }
                 else if (p.ID == fa_id)
@@ -277,90 +277,89 @@ namespace tnda_fix.Controllers
             }
             return Redirect(form["current-location"].ToString());
         }
+        //[HttpPost]
+        //public void SetStatus()
+        //{
+        //    tndaEntities db = new tndaEntities();
+        //    List<Person> list = db.People.ToList();
+        //    int id = int.Parse(Request.QueryString["query"]);
+        //    //bool status = Request.QueryString["query"];
+        //    foreach (Person p in list)
+        //    {
+        //        if (p.ID == id)
+        //        {
+        //            if (p.Status == false)
+        //            {
+        //                p.Status = true;
+        //                db.SaveChanges();
+        //            }
+        //            else
+        //            {
+        //                p.Status = false;
+        //                db.SaveChanges();
+        //            }
+        //        }
+        //    }
+        //}
+        //[HttpPost]
+        //public void EditName()
+        //{
+        //    tndaEntities db = new tndaEntities();
+        //    List<Person> list = db.People.ToList();
+        //    string id = Request.QueryString["query"];
+        //    string name = Request.QueryString["query"];
+        //    foreach (Person p in list)
+        //    {
+        //        if (p.ID == int.Parse(id))
+        //        {
+        //            p.Name = name;
+        //            db.SaveChanges();
+        //        }
+        //    }
+        //}
+        //[HttpPost]
+        //public void EditFistName()
+        //{
+        //    tndaEntities db = new tndaEntities();
+        //    List<Person> list = db.People.ToList();
+        //    string id = Request.QueryString["query"];
+        //    string fname = Request.QueryString["query"];
+        //    foreach (Person p in list)
+        //    {
+        //        if (p.ID == int.Parse(id))
+        //        {
+        //            p.FirstName = fname;
+        //            db.SaveChanges();
+        //        }
+        //    }
+        //}
+        //[HttpPost]
+        //public void EditGender()
+        //{
+        //    tndaEntities db = new tndaEntities();
+        //    List<Person> list = db.People.ToList();
+        //    string id = Request.QueryString["query"];
+        //    bool gender = bool.Parse(Request.QueryString["query"]);
+        //    foreach (Person p in list)
+        //    {
+        //        if (p.ID == int.Parse(id))
+        //        {
+        //            p.Gender = gender;
+        //            db.SaveChanges();
+        //        }
+        //    }
+        //}
         [HttpPost]
-        public void SetStatus()
+        public void EditClass(FormCollection form)
         {
             tndaEntities db = new tndaEntities();
             List<Person> list = db.People.ToList();
-            int id = int.Parse(Request.QueryString["query"]);
-            //bool status = Request.QueryString["query"];
+            int id = int.Parse(form["child-id"]);
             foreach (Person p in list)
             {
                 if (p.ID == id)
                 {
-                    if (p.Status == false)
-                    {
-                        p.Status = true;
-                        db.SaveChanges();
-                    }
-                    else
-                    {
-                        p.Status = false;
-                        db.SaveChanges();
-                    }
-                }
-            }
-        }
-        [HttpPost]
-        public void EditName()
-        {
-            tndaEntities db = new tndaEntities();
-            List<Person> list = db.People.ToList();
-            string id = Request.QueryString["query"];
-            string name = Request.QueryString["query"];
-            foreach (Person p in list)
-            {
-                if (p.ID == int.Parse(id))
-                {
-                    p.Name = name;
-                    db.SaveChanges();
-                }
-            }
-        }
-        [HttpPost]
-        public void EditFistName()
-        {
-            tndaEntities db = new tndaEntities();
-            List<Person> list = db.People.ToList();
-            string id = Request.QueryString["query"];
-            string fname = Request.QueryString["query"];
-            foreach (Person p in list)
-            {
-                if (p.ID == int.Parse(id))
-                {
-                    p.FirstName = fname;
-                    db.SaveChanges();
-                }
-            }
-        }
-        [HttpPost]
-        public void EditGender()
-        {
-            tndaEntities db = new tndaEntities();
-            List<Person> list = db.People.ToList();
-            string id = Request.QueryString["query"];
-            bool gender = bool.Parse(Request.QueryString["query"]);
-            foreach (Person p in list)
-            {
-                if (p.ID == int.Parse(id))
-                {
-                    p.Gender = gender;
-                    db.SaveChanges();
-                }
-            }
-        }
-        [HttpPost]
-        public void EditClass()
-        {
-            tndaEntities db = new tndaEntities();
-            List<Person> list = db.People.ToList();
-            string id = Request.QueryString["query"];
-            int c = int.Parse(Request.QueryString["query"]);
-            foreach (Person p in list)
-            {
-                if (p.ID == int.Parse(id))
-                {
-                    p.ID_Class = c;
+                    p.ID_Class = int.Parse(form["child-class"]);
                     db.SaveChanges();
                 }
             }
