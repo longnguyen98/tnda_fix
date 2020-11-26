@@ -96,7 +96,7 @@
             <h4>{{class_name}} <span class="lead ml-5">GLV: {{glv_name}}</span></h4>
         </div>
         <div class="col-lg-6 col-sm-6 mb-2 d-flex flex-row-reverse">
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#add-modal"><i class="fa fa-plus mr-2"></i> Thêm thiếu nhi</button>
+            <button type="button" class="btn btn-info font-weight-bold" data-toggle="modal" data-target="#add-modal"><i class="fa fa-plus mr-2"></i> Thêm thiếu nhi</button>
         </div>
     </div>
     <div id="vue_app" class="row bg-light rounded p-3">
@@ -113,7 +113,6 @@
                     <th scope="col">Chi tiết</th>
                 </tr>
             </thead>
-
             <tbody style="display:none" id="content">
                 <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
                     <th scope="row">{{p.id}}</th>

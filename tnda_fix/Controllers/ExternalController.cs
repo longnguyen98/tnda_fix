@@ -1,15 +1,14 @@
-﻿using IronXL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
+using IronXL;
 using tnda_fix.Models;
 
-
-namespace tnda.Controllers
+namespace tnda_fix.Controllers
 {
     public class ExternalController : Controller
     {
