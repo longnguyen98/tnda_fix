@@ -193,6 +193,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\GradeAndClassController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
@@ -476,6 +477,11 @@
     <Content Include="Views\Internal\detail.cshtml" />
     <Content Include="Views\Person\EditPerson.cshtml" />
     <Content Include="Views\Internal\allClasses.cshtml" />
+    <Content Include="Views\Shared\AdminLayout.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\AllGLV.cshtml" />
+    <Content Include="Views\Admin\CheckNew.cshtml" />
+    <Content Include="Views\Admin\AllClasses.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

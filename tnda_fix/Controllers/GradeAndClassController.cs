@@ -38,7 +38,7 @@ namespace tnda_fix.Controllers
             Class c = db.Classes.Find(id);
             Grade g = db.Grades.Find(c.ID_Grade);
             Person glv = db.People.Where(p => p.ID_role == 1 && p.ID_Class == c.ID).FirstOrDefault();
-            string glv_name = glv.ChristianName + " " + glv.FirstName + " " + glv.Name;
+            string glv_name = glv != null ? (glv.ChristianName + " " + glv.FirstName + " " + glv.Name) : "";
             //
             var json = new { className = g.GradeName + " " + c.ClassName, glv_name = glv_name };
             return Json(json, JsonRequestBehavior.AllowGet);

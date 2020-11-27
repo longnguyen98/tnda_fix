@@ -32,7 +32,6 @@ namespace tnda.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public JsonResult upload(HttpPostedFileBase file)
         {
