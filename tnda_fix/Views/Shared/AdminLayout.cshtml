@@ -1,0 +1,102 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Thiếu nhi Giáo xứ Dĩ An</title>
+    <!-- Bootstrap core CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="~/Content/landing-page.min.css" rel="stylesheet">
+    <link href="~/Content/dashboard.css" rel="stylesheet">
+    <link href="~/Content/simple-line-icons.css" />
+    <!-- Bootstrap core JavaScript -->
+    <script src="~/Scripts/jquery-3.5.1.min.js"></script>    
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    @*Vue*@
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    @*Datatables*@
+    <link href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    
+
+    <script>
+        var glv_name;
+        var glv;
+        $.ajax({
+            url: '/auth/getPersonFromSession',
+            success: function (glv) {
+                glv_name = glv.ch_name.trim() + ' ' + glv.fname.trim() + ' ' + glv.name.trim();
+                glv = glv;
+                new Vue({
+                    el: '#display_name_glv',
+                    data: {
+                        glv: glv,
+                        glv_name: glv.ch_name.trim()+' ' + glv.fname.trim()+' ' + glv.name.trim()
+                    }
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-dark sticky-top bg-info flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#"><i class="fa fa-church mr-3"></i>GLV GX Dĩ An</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed mt-1 text-white" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa fa-bars mr-2"></i> Menu
+        </button>              
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="sidebar-sticky pt-3">
+                    <ul id="display_name_glv" class="nav flex-column">
+                        <li class="nav-item bg-success rounded m-2">
+                            <span class="nav-link text-white pl-2">
+                                Xin Chào.
+                            </span>
+                            <h6 class="nav-link text-white pl-2 font-weight-bold" style="font-size:1em">
+                                {{glv_name}}
+                            </h6>
+                        </li>
+                        <li class="nav-item m-2">
+                            <a class="btn btn-info font-weight-bold w-100 text-left" :href="'/admin/index?id='+glv.id">
+                                <i class="fa fa-home mr-2"></i>Trang chính
+                            </a>
+                        </li>
+                        <li class="nav-item m-2">
+                            <a class="btn btn-info font-weight-bold w-100 text-left" href="/admin/allClasses">
+                                <i class="fa fa-list mr-2"></i>Tất cả các lớp
+                            </a>
+                        </li>
+                        <li class="nav-item m-2">
+                            <a class="btn btn-info font-weight-bold w-100 text-left" href="/admin/allGLV">
+                                <i class="fa fa-list mr-2"></i>Danh sách GLV
+                            </a>
+                        </li>
+                        <li class="nav-item m-2">
+                            <a class="btn btn-info font-weight-bold w-100 text-left" href="/admin/checknew">
+                                <i class="fa fa-list mr-2"></i>Duyệt đơn
+                            </a>
+                        </li>
+                        <li class="nav-item m-2">
+                            <a class="btn btn-danger font-weight-bold w-100 text-left" href="/auth/logout">
+                                <i class="fa fa-power-off mr-2"></i>Đăng xuất
+                            </a>
+                        </li>
+                    </ul>                   
+                </div>
+            </nav>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <br />
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+</body>
+</html>

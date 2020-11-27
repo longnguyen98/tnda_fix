@@ -24,6 +24,15 @@ namespace tnda_fix.Controllers
             username = Request["username"];
             password = Request["password"];
             if (auth(username, password))
+                //admin
+                if(username.EndsWith("admin"))
+                {
+                    Session.Add("accountName", username);
+                    Session.Timeout = 1440;
+                    return Redirect("~/Admin/index?id=" + (int)Session["personId"]);
+                }
+            //
+            else
             {
                 Session.Add("accountName", username);
                 Session.Timeout = 1440;
