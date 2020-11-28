@@ -4,28 +4,34 @@
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 <script>
-    $(document).ready(function getClasses() {
+    $(document).ready(getClasses());
+    function getClasses() {
+        $.LoadingOverlay("show");
         $.ajax({
             url: "/GradeAndClass/getAllGrades",
             success: function (result) {
                 for (var i = 0; i < result.length; i++) {
                     $("#grades").append(new Option(result[i].gradeName, result[i].ID));
                 }
-            }
-        });
-        $.ajax({
-            url: "/GradeAndClass/getClassByGrade",
-            data: { id: 1 },
-            success: function (result) {
-                for (var i = 0; i < result.length; i++) {
-                    $("#classes").append(new Option(result[i].className, result[i].ID));
-                }
-            }
-        });
+                $.ajax({
+                    url: "/GradeAndClass/getClassByGrade",
+                    data: { id: 1 },
+                    success: function (result) {
+                        for (var i = 0; i < result.length; i++) {
+                            $("#classes").append(new Option(result[i].className, result[i].ID));
+                        }
+                        $.LoadingOverlay("hide");
+                    }
+                });
 
-    })
+            }
+        });
+    }
+    function detailClass() {
+        var classId = $("#classes").val();
+        window.location.href = "/internal/listByClass?id_class="+classId;
+    }
 </script>
-
 <div class="card-body">
     <div class="form-group">
         <label>Lớp</label>
@@ -38,7 +44,7 @@
                     <div class="col-lg-5 col-sm-1">
                         <select id="classes" class="form-control" name="child-class"></select>
                     </div>
-                    <div><button type="button" class="btn btn-info" :onclick="'/internal/listByClass?id_class='+result.id">Xem</button></div>
+                    <div><button type="button" class="btn btn-info" onclick="detailClass()">Xem</button></div>
                  </div>
             </div>
         </div>

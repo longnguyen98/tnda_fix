@@ -238,6 +238,10 @@
     <Compile Include="Models\Grade.cs">
       <DependentUpon>Db.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Log.cs">
+      <DependentUpon>Db.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Logger.cs" />
     <Compile Include="Models\Person.cs">
       <DependentUpon>Db.tt</DependentUpon>
     </Compile>

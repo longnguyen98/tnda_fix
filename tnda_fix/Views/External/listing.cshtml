@@ -5,6 +5,7 @@
 }
 <script>
     $(document).ready(function () {
+        $.LoadingOverlay("show");
         var url_string = window.location.href;
         var url = new URL(url_string);
         var query = url.searchParams.get("query");
@@ -13,12 +14,7 @@
             url: "/Person/getPersonByQuery",
             data: { query: query },
             success: function (result) {
-                console.log(result);
-                if (!$.trim(result)) {
-                    window.alert("Không có dữ liệu!");
-                }
-                $("#loading").hide();
-                $("#content").show();
+                console.log(result);            
                 new Vue({
                     el: "#vue_app",
                     data: {
@@ -30,9 +26,10 @@
                     }
                 });
                 $('#table_wrapper').addClass("w-100");
+                $.LoadingOverlay("hide");
             }
         });
-    })
+    });
 </script>
 <br />
 <div id="vue_app" class="container">
@@ -49,12 +46,8 @@
                 </div>
             </form>
         </div>
-
     </div>
     <div class="row bg-light rounded p-3">
-        <div class="w-100" id="loading">
-            <img style="margin-left:auto;margin-right:auto;display:block" src="~/img/loading.gif" />
-        </div>
         <table id="table" class="table table-striped">
             <thead>
                 <tr>
@@ -67,7 +60,7 @@
 
                 </tr>
             </thead>
-            <tbody style="display:none" id="content">
+            <tbody id="content">
                 <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
                     <th scope="row">{{p.role}}</th>
                     <td>{{p.ch_name}}</td>

@@ -24,39 +24,46 @@
     <script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     @*Vue*@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    @*Loading Overlay*@
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
     <script>
-        $.ajax({
-            url: "/auth/getAuthStatus",
-            success: function (result) {
-                console.log(result);
-                if (result == true) {
-                    $.ajax({
-                        url: "/auth/getPersonFromSession",
-                        success: function (person) {
-                            console.log(person);
-                            new Vue({
-                                el: '#vue_app_layout',
-                                data: {
-                                    status: result,
-                                    person: person
-                                }
-                            });
-                            $('#glv_name').css("display", "inline");
-                        }
-                    });
-                } else {
-                    new Vue({
-                        el: '#vue_app_layout',
-                        data: {
-                            status: result
-                        }
-                    });
-                    $('#login_btn').css("display", "inline");
+        $(document).ready(function () {
+            $.LoadingOverlay("show");
+            $.ajax({
+                url: "/auth/getAuthStatus",
+                success: function (result) {
+                    console.log(result);
+                    if (result == true) {
+                        $.ajax({
+                            url: "/auth/getPersonFromSession",
+                            success: function (person) {
+                                console.log(person);
+                                new Vue({
+                                    el: '#vue_app_layout',
+                                    data: {
+                                        status: result,
+                                        person: person
+                                    }
+                                });
+                                $('#glv_name').css("display", "inline");
+                            }
+                        });
+                    } else {
+                        new Vue({
+                            el: '#vue_app_layout',
+                            data: {
+                                status: result
+                            }
+                        });
+                        $('#login_btn').css("display", "inline");
+                    }
+                    $.LoadingOverlay("hide");
                 }
-
-            }
+            });
         });
-
+        function Loading(attr) {
+            $.LoadingOverlay(attr);
+        }
     </script>
 </head>
 <body>
@@ -123,7 +130,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="w-100 btn btn-primary">Đăng nhập</button>
+                        <button type="submit" class="w-100 btn btn-primary" onclick="Loading('show')">Đăng nhập</button>
                     </div>
                 </form>
             </div>

@@ -6,6 +6,7 @@
 
 <script>
     $(document).ready(function () {
+        $.LoadingOverlay("show");
         var url_string = window.location.href;
         console.log(url_string);
         var url = new URL(url_string);
@@ -33,23 +34,8 @@
                     }
                 });               
                 $('#table_wrapper').addClass("w-100");
+                $.LoadingOverlay("hide");
             }
-        });
-    });
-    function load_modal(id) {       
-        $.ajax({
-            url: "/Person/getPersonDetail?id=" + id,
-            success: function (result) {
-                console.log(result);
-                new Vue({
-                    el: "#edit_modal",
-                    data: {
-                        detail:result
-                    }
-                });
-                $("#edit_modal").modal();
-            }
-
         });
         $.ajax({
             url: "/GradeAndClass/getAllGrades",
@@ -68,14 +54,28 @@
                 }
             }
         });
+    });
+    function load_modal(id) { 
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: "/Person/getPersonDetail?id=" + id,
+            success: function (result) {
+                console.log(result);
+                new Vue({
+                    el: "#edit_modal",
+                    data: {
+                        detail:result
+                    }
+                });
+                $("#edit_modal").modal();
+                $.LoadingOverlay("hide");
+            }
 
+        });        
     }
 </script>
 <br />
 <div id="vue_app" class="row bg-light rounded p-3">
-    <div class="w-100" id="loading">
-        <img style="margin-left:auto;margin-right:auto;display:block" src="~/img/loading.gif" />
-    </div>
     <table id="table" class="table table-striped" style="width:100%">
         <thead>
             <tr>
@@ -165,8 +165,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
+                    </div>                    
                     <button type="submit" class="btn btn-primary w-100">Lưu</button>
         </form>
         </div>
