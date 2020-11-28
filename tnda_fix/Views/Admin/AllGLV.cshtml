@@ -5,7 +5,9 @@
 }
 
 <script>
+    var vue_edit;
     $(document).ready(function () {
+        $.LoadingOverlay("show");
         var url_string = window.location.href;
         console.log(url_string);
         var url = new URL(url_string);
@@ -21,6 +23,7 @@
                 }
                 $("#loading").hide();
                 $("#content").show();
+                console.log(result);
                 new Vue({
                     el: "#vue_app"
                     ,
@@ -31,31 +34,26 @@
                         $('#table').DataTable();
                     }
                 });
+                vue_edit = new Vue({
+                    el: "#edit_modal",  
+                    data: {detail:result[0]}
+                });
                 $('#table_wrapper').addClass("w-100");
+                $.LoadingOverlay("hide");
             }
         });
+       
     });
     
     function load_modal(id) {
+        $.LoadingOverlay("show");
         $.ajax({
             url: "/Person/getPersonDetail?id=" + id,
             success: function (result) {
                 console.log(result);
-                 var V = new Vue({
-                    el: "#edit_modal",
-                    data: {
-                        detail: result
-                    }
-                    //methods: {
-                    //    destroy() {
-                    //        this.$destroy();
-                    //    }
-                    //}
-                });
-                //setTimeout(function () {
-                //    V.$destroy()
-                //}, 5000)
+                Vue.set(vue_edit, 'detail', result);
                 $("#edit_modal").modal();
+                $.LoadingOverlay("hide");
             }
         });
         $.ajax({
@@ -81,9 +79,6 @@
 </script>
 <br />
 <div id="vue_app" class="row bg-light rounded p-3">
-        <div class="w-100" id="loading">
-            <img style="margin-left:auto;margin-right:auto;display:block" src="~/img/loading.gif" />
-        </div>
         <table id="table" class="table table-striped" style="width:100%">
             <thead>
                 <tr>

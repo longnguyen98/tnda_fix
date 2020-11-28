@@ -5,6 +5,7 @@
 }
 <script>
     $(document).ready(function () {
+        $.LoadingOverlay("show");
         var url_string = window.location.href;
         var url = new URL(url_string);
         var query = url.searchParams.get("query");
@@ -30,6 +31,7 @@
                     }
                 });
                 $('#table_wrapper').addClass("w-100");
+                $.LoadingOverlay("hide");
             }
         });
     });
@@ -51,9 +53,6 @@
         </div>
     </div>
     <div class="row bg-light rounded p-3">
-        <div class="w-100" id="loading">
-            <img style="margin-left:auto;margin-right:auto;display:block" src="~/img/loading.gif" />
-        </div>
         <table id="table" class="table table-striped">
             <thead>
                 <tr>

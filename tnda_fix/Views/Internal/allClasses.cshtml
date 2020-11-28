@@ -5,6 +5,7 @@
 }
 <script>
     $(document).ready(function () {
+    $.LoadingOverlay("show");
         $.ajax({
             url: "/gradeAndClass/getAllClasses",            
             success: function (result) {
@@ -15,6 +16,7 @@
                         list: result
                     }
                 });
+                $.LoadingOverlay("hide");
             }
         });
     });

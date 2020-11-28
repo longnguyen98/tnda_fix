@@ -5,6 +5,7 @@
 }
 <script>
     $(document).ready(function () {
+        $.LoadingOverlay("show");
         var url_string = window.location.href;
         console.log(url_string);
         var url = new URL(url_string);
@@ -24,34 +25,35 @@
                         glv_name: glv_name,
                         class_name: class_name
                     }
-                })
-            }
-
-        });
-        $.ajax({
-            url: "/Person/getPersonByClass",
-            data: { id_class: id_class },
-            success: function (result) {
-                console.log(result);
-                if (!$.trim(result)) {
-                    $("#notfound").show();
-                }
-                $("#loading").hide();
-                $("#content").show();
-                new Vue({
-                    el: "#vue_app"
-                    ,
-                    data: {
-                        persons: result,
-                        link: '/internal/detail?id='
-                    }
-                    , mounted: function () {
-                        $('#table').DataTable();
+                });
+                $.ajax({
+                    url: "/Person/getPersonByClass",
+                    data: { id_class: id_class },
+                    success: function (result) {
+                        console.log(result);
+                        if (!$.trim(result)) {
+                            $("#notfound").show();
+                        }
+                        $("#loading").hide();
+                        $("#content").show();
+                        new Vue({
+                            el: "#vue_app"
+                            ,
+                            data: {
+                                persons: result,
+                                link: '/internal/detail?id='
+                            }
+                            , mounted: function () {
+                                $('#table').DataTable();
+                            }
+                        });
+                        $('#table_wrapper').addClass("w-100");
+                        $.LoadingOverlay("hide");
                     }
                 });
-                $('#table_wrapper').addClass("w-100");
             }
-        });
+
+        });        
         $.ajax({
             url: "/GradeAndClass/getAllGrades",
             success: function (result) {
@@ -100,9 +102,6 @@
         </div>
     </div>
     <div id="vue_app" class="row bg-light rounded p-3">
-        <div class="w-100" id="loading">
-            <img style="margin-left:auto;margin-right:auto;display:block" src="~/img/loading.gif" />
-        </div>
         <table id="table" class="table table-striped" style="width:100%">
             <thead>
                 <tr>
