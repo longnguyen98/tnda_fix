@@ -126,7 +126,7 @@
                                     <img class="card-img-top rounded" :src="detail.img" alt="Img" />
                                 </div>
                                 <div>
-                                    <input type="text" class="form-control" :value=detail.id name="child-id">
+                                    <input hidden type="text" class="form-control" :value=detail.id name="child-id">
                                     <p><h5 class="card-title">{{detail.ch_name}} {{detail.fname}} {{detail.name}}</h5></p>
                                     <h6 class="card-subtitle mb-2 text-muted">{{detail.role}}</h6>
                                     <p class="card-text">Ngày sinh: <b>{{detail.birth}}</b></p>
