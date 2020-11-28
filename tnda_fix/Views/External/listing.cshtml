@@ -14,12 +14,7 @@
             url: "/Person/getPersonByQuery",
             data: { query: query },
             success: function (result) {
-                console.log(result);
-                if (!$.trim(result)) {
-                    window.alert("Không có dữ liệu!");
-                }
-                $("#loading").hide();
-                $("#content").show();
+                console.log(result);            
                 new Vue({
                     el: "#vue_app",
                     data: {
@@ -65,7 +60,7 @@
 
                 </tr>
             </thead>
-            <tbody style="display:none" id="content">
+            <tbody id="content">
                 <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
                     <th scope="row">{{p.role}}</th>
                     <td>{{p.ch_name}}</td>

@@ -38,10 +38,12 @@ namespace tnda_fix.Controllers
                 Session.Timeout = 1440;
 
             }
+            Logger.create("LOGIN",username +" has logged in", (int)Session["personId"]);
             return Redirect("~/internal/index?id=" + (int)Session["personId"]);
         }
         public ActionResult logout()
         {
+            Logger.create("LOGOUT", Session["accountName"] + " has logged out", (int)Session["personId"]);
             Session.Clear();
             return Redirect("~/external/index");
         }
