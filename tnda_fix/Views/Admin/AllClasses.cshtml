@@ -4,28 +4,36 @@
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 <script>
-    $(document).ready(getClasses());
-    function getClasses() {
+    var grade_id;
+    $(document).ready(function () {
         $.LoadingOverlay("show");
         $.ajax({
             url: "/GradeAndClass/getAllGrades",
             success: function (result) {
                 for (var i = 0; i < result.length; i++) {
                     $("#grades").append(new Option(result[i].gradeName, result[i].ID));
-                }
-                $.ajax({
-                    url: "/GradeAndClass/getClassByGrade",
-                    data: { id: 1 },
-                    success: function (result) {
-                        for (var i = 0; i < result.length; i++) {
-                            $("#classes").append(new Option(result[i].className, result[i].ID));
-                        }
-                        $.LoadingOverlay("hide");
-                    }
-                });
-
+                }                
+                getClasses(1);
+                $.LoadingOverlay("hide");
             }
         });
+    });
+    function getClasses(grade_id) {
+        $.LoadingOverlay("show");
+        if (grade_id == null) {
+            grade_id = $('#grades').val();
+        }
+        $.ajax({
+            url: "/GradeAndClass/getClassByGrade",
+            data: { id: grade_id },
+            success: function (result) {
+                $("#classes").empty();
+                for (var i = 0; i < result.length; i++) {
+                    $("#classes").append(new Option(result[i].className, result[i].ID));
+                }
+                $.LoadingOverlay("hide");
+            }
+        });       
     }
     function detailClass() {
         var id_class = $("#classes").val();
@@ -75,7 +83,6 @@
 </script>
 <div class="card-body">
     <div class="form-group">
-        <label>Lớp</label>
         <div class="col-lg-12">
             <div class="card d-flex">
                 <div class="card-body row d-flex justify-content-center">
@@ -109,7 +116,6 @@
                 <th scope="col">Chi tiết</th>
             </tr>
         </thead>
-
         <tbody style="display:none" id="content">
             <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
                 <th scope="row">{{p.id}}</th>
@@ -120,9 +126,6 @@
             </tr>
         </tbody>
     </table>
-    <div style="display:none" id="notfound">
-        <h3>Không có dữ liệu!</h3>
-    </div>
 </div>
 
 
