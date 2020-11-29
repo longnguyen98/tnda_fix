@@ -21,69 +21,19 @@
                     </div>
                     <br/>
                     <div>
-                        <button type="button" class="btn btn-info btn btn-lg btn-block" data-toggle="modal" data-target="#add-modal">Đăng ký học</button>
+                        <button type="button" class="btn btn-success btn btn-lg btn-block font-weight-bold" data-toggle="modal" data-target="#add-modal">Đăng ký học Giáo Lý</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </header>
-<!-- section -->
-@*<section class="features-icons bg-info">
-    <div class="container">
-        <div class="row bg-light rounded p-5">
-            <div class="col-lg-6 col-sm-8 col-md-8 d-flex">
-                <div class="justify-content-center align-self-center">
-                    <h3 class="text-center">Đăng ký học Giáo Lý</h3>
-                    <br />
-                    <img class="img-fluid rounded" src="~/img/st-Jean-de-la-Salle.jpg" />
-                    <p class="font-italic text-center">Thánh Gioan La San - Quan thầy ngành nhà giáo</p>
-                    <p class="font-italic text-left">Gioan La San (tiếng Pháp: Jean-Baptiste de La Salle; 30 tháng 4 năm 1651 - 7 tháng 4 năm 1719) là một linh mục, nhà cải cách giáo dục, và là người sáng lập ra Dòng Sư Huynh Các Trường Công giáo hay còn gọi là Dòng La San. Ông được Giáo hội Công giáo Rôma tôn làm thánh và quan thầy của các giáo viên, giáo chức. Ông cũng được coi là người sáng lập ra mô hình trường trung học Công giáo đầu tiên.</p>
-                </div>
-            </div>
-            <div class="col-lg-6 col-sm-8 col-md-8">
-                <form>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                    </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="check-box">
-                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                    </div>
-                    <button disabled type="submit" class="btn btn-primary">Đang phát triển...</button>
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#add-modal"><i class="fa fa-plus mr-2"></i> Thêm thiếu nhi</button>
-                </form>
-                <form action="/external/uploadxlsasync" method="post" enctype="multipart/form-data">
-                    <input name="id" value="1122" />
-                    <input type="file" name="file" />
-                    <button type="submit">upload</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>*@
 <div class="modal fade bd-example-modal-lg" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content p-5">
             <form action="/person/AddPerson" method="post">
+                <h4 class="font-weight-bold">Thiếu nhi</h4>
+                <br />
                 <input hidden name="current_location" id="current_location" type="text" />
                 <div class="form-group">
                     <label>Tên thánh</label>
@@ -109,13 +59,13 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <input hidden type="text" class="form-control" name="child-status" value="false">
+                    <input hidden type="text" class="form-control" name="child-role" value="7">
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ</label>
                     <input type="text" class="form-control" placeholder="Địa chỉ" name="child-address">
                 </div>
-                <br/>
+                <br />
                 <div class="form-check">
                     <input id="check-box" class="form-check-input mr-2" onclick="myShow()" type="checkbox" name="check-box" checked value="true">
                     <label class="form-check-label" for="defaultCheck1">
@@ -196,6 +146,10 @@
     </div>
 </div>
 <script>
+    $(document).ready(function () {
+        console.log("check");
+        $('#check-box').prop('checked', true);
+    });
     function myShow() {
         // Get the checkbox
         var checkBox = document.getElementById("check-box");

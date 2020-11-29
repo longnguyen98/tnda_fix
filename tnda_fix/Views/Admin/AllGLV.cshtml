@@ -1,0 +1,160 @@
+﻿
+@{
+    ViewBag.Title = "AllGLV";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<script>
+    var vue_edit;
+    $(document).ready(function () {
+        $.LoadingOverlay("show");
+        var url_string = window.location.href;
+        console.log(url_string);
+        var url = new URL(url_string);
+        console.log(url);
+        $('#current_location').val(url_string);
+        //
+        $.ajax({
+            url: "/Person/getGLV",
+            success: function (result) {
+                console.log(result);
+                if (!$.trim(result)) {
+                    $("#notfound").show();
+                }
+                $("#loading").hide();
+                $("#content").show();
+                console.log(result);
+                new Vue({
+                    el: "#vue_app"
+                    ,
+                    data: {
+                        persons: result
+                    }
+                    , mounted: function () {
+                        $('#table').DataTable();
+                    }
+                });
+                vue_edit = new Vue({
+                    el: "#edit_modal",  
+                    data: {detail:result[0]}
+                });
+                $('#table_wrapper').addClass("w-100");
+                $.LoadingOverlay("hide");
+            }
+        });
+       
+    });
+    
+    function load_modal(id) {
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: "/Person/getPersonDetail?id=" + id,
+            success: function (result) {
+                console.log(result);
+                Vue.set(vue_edit, 'detail', result);
+                $("#edit_modal").modal();
+                $.LoadingOverlay("hide");
+            }
+        });
+        $.ajax({
+            url: "/GradeAndClass/getAllGrades",
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#grades").append(new Option(result[i].gradeName, result[i].ID));
+                }
+            }
+        });
+        $.ajax({
+            url: "/GradeAndClass/getClassByGrade",
+            data: { id: 1 },
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#classes").append(new Option(result[i].className, result[i].ID));
+                }
+            }
+        });
+    }
+
+    
+</script>
+<br />
+<div id="vue_app" class="row bg-light rounded p-3">
+        <table id="table" class="table table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Tên Thánh</th>
+                    <th scope="col">Họ & Tên</th>
+                    <th scope="col">Ngày sinh</th>
+                    <th scope="col">Lớp</th>
+                    <th scope="col">Chi tiết</th>
+                </tr>
+            </thead>
+
+            <tbody style="display:none" id="content">
+                <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
+                    <th scope="row">{{p.id}}</th>
+                    <td>{{p.ch_name}}</td>
+                    <td>{{p.fname}} {{p.name}}</td>
+                    <td>{{p.birth}}</td>
+                    <td>{{p.pclass}}</td>
+                    <td><button type="button" class="btn btn-info" :onclick="'load_modal('+p.id+')'">Chi tiết</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="display:none" id="notfound">
+            <h3>Không có dữ liệu!</h3>
+        </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content p-5">
+            <form action="/person/EditClass" method="post">
+                <div class="d-flex justify-content-center bg-light rounded">
+                    <img id="loading" style="display:none" src="~/img/loading.gif" />
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <div class="card d-flex">
+                            <div class="card-body row d-flex justify-content-center">
+                                <div class="col-lg-2 col-sm-6 mb-2">
+                                    <img class="card-img-top rounded" :src="detail.img" alt="Img" />
+                                </div>
+                                <div>
+                                    <input hidden type="text" class="form-control" :value=detail.id name="child-id">
+                                    <p><h5 class="card-title">{{detail.ch_name}} {{detail.fname}} {{detail.name}}</h5></p>
+                                    <h6 class="card-subtitle mb-2 text-muted">{{detail.role}}</h6>
+                                    <p class="card-text">Ngày sinh: <b>{{detail.birth}}</b></p>
+                                </div>
+                                <div class="col-lg-5 col-sm-1">
+                                    <p class="card-text"></p>
+                                    <p class="card-text">Lớp: <b>{{detail.pclass}}</b></p>
+                                    <p class="card-text">SĐT: <b>{{detail.phone}}</b></p>
+                                    <p class="card-text">Địa chỉ: <b>{{detail.address}}</b></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="col-lg-12 col-sm-12 mb-2">
+                        <div class="card d-flex">
+                            <div class="card-body">
+                                <h6> Xếp lớp</h6>
+                                <div class="form-group">
+                                    <label>Khối</label>
+                                    <select id="grades" onchange="getClasses()" class="form-control" name="child-grade"></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Lớp</label>
+                                    <select id="classes" class="form-control" name="child-class"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Lưu</button>
+            </form>
+        </div>
+    </div>
+</div>

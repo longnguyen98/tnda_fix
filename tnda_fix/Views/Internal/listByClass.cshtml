@@ -5,6 +5,7 @@
 }
 <script>
     $(document).ready(function () {
+        $.LoadingOverlay("show");
         var url_string = window.location.href;
         console.log(url_string);
         var url = new URL(url_string);
@@ -24,51 +25,35 @@
                         glv_name: glv_name,
                         class_name: class_name
                     }
-                })
-            }
-
-        });
-        $.ajax({
-            url: "/Person/getPersonByClass",
-            data: { id_class: id_class },
-            success: function (result) {
-                console.log(result);
-                if (!$.trim(result)) {
-                    $("#notfound").show();
-                }
-                $("#loading").hide();
-                $("#content").show();
-                new Vue({
-                    el: "#vue_app"
-                    ,
-                    data: {
-                        persons: result,
-                        link: '/internal/detail?id='
-                    }
-                    , mounted: function () {
-                        $('#table').DataTable();
+                });
+                $.ajax({
+                    url: "/Person/getPersonByClass",
+                    data: { id_class: id_class },
+                    success: function (result) {
+                        console.log(result);
+                        if (!$.trim(result)) {
+                            $("#notfound").show();
+                        }
+                        $("#loading").hide();
+                        $("#content").show();
+                        new Vue({
+                            el: "#vue_app"
+                            ,
+                            data: {
+                                persons: result,
+                                link: '/internal/detail?id='
+                            }
+                            , mounted: function () {
+                                $('#table').DataTable();
+                            }
+                        });
+                        $('#table_wrapper').addClass("w-100");
+                        $.LoadingOverlay("hide");
                     }
                 });
+            }
 
-            }
-        });
-    });
-</script>
-<script>
-    function getClasses() {
-        var grade_id = $('#grades').val();
-        $('#classes').html('');
-        $.ajax({
-            url: "/GradeAndClass/getClassByGrade",
-            data: { id: grade_id },
-            success: function (result) {
-                for (var i = 0; i < result.length; i++) {
-                    $("#classes").append(new Option(result[i].className, result[i].ID));
-                }
-            }
-        });
-    }
-    $(document).ready(function () {
+        });        
         $.ajax({
             url: "/GradeAndClass/getAllGrades",
             success: function (result) {
@@ -88,6 +73,24 @@
         });
     });
 </script>
+<script>
+    function getClasses() {
+        var grade_id = $('#grades').val();
+        $('#classes').html('');
+        $.ajax({
+            url: "/GradeAndClass/getClassByGrade",
+            data: { id: grade_id },
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#classes").append(new Option(result[i].className, result[i].ID));
+                }
+            }
+        });
+    }
+    $(document).ready(function () {
+       
+    });
+</script>
 <br />
 <div class="container bg-info">
     <div class="row bg-light rounded p-3">
@@ -95,13 +98,10 @@
             <h4>{{class_name}} <span class="lead ml-5">GLV: {{glv_name}}</span></h4>
         </div>
         <div class="col-lg-6 col-sm-6 mb-2 d-flex flex-row-reverse">
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#add-modal"><i class="fa fa-plus mr-2"></i> Thêm thiếu nhi</button>
+            <button type="button" class="btn btn-info font-weight-bold" data-toggle="modal" data-target="#add-modal"><i class="fa fa-plus mr-2"></i> Thêm thiếu nhi</button>
         </div>
     </div>
     <div id="vue_app" class="row bg-light rounded p-3">
-        <div class="w-100" id="loading">
-            <img src="~/img/loading.gif" />
-        </div>
         <table id="table" class="table table-striped" style="width:100%">
             <thead>
                 <tr>
@@ -112,7 +112,6 @@
                     <th scope="col">Chi tiết</th>
                 </tr>
             </thead>
-
             <tbody style="display:none" id="content">
                 <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
                     <th scope="row">{{p.id}}</th>
@@ -121,12 +120,8 @@
                     <td>{{p.birth}}</td>    
                     <td><a :href="link+p.id" class="btn btn-sm btn-info">Chi tiết</a></td>
                 </tr>
-
             </tbody>
-        </table>
-        <div style="display:none" id="notfound">            
-                <h3>Không có dữ liệu!</h3>            
-        </div>
+        </table>    
     </div>
 </div>
 <div class="modal fade bd-example-modal-lg" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

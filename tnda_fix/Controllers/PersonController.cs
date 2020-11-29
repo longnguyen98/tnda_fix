@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using System.Web;
-using tnda_fix.Models;
 using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using tnda_fix.Models;
 
 namespace tnda_fix.Controllers
 {
@@ -12,16 +12,14 @@ namespace tnda_fix.Controllers
     {
         public JsonResult GetPersonDetail()
         {
-            string s_id = Request.QueryString["id"];
-            int id = int.Parse(s_id);
-            return getPersonDetailWithArg(id);
+            return getPersonDetailWithArg(int.Parse(Request.QueryString["id"]));
         }
         public JsonResult getPersonDetailWithArg(int id)
         {
             tndaEntities db = new tndaEntities();
             Person child = db.People.Find(id);
             //
-            if (child.ID_role == 4)
+            if (child.ID_role == 4 || child.ID_role ==7)
             {
                 Family family = db.Families.Find(child.ID_Farmily);
                 //
@@ -29,17 +27,20 @@ namespace tnda_fix.Controllers
                 //            
                 Person mother = db.People.Where(p => p.ID_Farmily == family.ID && p.ID != father.ID && p.ID != child.ID).FirstOrDefault();
                 //
-                Person glv = db.People.Where(p => p.ID_Class == child.ID_Class && (p.ID_role == 1 || p.ID_role == 2)).FirstOrDefault();
-                string glv_name = glv.ChristianName + " " + glv.FirstName + " " + glv.Name;
+                Person glv = db.People.Where(p => p.ID_Class == child.ID_Class && (p.ID_role == 1 || p.ID_role == 2) && p.ID_Class != null).FirstOrDefault();
+                string glv_name = glv != null ? (glv.ChristianName + " " + glv.FirstName + " " + glv.Name) : "";
                 string img = child.Image;
                 if (string.IsNullOrEmpty(img))
                 {
                     img = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                 }
+                string birthString = child.Birth != null ? child.Birth.Value.ToString("dd.MM.yyy") : "";
+                string classString = child.Class != null ? (child.Class.Grade.GradeName + " " + child.Class.ClassName) : "";
                 //
                 var fatherJson = new { fa_id = father.ID, ch_name = father.ChristianName, fname = father.FirstName, name = father.Name, role = father.Role.RoleName, phone = father.Phone };
                 var motherJson = new { mo_id = mother.ID, ch_name = mother.ChristianName, fname = mother.FirstName, name = mother.Name, role = mother.Role.RoleName, phone = mother.Phone, role_id = child.ID_role };
-                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, role = child.Role.RoleName, glv = glv_name, id_class = child.ID_Class, birth = child.Birth.Value.ToString("dd.MM.yyy"), address = child.Address, father = fatherJson, mother = motherJson, role_id = child.ID_role, glv_id = glv.ID, img = img };
+                var glvId = glv != null ? glv.ID : 91;
+                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, pclass = classString, role = child.Role.RoleName, glv = glv_name, id_class = child.ID_Class, birth = birthString, address = child.Address, father = fatherJson, mother = motherJson, role_id = child.ID_role, glv_id = glvId, img = img, note = child.Note };
                 //
                 return Json(json, JsonRequestBehavior.AllowGet);
             }
@@ -50,7 +51,9 @@ namespace tnda_fix.Controllers
                 {
                     image = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                 }
-                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, grade = child.Class.Grade.GradeName, pclass = child.Class.ClassName, id_class = child.ID_Class, role = child.Role.RoleName, birth = child.Birth.Value.ToString("dd.MM.yyyy"), address = child.Address, phone = child.Phone, role_id = child.ID_role, img = image};
+                string birthString = child.Birth != null ? child.Birth.Value.ToString("dd.MM.yyy") : "";
+                string classString = child.Class != null ? (child.Class.Grade.GradeName + " " + child.Class.ClassName) : "";
+                var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, pclass = classString, id_class = child.ID_Class, role = child.Role.RoleName, birth = birthString, address = child.Address, phone = child.Phone, role_id = child.ID_role, img = image };
                 return Json(json, JsonRequestBehavior.AllowGet);
             }
 
@@ -78,7 +81,9 @@ namespace tnda_fix.Controllers
                 {
                     if (Tools.convert(p.ChristianName.ToUpper()).Equals(query) || Tools.convert(p.FirstName.ToUpper()).Equals(query) || Tools.convert(p.Name.ToUpper()).Equals(query) || cfn || cn || fn)
                     {
-                        var ob = new { id = p.ID, ch_name = p.ChristianName, fname = p.FirstName, name = p.Name, pclass = p.Class.Grade.GradeName + " " + p.Class.ClassName, birth = p.Birth.Value.ToString("dd.MM.yyy"), role = p.Role.RoleName };
+                        string birthString = p.Birth != null ? p.Birth.Value.ToString("dd.MM.yyy") : "";
+                        string classString = p.Class != null ? (p.Class.Grade.GradeName + " " + p.Class.ClassName) : "";
+                        var ob = new { id = p.ID, ch_name = p.ChristianName, fname = p.FirstName, name = p.Name, pclass = classString, birth = birthString, role = p.Role.RoleName };
                         //
                         objects.Add(ob);
                     }
@@ -101,8 +106,48 @@ namespace tnda_fix.Controllers
             }
             return Json(json, JsonRequestBehavior.AllowGet);
         }
+        //
+        public JsonResult getNewPerson()
+        {
+            tndaEntities db = new tndaEntities();
+            List<Person> people = db.People.Where(p => p.ID_role == 7).ToList();
+            List<object> json = new List<object>();
+            foreach (Person child in people) {
+                    Family family = db.Families.Find(child.ID_Farmily);
+                    //
+                    Person father = db.People.Find(family.ID_Dad);
+                    //            
+                    Person mother = db.People.Where(p => p.ID_Farmily == family.ID && p.ID != father.ID && p.ID != child.ID).FirstOrDefault();
+                    string img = child.Image;
+                    if (string.IsNullOrEmpty(img))
+                    {
+                        img = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
+                    }
+                    string birthString = child.Birth != null ? child.Birth.Value.ToString("dd.MM.yyy") : "";
+                    //
+                    var fatherJson = new { fa_id = father.ID, ch_name = father.ChristianName, fname = father.FirstName, name = father.Name, role = father.Role.RoleName, phone = father.Phone };
+                    var motherJson = new { mo_id = mother.ID, ch_name = mother.ChristianName, fname = mother.FirstName, name = mother.Name, role = mother.Role.RoleName, phone = mother.Phone, role_id = child.ID_role };
+                    var ob = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, birth = birthString, address = child.Address, father = fatherJson, mother = motherJson, role_id = child.ID_role, img = img };
+                    json.Add(ob);
+            }
+            return Json(json, JsonRequestBehavior.AllowGet);
 
-
+        }
+        public JsonResult getGLV()
+        {
+            tndaEntities db = new tndaEntities();
+            List<object> json = new List<object>();
+            List<Person> people = db.People.Where(p => p.ID_role == 1).ToList();
+            foreach (Person p in people)
+            {
+                string birthString = p.Birth != null ? p.Birth.Value.ToString("dd.MM.yyy") : "";
+                string classString = p.Class != null ? (p.Class.Grade.GradeName + " " + p.Class.ClassName) : "";
+                var ob = new { id = p.ID, ch_name = p.ChristianName, fname = p.FirstName, name = p.Name, pclass = classString, birth = birthString };
+                //
+                json.Add(ob);
+            }
+            return Json(json, JsonRequestBehavior.AllowGet);
+        }
 
 
         [HttpPost]
@@ -121,18 +166,13 @@ namespace tnda_fix.Controllers
 
 
 
-            return Redirect("~/internal/index?id="+id);
+            return Redirect("~/internal/index?id=" + id);
         }
-        
+
         //
         [HttpPost]
         public ActionResult AddPerson(FormCollection form)
         {
-            //List<Object> objects = new List<object>();
-            //foreach (String key in form.AllKeys)
-            //{
-            //    objects.Add(form.Get(key));
-            //}
             tndaEntities db = new tndaEntities();
             int id_family_lead = -1;
             int id_family = -1;
@@ -197,7 +237,10 @@ namespace tnda_fix.Controllers
                     db.SaveChanges();
                 }
             }
-            Person p = new Person 
+            //
+
+            //
+            Person p = new Person
             {
                 ChristianName = form["child-ch-name"],
                 FirstName = form["child-fname"],
@@ -205,8 +248,12 @@ namespace tnda_fix.Controllers
                 Birth = Convert.ToDateTime(form["child-birth"]), //
                 Address = form["child-address"],
                 ID_Class = int.Parse(form["child-class"]),
-                ID_role = 4,
-                Status = bool.Parse(form["child-status"]),
+                //set later ID_Farmily = id_family,
+                ID_role = int.Parse(form["child-role"]),
+                //Image = "",
+                Note = form["child-gp"] +" "+ form["child-gx"] + " " + form["child-grade"] + " " + form["child-class"],
+                //Phone = "",
+                Status = false,
                 Gender = bool.Parse(form["child-gender"]),
                 CreateDate = DateTime.Now
             };
@@ -222,12 +269,10 @@ namespace tnda_fix.Controllers
             {
                 mom.Address = p.Address;
             }
-            if (form["check-box"] == "true")
-                p.Note = form["child-gp"] + " " + form["child-gx"] + " " + form["child-gx"] + " " + form["child-grade"] + " " + form["child-class"];
             db.People.Add(p);
             db.SaveChanges();
-            return View();
-            //return Redirect(form["current-location"].ToString());
+            //
+            return Redirect(form["current-location"].ToString());
         }
         //Edit Person
         [HttpPost]
@@ -245,13 +290,13 @@ namespace tnda_fix.Controllers
                     p.Name = form.Get("child-name");
                     p.ChristianName = form.Get("child-ch-name");
                     p.Birth = DateTime.Parse(form["child-birth"]);
-                    p.FirstName = form.Get("child-fname"); 
+                    p.FirstName = form.Get("child-fname");
                     p.Address = form.Get("child-address");
                     p.Gender = bool.Parse(form["child-gender"]);
-                    p.ID_Class = int.Parse(form["child-class"]);
+                    //p.ID_Class = int.Parse(form["child-class"]);
                     db.SaveChanges();
                 }
-                else if(p.ID == fa_id)
+                else if (p.ID == fa_id)
                 {
                     p.ChristianName = form.Get("fa-ch-name");
                     p.FirstName = form.Get("fa-fname");
@@ -259,7 +304,7 @@ namespace tnda_fix.Controllers
                     p.Phone = form.Get("fa-phone");
                     db.SaveChanges();
                 }
-                else if(p.ID == mo_id)
+                else if (p.ID == mo_id)
                 {
                     p.ChristianName = form.Get("mo-ch-name");
                     p.FirstName = form.Get("mo-fname");
@@ -270,87 +315,89 @@ namespace tnda_fix.Controllers
             }
             return Redirect(form["current-location"].ToString());
         }
+        //[HttpPost]
+        //public void SetStatus()
+        //{
+        //    tndaEntities db = new tndaEntities();
+        //    List<Person> list = db.People.ToList();
+        //    int id = int.Parse(Request.QueryString["query"]);
+        //    //bool status = Request.QueryString["query"];
+        //    foreach (Person p in list)
+        //    {
+        //        if (p.ID == id)
+        //        {
+        //            if (p.Status == false)
+        //            {
+        //                p.Status = true;
+        //                db.SaveChanges();
+        //            }
+        //            else
+        //            {
+        //                p.Status = false;
+        //                db.SaveChanges();
+        //            }
+        //        }
+        //    }
+        //}
+        //[HttpPost]
+        //public void EditName()
+        //{
+        //    tndaEntities db = new tndaEntities();
+        //    List<Person> list = db.People.ToList();
+        //    string id = Request.QueryString["query"];
+        //    string name = Request.QueryString["query"];
+        //    foreach (Person p in list)
+        //    {
+        //        if (p.ID == int.Parse(id))
+        //        {
+        //            p.Name = name;
+        //            db.SaveChanges();
+        //        }
+        //    }
+        //}
+        //[HttpPost]
+        //public void EditFistName()
+        //{
+        //    tndaEntities db = new tndaEntities();
+        //    List<Person> list = db.People.ToList();
+        //    string id = Request.QueryString["query"];
+        //    string fname = Request.QueryString["query"];
+        //    foreach (Person p in list)
+        //    {
+        //        if (p.ID == int.Parse(id))
+        //        {
+        //            p.FirstName = fname;
+        //            db.SaveChanges();
+        //        }
+        //    }
+        //}
+        //[HttpPost]
+        //public void EditGender()
+        //{
+        //    tndaEntities db = new tndaEntities();
+        //    List<Person> list = db.People.ToList();
+        //    string id = Request.QueryString["query"];
+        //    bool gender = bool.Parse(Request.QueryString["query"]);
+        //    foreach (Person p in list)
+        //    {
+        //        if (p.ID == int.Parse(id))
+        //        {
+        //            p.Gender = gender;
+        //            db.SaveChanges();
+        //        }
+        //    }
+        //}
         [HttpPost]
-        public void SetStatus()
+        public void EditClass(FormCollection form)
         {
             tndaEntities db = new tndaEntities();
             List<Person> list = db.People.ToList();
-            int id =int.Parse(Request.QueryString["query"]);
-            //bool status = Request.QueryString["query"];
+            int id = int.Parse(form["child-id"]);
             foreach (Person p in list)
             {
-                if (p.ID == id )
-                    if(p.Status == false)
-                    {
-                    p.Status = true;
-                    db.SaveChanges();
-                    }
-                    else {
-                        p.Status = false;
-                        db.SaveChanges();
-                    }
-            }
-        }
-        [HttpPost]
-        public void EditName()
-        {
-            tndaEntities db = new tndaEntities();
-            List<Person> list = db.People.ToList();
-            string id = Request.QueryString["query"];
-            string name = Request.QueryString["query"];
-            foreach (Person p in list)
-            {
-                if (p.ID == int.Parse(id))
+                if (p.ID == id)
                 {
-                    p.Name = name;
-                    db.SaveChanges();
-                }
-            }
-        }
-        [HttpPost]
-        public void EditFistName()
-        {
-            tndaEntities db = new tndaEntities();
-            List<Person> list = db.People.ToList();
-            string id = Request.QueryString["query"];
-            string fname = Request.QueryString["query"];
-            foreach (Person p in list)
-            {
-                if (p.ID == int.Parse(id))
-                {
-                    p.FirstName = fname;
-                    db.SaveChanges();
-                }
-            }
-        }
-        [HttpPost]
-        public void EditGender()
-        {
-            tndaEntities db = new tndaEntities();
-            List<Person> list = db.People.ToList();
-            string id = Request.QueryString["query"];
-            bool gender = bool.Parse(Request.QueryString["query"]);
-            foreach (Person p in list)
-            {
-                if (p.ID == int.Parse(id))
-                {
-                    p.Gender = gender;
-                    db.SaveChanges();
-                }
-            }
-        }
-        [HttpPost]
-        public void EditClass()
-        {
-            tndaEntities db = new tndaEntities();
-            List<Person> list = db.People.ToList();
-            string id = Request.QueryString["query"];
-            int c = int.Parse(Request.QueryString["query"]);
-            foreach (Person p in list)
-            {
-                if (p.ID == int.Parse(id))
-                {
-                    p.ID_Class = c;
+                    p.ID_Class = int.Parse(form["child-class"]);
                     db.SaveChanges();
                 }
             }

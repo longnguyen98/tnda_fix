@@ -54,6 +54,16 @@
           <Property Name="GradeName" Type="nvarchar" MaxLength="15" />
           <Property Name="Status" Type="bit" />
         </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="255" />
+          <Property Name="Detail" Type="varchar" MaxLength="255" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="Time" Type="datetime2" Precision="7" />
+        </EntityType>
         <EntityType Name="Person">
           <Key>
             <PropertyRef Name="ID" />
@@ -268,6 +278,7 @@
           <EntitySet Name="FamilyInfo" EntityType="Self.FamilyInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FamilyLinkInfo" EntityType="Self.FamilyLinkInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Grade" EntityType="Self.Grade" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PersonLog" EntityType="Self.PersonLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Registration" EntityType="Self.Registration" Schema="dbo" store:Type="Tables" />
@@ -386,6 +397,7 @@
             <End Role="Person" EntitySet="People" />
             <End Role="Report" EntitySet="Reports" />
           </AssociationSet>
+          <EntitySet Name="Logs" EntityType="tndaModel.Log" />
         </EntityContainer>
         <EntityType Name="ACC">
           <Key>
@@ -667,6 +679,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Detail" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="Time" Type="DateTime" Precision="7" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -789,6 +811,17 @@
               <MappingFragment StoreEntitySet="Role">
                 <ScalarProperty Name="RoleName" ColumnName="RoleName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logs">
+            <EntityTypeMapping TypeName="tndaModel.Log">
+              <MappingFragment StoreEntitySet="Log">
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Detail" ColumnName="Detail" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

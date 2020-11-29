@@ -25,7 +25,11 @@
     <script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     @*Loading Overlay*@
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
-    <script>
+
+
+    <script>        
+        var glv_name;
+        var glv;
         $(document).ready(function () {
             $.LoadingOverlay("show");
             $.ajax({
@@ -43,10 +47,7 @@
                     $.LoadingOverlay("hide");
                 }
             });
-        });        
-        function Loading(attr) {
-            $.LoadingOverlay(attr);
-        }
+        });
     </script>
 </head>
 <body>
@@ -54,7 +55,7 @@
         <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#"><i class="fa fa-church mr-3"></i>GLV GX Dĩ An</a>
         <button class="navbar-toggler position-absolute d-md-none collapsed mt-1 text-white" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fa fa-bars mr-2"></i> Menu
-        </button>              
+        </button>
     </nav>
     <div class="container-fluid">
         <div class="row">
@@ -70,26 +71,31 @@
                             </h6>
                         </li>
                         <li class="nav-item m-2">
-                            <a class="btn btn-info font-weight-bold w-100 text-left" :href="'/internal/index?id='+glv.id">
+                            <a class="btn btn-info font-weight-bold w-100 text-left" :href="'/admin/index?id='+glv.id">
                                 <i class="fa fa-home mr-2"></i>Trang chính
                             </a>
                         </li>
                         <li class="nav-item m-2">
-                            <a class="btn btn-info font-weight-bold w-100 text-left" :href="'/internal/listbyclass?id_class=' + glv.id_class">
-                                <i class="fa fa-list mr-2"></i>Danh sách thiếu nhi
-                            </a>
-                        </li>
-                        <li class="nav-item m-2">
-                            <a class="btn btn-info font-weight-bold w-100 text-left" href="/internal/allClasses">
+                            <a class="btn btn-info font-weight-bold w-100 text-left" href="/admin/allClasses">
                                 <i class="fa fa-list mr-2"></i>Tất cả các lớp
                             </a>
                         </li>
                         <li class="nav-item m-2">
-                            <a class="btn btn-danger font-weight-bold w-100 text-left" onclick="Loading('show')" href="/auth/logout">
+                            <a class="btn btn-info font-weight-bold w-100 text-left" href="/admin/allGLV">
+                                <i class="fa fa-list mr-2"></i>Danh sách GLV
+                            </a>
+                        </li>
+                        <li class="nav-item m-2">
+                            <a class="btn btn-info font-weight-bold w-100 text-left" href="/admin/checknew">
+                                <i class="fa fa-list mr-2"></i>Duyệt đơn
+                            </a>
+                        </li>
+                        <li class="nav-item m-2">
+                            <a class="btn btn-danger font-weight-bold w-100 text-left" href="/auth/logout">
                                 <i class="fa fa-power-off mr-2"></i>Đăng xuất
                             </a>
                         </li>
-                    </ul>                   
+                    </ul>
                 </div>
             </nav>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
