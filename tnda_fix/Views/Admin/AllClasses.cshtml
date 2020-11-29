@@ -28,8 +28,49 @@
         });
     }
     function detailClass() {
-        var classId = $("#classes").val();
-        window.location.href = "/internal/listByClass?id_class="+classId;
+        var id_class = $("#classes").val();
+        //window.location.href = "/internal/listByClass?id_class=" + classId;
+        $.ajax({
+            url: '/gradeAndClass/getClassbyId',
+            data: { id_class: id_class },
+            success: function (result) {
+                var glv_name = result.glv_name;
+                var class_name = result.className;
+                new Vue({
+                    el: '#class_info',
+                    data: {
+                        glv_name: glv_name,
+                        class_name: class_name
+                    }
+                });
+                $.ajax({
+                    url: "/Person/getPersonByClass",
+                    data: { id_class: id_class },
+                    success: function (result) {
+                        console.log(result);
+                        if (!$.trim(result)) {
+                            $("#notfound").show();
+                        }
+                        $("#loading").hide();
+                        $("#content").show();
+                        new Vue({
+                            el: "#vue_app"
+                            ,
+                            data: {
+                                persons: result,
+                                link: '/internal/detail?id='
+                            }
+                            , mounted: function () {
+                                $('#table').DataTable();
+                            }
+                        });
+                        $('#table_wrapper').addClass("w-100");
+                        $.LoadingOverlay("hide");
+                    }
+                });
+            }
+
+        });
     }
 </script>
 <div class="card-body">
@@ -50,6 +91,38 @@
         </div>
     </div>
 </div>
+<br />
+<div id="vue_app" class="row bg-light rounded p-3">
+    <div>
+        <div id="class_info">
+            <h4>{{class_name}}</h4>
+            <h5>GLV: {{glv_name}}</h5>
+        </div>
+    </div>
+    <table id="table" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Tên Thánh</th>
+                <th scope="col">Họ & Tên</th>
+                <th scope="col">Ngày sinh</th>
+                <th scope="col">Chi tiết</th>
+            </tr>
+        </thead>
 
+        <tbody style="display:none" id="content">
+            <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
+                <th scope="row">{{p.id}}</th>
+                <td>{{p.ch_name}}</td>
+                <td>{{p.fname}} {{p.name}}</td>
+                <td>{{p.birth}}</td>
+                <td><button type="button" class="btn btn-info" onclick="'load_modal('+p.id+')'">Chi tiết</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="display:none" id="notfound">
+        <h3>Không có dữ liệu!</h3>
+    </div>
+</div>
 
 
