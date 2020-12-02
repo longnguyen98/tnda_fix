@@ -2,6 +2,15 @@
     Layout = "~/Views/Shared/ExternalLayout.cshtml";
 }
 <!-- Masthead -->
+<script>
+    $(document).ready(function () {
+        $('#loading').show();;
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        console.log(url_string);
+        $('#current_location').val(url_string);
+    })
+</script>
 <header class="masthead text-white text-center" style="background:url('../img/bg_ex_index.jpg');background-size:cover;">
     <div class="overlay"></div>
     <div class="container">
@@ -37,19 +46,19 @@
                 <input hidden name="current_location" id="current_location" type="text" />
                 <div class="form-group">
                     <label>Tên thánh</label>
-                    <input type="text" class="form-control" placeholder="Tên Thánh" name="child-ch-name">
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="child-ch-name" required pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Họ và đệm</label>
-                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="child-fname">
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="child-fname" required pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Tên</label>
-                    <input type="text" class="form-control" placeholder="A" name="child-name">
+                    <input type="text" class="form-control" placeholder="A" name="child-name" required pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Ngày tháng năm sinh</label>
-                    <input type="date" class="form-control" name="child-birth">
+                    <input type="date" class="form-control" name="child-birth" required>
                 </div>
                 <div class="form-group">
                     <label>Giới tính</label>
@@ -63,7 +72,7 @@
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ</label>
-                    <input type="text" class="form-control" placeholder="Địa chỉ" name="child-address">
+                    <input type="text" class="form-control" placeholder="Địa chỉ" name="child-address" required>
                 </div>
                 <br />
                 <div class="form-check">
@@ -107,37 +116,37 @@
                 <h4 class="font-weight-bold">Bố</h4>
                 <div class="form-group">
                     <label>Tên Thánh</label>
-                    <input type="text" class="form-control" placeholder="Tên Thánh" name="fa-ch-name">
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="fa-ch-name" required pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Họ và đệm</label>
-                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="fa-fname">
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="fa-fname" required pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Tên</label>
-                    <input type="text" class="form-control" placeholder="A" name="fa-name">
+                    <input type="text" class="form-control" placeholder="A" name="fa-name" required pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>SDT</label>
-                    <input type="text" class="form-control" placeholder="Số điện thoại" name="fa-phone">
+                    <input type="text" class="form-control" placeholder="Số điện thoại" name="fa-phone" required>
                 </div>
                 <br />
                 <h4 class="font-weight-bold">Mẹ</h4>
                 <div class="form-group">
                     <label>Tên Thánh</label>
-                    <input type="text" class="form-control" placeholder="Tên Thánh" name="mo-ch-name">
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="mo-ch-name" required pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Họ và đệm</label>
-                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="mo-fname">
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="mo-fname" required pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Tên</label>
-                    <input type="text" class="form-control" placeholder="A" name="mo-name">
+                    <input type="text" class="form-control" placeholder="A" name="mo-name" required pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>SDT</label>
-                    <input type="text" class="form-control" placeholder="Số điện thoại" name="mo-phone">
+                    <input type="text" class="form-control" placeholder="Số điện thoại" name="mo-phone" required>
                 </div>
                 <button type="submit" class="btn btn-info w-100">Xác nhận</button>
                 <button type="submit" data-dismiss="modal" class="btn btn-danger w-100 mt-2">Hủy</button>
@@ -160,6 +169,6 @@
             toShow.style.display = "block";
         } else {
             toShow.style.display = "none";
-        }      
+        }
     }
 </script>

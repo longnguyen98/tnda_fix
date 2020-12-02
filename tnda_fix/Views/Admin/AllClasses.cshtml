@@ -13,9 +13,11 @@
                 for (var i = 0; i < result.length; i++) {
                     $("#grades").append(new Option(result[i].gradeName, result[i].ID));
                 }
+                var grade_id = $('#grades').val();
+                $('#classes').html('');
                 $.ajax({
                     url: "/GradeAndClass/getClassByGrade",
-                    data: { id: 1 },
+                    data: { id: grade_id },
                     success: function (result) {
                         for (var i = 0; i < result.length; i++) {
                             $("#classes").append(new Option(result[i].className, result[i].ID));
@@ -27,6 +29,7 @@
             }
         });
     }
+    
     function detailClass() {
         var id_class = $("#classes").val();
         //window.location.href = "/internal/listByClass?id_class=" + classId;
@@ -72,6 +75,7 @@
 
         });
     }
+
 </script>
 <div class="card-body">
     <div class="form-group">

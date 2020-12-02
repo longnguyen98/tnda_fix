@@ -74,8 +74,19 @@
             }
         });
     }
-
-    
+    function getClasses() {
+        var grade_id = $('#grades').val();
+        $('#classes').html('');
+        $.ajax({
+            url: "/GradeAndClass/getClassByGrade",
+            data: { id: grade_id },
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#classes").append(new Option(result[i].className, result[i].ID));
+                }
+            }
+        });
+    }
 </script>
 <br />
 <div id="vue_app" class="row bg-light rounded p-3">
@@ -110,6 +121,7 @@
         <div class="modal-dialog modal-lg">
         <div class="modal-content p-5">
             <form action="/person/EditClass" method="post">
+                <input hidden name="current_location" type="text" value="/admin/allglv"/>
                 <div class="d-flex justify-content-center bg-light rounded">
                     <img id="loading" style="display:none" src="~/img/loading.gif" />
                 </div>

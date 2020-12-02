@@ -113,11 +113,11 @@ namespace tnda_fix.Controllers
             List<Person> people = db.People.Where(p => p.ID_role == 7).ToList();
             List<object> json = new List<object>();
             foreach (Person child in people) {
-                    Family family = db.Families.Find(child.ID_Farmily);
-                    //
-                    Person father = db.People.Find(family.ID_Dad);
-                    //            
-                    Person mother = db.People.Where(p => p.ID_Farmily == family.ID && p.ID != father.ID && p.ID != child.ID).FirstOrDefault();
+                    //Family family = db.Families.Find(child.ID_Farmily);
+                    ////
+                    //Person father = db.People.Find(family.ID_Dad);
+                    ////            
+                    //Person mother = db.People.Where(p => p.ID_Farmily == family.ID && p.ID != father.ID && p.ID != child.ID).FirstOrDefault();
                     string img = child.Image;
                     if (string.IsNullOrEmpty(img))
                     {
@@ -125,9 +125,9 @@ namespace tnda_fix.Controllers
                     }
                     string birthString = child.Birth != null ? child.Birth.Value.ToString("dd.MM.yyy") : "";
                     //
-                    var fatherJson = new { fa_id = father.ID, ch_name = father.ChristianName, fname = father.FirstName, name = father.Name, role = father.Role.RoleName, phone = father.Phone };
-                    var motherJson = new { mo_id = mother.ID, ch_name = mother.ChristianName, fname = mother.FirstName, name = mother.Name, role = mother.Role.RoleName, phone = mother.Phone, role_id = child.ID_role };
-                    var ob = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, birth = birthString, address = child.Address, father = fatherJson, mother = motherJson, role_id = child.ID_role, img = img };
+                    //var fatherJson = new { fa_id = father.ID, ch_name = father.ChristianName, fname = father.FirstName, name = father.Name, role = father.Role.RoleName, phone = father.Phone };
+                    //var motherJson = new { mo_id = mother.ID, ch_name = mother.ChristianName, fname = mother.FirstName, name = mother.Name, role = mother.Role.RoleName, phone = mother.Phone, role_id = child.ID_role };
+                    var ob = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, birth = birthString};
                     json.Add(ob);
             }
             return Json(json, JsonRequestBehavior.AllowGet);
@@ -251,7 +251,6 @@ namespace tnda_fix.Controllers
                 //set later ID_Farmily = id_family,
                 ID_role = int.Parse(form["child-role"]),
                 //Image = "",
-                Note = form["child-gp"] +" "+ form["child-gx"] + " " + form["child-grade"] + " " + form["child-class"],
                 //Phone = "",
                 Status = false,
                 Gender = bool.Parse(form["child-gender"]),
@@ -269,10 +268,12 @@ namespace tnda_fix.Controllers
             {
                 mom.Address = p.Address;
             }
+            if (form["check-box"] != null && bool.Parse(form["check-box"]))
+                p.Note = form["child-gp"] + " " + form["child-gx"] + " " + form["child-grade"] + " " + form["child-class"];
             db.People.Add(p);
             db.SaveChanges();
             //
-            return Redirect(form["current-location"].ToString());
+            return Redirect(form["current_location"].ToString());
         }
         //Edit Person
         [HttpPost]
@@ -388,7 +389,7 @@ namespace tnda_fix.Controllers
         //    }
         //}
         [HttpPost]
-        public void EditClass(FormCollection form)
+        public ActionResult EditClass(FormCollection form)
         {
             tndaEntities db = new tndaEntities();
             List<Person> list = db.People.ToList();
@@ -398,9 +399,12 @@ namespace tnda_fix.Controllers
                 if (p.ID == id)
                 {
                     p.ID_Class = int.Parse(form["child-class"]);
+                    if (form["child-role"] != null)
+                        p.ID_role = int.Parse(form["child-role"]);
                     db.SaveChanges();
                 }
             }
+            return Redirect(form["current_location"].ToString());
         }
         [HttpPost]
         public void EditFamily()
