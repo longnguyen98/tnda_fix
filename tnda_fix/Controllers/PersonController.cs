@@ -19,7 +19,7 @@ namespace tnda_fix.Controllers
             tndaEntities db = new tndaEntities();
             Person child = db.People.Find(id);
             //
-            if (child.ID_role == 4 || child.ID_role ==7)
+            if (child.ID_role == 4 || child.ID_role == 7)
             {
                 Family family = db.Families.Find(child.ID_Farmily);
                 //
@@ -112,23 +112,24 @@ namespace tnda_fix.Controllers
             tndaEntities db = new tndaEntities();
             List<Person> people = db.People.Where(p => p.ID_role == 7).ToList();
             List<object> json = new List<object>();
-            foreach (Person child in people) {
-                    //Family family = db.Families.Find(child.ID_Farmily);
-                    ////
-                    //Person father = db.People.Find(family.ID_Dad);
-                    ////            
-                    //Person mother = db.People.Where(p => p.ID_Farmily == family.ID && p.ID != father.ID && p.ID != child.ID).FirstOrDefault();
-                    string img = child.Image;
-                    if (string.IsNullOrEmpty(img))
-                    {
-                        img = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
-                    }
-                    string birthString = child.Birth != null ? child.Birth.Value.ToString("dd.MM.yyy") : "";
-                    //
-                    //var fatherJson = new { fa_id = father.ID, ch_name = father.ChristianName, fname = father.FirstName, name = father.Name, role = father.Role.RoleName, phone = father.Phone };
-                    //var motherJson = new { mo_id = mother.ID, ch_name = mother.ChristianName, fname = mother.FirstName, name = mother.Name, role = mother.Role.RoleName, phone = mother.Phone, role_id = child.ID_role };
-                    var ob = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, birth = birthString};
-                    json.Add(ob);
+            foreach (Person child in people)
+            {
+                //Family family = db.Families.Find(child.ID_Farmily);
+                ////
+                //Person father = db.People.Find(family.ID_Dad);
+                ////            
+                //Person mother = db.People.Where(p => p.ID_Farmily == family.ID && p.ID != father.ID && p.ID != child.ID).FirstOrDefault();
+                string img = child.Image;
+                if (string.IsNullOrEmpty(img))
+                {
+                    img = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
+                }
+                string birthString = child.Birth != null ? child.Birth.Value.ToString("dd.MM.yyy") : "";
+                //
+                //var fatherJson = new { fa_id = father.ID, ch_name = father.ChristianName, fname = father.FirstName, name = father.Name, role = father.Role.RoleName, phone = father.Phone };
+                //var motherJson = new { mo_id = mother.ID, ch_name = mother.ChristianName, fname = mother.FirstName, name = mother.Name, role = mother.Role.RoleName, phone = mother.Phone, role_id = child.ID_role };
+                var ob = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, birth = birthString };
+                json.Add(ob);
             }
             return Json(json, JsonRequestBehavior.AllowGet);
 
@@ -148,8 +149,56 @@ namespace tnda_fix.Controllers
             }
             return Json(json, JsonRequestBehavior.AllowGet);
         }
-
-
+        public JsonResult countGLV()
+        {
+            tndaEntities db = new tndaEntities();
+            List<object> json = new List<object>();
+            List<Person> people = db.People.Where(p => p.ID_role == 1).ToList();
+            int count = people.Count();
+            int slKT, slRL, slTS, slSD;
+            slKT = slRL = slTS = slSD = 0;
+            foreach (Person p in people)
+            {
+                if (p.ID_Class != null)
+                    if (p.Class.ID_Grade == 1)
+                        slKT++;
+                    else if (p.Class.ID_Grade == 2)
+                        slRL++;
+                    else if (p.Class.ID_Grade == 3)
+                        slTS++;
+                    else
+                        slSD++;
+            }
+            int ot = count - slKT - slRL - slTS - slSD;
+            var ob = new { total = count, KT = slKT, RL = slRL, TS = slTS, SD = slSD, other = ot };
+            json.Add(ob);
+            return Json(json, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult countTN()
+        {
+            tndaEntities db = new tndaEntities();
+            List<object> json = new List<object>();
+            List<Person> people = db.People.Where(p => p.ID_role == 4).ToList();
+            int count = people.Count();
+            int slKT, slRL, slTS, slSD;
+            slKT = slRL = slTS = slSD = 0;
+            foreach (Person p in people)
+            {
+                if (p.ID_Class != null)
+                    if (p.Class.ID_Grade == 1)
+                        slKT++;
+                    else if (p.Class.ID_Grade == 2)
+                        slRL++;
+                    else if (p.Class.ID_Grade == 3)
+                        slTS++;
+                    else
+                        slSD++;
+            }
+            int ot = count - slKT - slRL - slTS - slSD;
+            var ob = new { total = count, KT = slKT, RL = slRL, TS = slTS, SD = slSD, other = ot };
+            json.Add(ob);
+            return Json(json, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public ActionResult setImg(FormCollection form, HttpPostedFileBase file)
         {

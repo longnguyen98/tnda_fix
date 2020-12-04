@@ -29,7 +29,7 @@ namespace tnda_fix.Controllers
                 {
                     Session.Add("accountName", username);
                     Session.Timeout = 1440;
-                    return Redirect("~/Admin/index?id=" + (int)Session["personId"]);
+                    return Redirect("~/Admin/dashboard");
                 }
             //
             else

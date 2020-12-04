@@ -67,8 +67,8 @@ namespace tnda_fix.Controllers
                         break;
 
                 }
-
-                var ob = new { name = name.Trim(), id = cl.ID, color = color };
+                //int total = cl.People.Where(p => p.ID_role == 4).Count();
+                var ob = new { name = name.Trim(), id = cl.ID, color = color, /*tn_total = total*/ };
                 list.Add(ob);
             }
             return Json(list, JsonRequestBehavior.AllowGet);

@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "dashBoard";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: "/person/countGLV",
+            success: function (result) {
+                console.log(result);
+                new Vue({
+                    el: '#vue_app',
+                    data: {
+                        glv: result
+                    }
+                });
+            }
+        });
+        $.ajax({
+            url: "/person/countTN",
+            success: function (result) {
+                console.log(result);
+                new Vue({
+                    el: '#tn_count',
+                    data: {
+                        tn: result
+                    }
+                });
+                $.LoadingOverlay("hide");
+            }
+        });
+    });
+</script>
+<div>
+    <div class="col-lg-12" id="vue_app">
+        <div class="card d-flex">
+            <div class="card-body row d-flex justify-content-center">
+                <div class="col-lg-2 col-sm-6 mb-2">
+                    <h3>GLV</h3>
+                    <h6>{{glv.total}}</h6>
+                </div>
+                <div class="col-lg-2">
+                    <h5>Khai tâm</h5>
+                    <h6>{{glv.KT}}</h6>
+                </div>
+                <div class="col-lg-2">
+                    <h5>Rước lễ</h5>
+                    <h6>{{glv.RL}}</h6>
+                </div>
+                <div class="col-lg-2">
+                    <h5>Thêm sức</h5>
+                    <h6>{{glv.TS}}</h6>
+                </div>
+                <div class="col-lg-2">
+                    <h5>Sống đạo</h5>
+                    <h6>{{glv.SD}}</h6>
+                </div>
+                <div class="col-lg-2">
+                    <h5>Chưa xếp lớp</h5>
+                    <h6>{{glv.other}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="col-lg-12" id="tn_count">
+        <div class="card d-flex">
+            <div class="card-body row d-flex justify-content-center">
+                <div class="col-lg-2 col-sm-6 mb-2">
+                    <h3>Thiếu nhi</h3>
+                    <h6>{{tn.total}}</h6>
+                </div>
+                <div class="col-lg-2">
+                    <h5>Khai tâm</h5>
+                    <h6>{{tn.KT}}</h6>
+                </div>
+                <div class="col-lg-2">
+                    <h5>Rước lễ</h5>
+                    <h6>{{tn.RL}}</h6>
+                </div>
+                <div class="col-lg-2">
+                    <h5>Thêm sức</h5>
+                    <h6>{{tn.TS}}</h6>
+                </div>
+                <div class="col-lg-2">
+                    <h5>Sống đạo</h5>
+                    <h6>{{tn.SD}}</h6>
+                </div>
+                <div class="col-lg-2">
+                    <h5>Chưa xếp lớp</h5>
+                    <h6>{{tn.other}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

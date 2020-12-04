@@ -27,5 +27,9 @@ namespace tnda_fix.Controllers
         {
             return View();
         }
+        public ActionResult dashBoard()
+        {
+            return View();
+        }
     }
 }
