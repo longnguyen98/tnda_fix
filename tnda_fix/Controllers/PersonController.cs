@@ -149,56 +149,7 @@ namespace tnda_fix.Controllers
             }
             return Json(json, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult countGLV()
-        {
-            tndaEntities db = new tndaEntities();
-            List<object> json = new List<object>();
-            List<Person> people = db.People.Where(p => p.ID_role == 1).ToList();
-            int count = people.Count();
-            int slKT, slRL, slTS, slSD;
-            slKT = slRL = slTS = slSD = 0;
-            foreach (Person p in people)
-            {
-                if (p.ID_Class != null)
-                    if (p.Class.ID_Grade == 1)
-                        slKT++;
-                    else if (p.Class.ID_Grade == 2)
-                        slRL++;
-                    else if (p.Class.ID_Grade == 3)
-                        slTS++;
-                    else
-                        slSD++;
-            }
-            int ot = count - slKT - slRL - slTS - slSD;
-            var ob = new { total = count, KT = slKT, RL = slRL, TS = slTS, SD = slSD, other = ot };
-            json.Add(ob);
-            return Json(json, JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult countTN()
-        {
-            tndaEntities db = new tndaEntities();
-            List<object> json = new List<object>();
-            List<Person> people = db.People.Where(p => p.ID_role == 4).ToList();
-            int count = people.Count();
-            int slKT, slRL, slTS, slSD;
-            slKT = slRL = slTS = slSD = 0;
-            foreach (Person p in people)
-            {
-                if (p.ID_Class != null)
-                    if (p.Class.ID_Grade == 1)
-                        slKT++;
-                    else if (p.Class.ID_Grade == 2)
-                        slRL++;
-                    else if (p.Class.ID_Grade == 3)
-                        slTS++;
-                    else
-                        slSD++;
-            }
-            int ot = count - slKT - slRL - slTS - slSD;
-            var ob = new { total = count, KT = slKT, RL = slRL, TS = slTS, SD = slSD, other = ot };
-            json.Add(ob);
-            return Json(json, JsonRequestBehavior.AllowGet);
-        }
+        
         [HttpPost]
         public ActionResult setImg(FormCollection form, HttpPostedFileBase file)
         {
