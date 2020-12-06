@@ -61,15 +61,10 @@
                     data: { id_class: id_class },
                     success: function (result) {
                         console.log(result);
-                        if (!$.trim(result)) {
-                            $("#notfound").show();
-                        }
-                        $("#loading").hide();
-                        $("#content").show();
                         new Vue({
                             el: "#vue_app"
                             ,
-                            data: {
+                            data: { 
                                 persons: result,
                                 link: '/internal/detail?id='
                             }
@@ -121,7 +116,7 @@
                 <th scope="col">Chi tiết</th>
             </tr>
         </thead>
-        <tbody style="display:none" id="content">
+        <tbody>
             <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
                 <th scope="row">{{p.id}}</th>
                 <td>{{p.ch_name}}</td>
