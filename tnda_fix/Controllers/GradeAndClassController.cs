@@ -13,7 +13,7 @@ namespace tnda_fix.Controllers
             List<object> grades = new List<object>();
             foreach (Grade g in db.Grades.ToList())
             {
-                var ob = new { ID = g.ID, gradeName = g.GradeName };
+                var ob = new { ID = g.ID, gradeName = g.GradeName.Trim()};
                 grades.Add(ob);
             }
             return Json(grades, JsonRequestBehavior.AllowGet);
@@ -26,7 +26,7 @@ namespace tnda_fix.Controllers
             //
             foreach (Class c in db.Classes.Where(c => c.ID_Grade == grade_id).ToList())
             {
-                var ob = new { ID = c.ID, className = c.ClassName };
+                var ob = new { ID = c.ID, className = c.ClassName.Trim() };
                 classes.Add(ob);
             }
             return Json(classes, JsonRequestBehavior.AllowGet);

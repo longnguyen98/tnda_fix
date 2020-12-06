@@ -33,12 +33,67 @@
                         }); 
                         tn4Dashboard = resultTN[0];
                         google.charts.load('current', { 'packages': ['corechart'] });
-                        google.charts.setOnLoadCallback(drawChart);
-                        $.LoadingOverlay("hide");
+                        google.charts.setOnLoadCallback(drawChart);                      
                     }
                 });
             }
-        });      
+        });
+        $.ajax({
+            url: "/dashboard/countByClass",
+            data: { id_grade: 1 },
+            success: function (result) {
+                console.log(result);
+                new Vue({
+                    el: '#modal_kt',
+                    data: {
+                        detail: result,
+                    }
+                });
+                $.LoadingOverlay("hide");
+            }
+        });
+        $.ajax({
+            url: "/dashboard/countByClass",
+            data: { id_grade: 2 },
+            success: function (result) {
+                console.log(result);
+                new Vue({
+                    el: '#modal_rl',
+                    data: {
+                        detail: result,
+                    }
+                });
+                $.LoadingOverlay("hide");
+            }
+        });
+        $.ajax({
+            url: "/dashboard/countByClass",
+            data: { id_grade: 3 },
+            success: function (result) {
+                console.log(result);
+                new Vue({
+                    el: '#modal_ts',
+                    data: {
+                        detail: result,
+                    }
+                });
+                $.LoadingOverlay("hide");
+            }
+        });
+        $.ajax({
+            url: "/dashboard/countByClass",
+            data: { id_grade: 4 },
+            success: function (result) {
+                console.log(result);
+                new Vue({
+                    el: '#modal_sd',
+                    data: {
+                        detail: result,
+                    }
+                });
+                $.LoadingOverlay("hide");
+            }
+        });
     });
 
     function drawChart() {        
@@ -69,7 +124,8 @@
         var chart1 = new google.visualization.PieChart(document.getElementById('piechart1'));
         chart.draw(dataGLV, option);
         chart1.draw(dataTN, option1);
-    }
+        
+    }  
 </script>
 <div>
     <h2>THỐNG KÊ</h2>
@@ -116,19 +172,19 @@
                     <h6>{{tn.total}}</h6>
                 </div>
                 <div class="col-lg-2">
-                    <h5>Khai tâm</h5>
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_kt"><h5>Khai tâm</h5></a>
                     <h6>{{tn.KT}}</h6>
                 </div>
                 <div class="col-lg-2">
-                    <h5>Rước lễ</h5>
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_rl"><h5>Rước lễ</h5></a>
                     <h6>{{tn.RL}}</h6>
                 </div>
                 <div class="col-lg-2">
-                    <h5>Thêm sức</h5>
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_ts"><h5>Thêm sức</h5></a>
                     <h6>{{tn.TS}}</h6>
                 </div>
                 <div class="col-lg-2">
-                    <h5>Sống đạo</h5>
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_sd"><h5>Sống đạo</h5></a>
                     <h6>{{tn.SD}}</h6>
                 </div>
                 <div class="col-lg-2">
@@ -136,6 +192,98 @@
                     <h6>{{tn.other}}</h6>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="modal_kt" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content p-5">
+            <form>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <div class="card d-flex">
+                            <div class="card-body">
+                                <h3>Khai tâm</h3>
+                                <div class="row d-flex justify-content-start">
+                                    <div v-for="cl in detail" class="col-3">
+                                        <h5>{{cl.name}} {{cl.total}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <br />
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="modal_rl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content p-5">
+            <form>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <div class="card d-flex">
+                            <div class="card-body">
+                                <h3>Rước lễ</h3>
+                                <div class="row d-flex justify-content-start">
+                                    <div v-for="cl in detail" class="col-3">
+                                        <h5>{{cl.name}} {{cl.total}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="modal_ts" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content p-5">
+            <form>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <div class="card d-flex">
+                            <div class="card-body">
+                                <h3>Thêm sức</h3>
+                                <div class="row d-flex justify-content-start">                                    
+                                    <div v-for="cl in detail" class="col-3">
+                                        <h5>{{cl.name}} {{cl.total}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="modal_sd" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content p-5">
+            <form>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <div class="card d-flex">
+                            <div class="card-body">
+                                <h3>Sống đạo</h3>
+                                <div class="row d-flex justify-content-start">
+                                    <div v-for="cl in detail" class="col-3">
+                                        <h5>{{cl.name}} {{cl.total}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </form>
         </div>
     </div>
 </div>

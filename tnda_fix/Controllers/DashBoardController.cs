@@ -64,5 +64,21 @@ namespace tnda_fix.Controllers
             json.Add(ob);
             return Json(json, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult countByClass()
+        {
+            int idGr = int.Parse(Request.QueryString["id_grade"]);
+            tndaEntities db = new tndaEntities();
+            List<object> json = new List<object>();
+            List<Person> people = db.People.Where(p => p.ID_role == 4 && p.Class.ID_Grade == idGr ).ToList();
+            List<Class> classes = db.Classes.Where(c => c.ID_Grade == idGr).ToList();
+            foreach (Class c in classes)
+            {
+                int count = people.Where(p => p.ID_Class == c.ID).Count();
+                var ob = new { id = c.ID, name = c.ClassName, total = count};
+                json.Add(ob);
+            }
+            
+            return Json(json, JsonRequestBehavior.AllowGet);
+        }
     }
 }
