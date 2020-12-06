@@ -4,6 +4,9 @@
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 <script>
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var id_class = url.searchParams.get("id_class") != null ? url.searchParams.get("id_class") : 1;
     var grade_id;
     $(document).ready(function () {
         $.LoadingOverlay("show");
@@ -12,11 +15,11 @@
             success: function (result) {
                 for (var i = 0; i < result.length; i++) {
                     $("#grades").append(new Option(result[i].gradeName, result[i].ID));
-                }                
-                getClasses(1);
-                $.LoadingOverlay("hide");
+                }
+                getClasses($('#grades').val());
             }
         });
+        
     });
     function getClasses(grade_id) {
         $.LoadingOverlay("show");
@@ -31,13 +34,15 @@
                 for (var i = 0; i < result.length; i++) {
                     $("#classes").append(new Option(result[i].className, result[i].ID));
                 }
+                detailClass();
                 $.LoadingOverlay("hide");
             }
-        });       
+        });
     }
-    function detailClass() {
-        var id_class = $("#classes").val();
-        //window.location.href = "/internal/listByClass?id_class=" + classId;
+    function navigate() {
+        window.location.replace(url.origin +url.pathname + '?id_class=' + $('#classes').val());
+    }
+    function detailClass() {                
         $.ajax({
             url: '/gradeAndClass/getClassbyId',
             data: { id_class: id_class },
@@ -92,8 +97,8 @@
                     <div class="col-lg-5 col-sm-1">
                         <select id="classes" class="form-control" name="child-class"></select>
                     </div>
-                    <div><button type="button" class="btn btn-info" onclick="detailClass()">Xem</button></div>
-                 </div>
+                    <div><button type="button" class="btn btn-info" onclick="navigate()">Xem</button></div>
+                </div>
             </div>
         </div>
     </div>
