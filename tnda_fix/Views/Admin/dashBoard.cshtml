@@ -6,7 +6,8 @@
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-    var glv1;
+    var glv4Dashboard;
+    var tn4Dashboard;
     $(document).ready(function () {
         $.LoadingOverlay("show");
         $.ajax({
@@ -16,50 +17,50 @@
                 new Vue({
                     el: '#vue_app',
                     data: {
-                        glv: result,
-                        glv1: result
+                        glv: result[0],                      
+                    }
+                });
+                glv4Dashboard = result[0];
+                $.ajax({
+                    url: "/dashboard/countTN",
+                    success: function (resultTN) {
+                        console.log(resultTN);
+                        new Vue({
+                            el: '#tn_count',
+                            data: {
+                                tn: resultTN[0]
+                            }
+                        }); 
+                        tn4Dashboard = resultTN[0];
+                        google.charts.load('current', { 'packages': ['corechart'] });
+                        google.charts.setOnLoadCallback(drawChart);
+                        $.LoadingOverlay("hide");
                     }
                 });
             }
-        });
-        $.ajax({
-            url: "/dashboard/countTN",
-            success: function (result) {
-                console.log(result);
-                new Vue({
-                    el: '#tn_count',
-                    data: {
-                        tn: result
-                    }
-                });
-                $.LoadingOverlay("hide");
-            }
-        });
+        });      
     });
-    google.charts.load('current', { 'packages': ['corechart'] });
-    google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
-        
+    function drawChart() {        
         var dataGLV = google.visualization.arrayToDataTable([
           ['Task', 'person'],
-          ['Thêm sức', 11],
-          ['Other', 2],
-          ['Sống đạo', 2],
-          ['Rước lễ', 20],
-          ['Khai tâm', 7]
+          ['Thêm sức', glv4Dashboard.TS],
+          ['Other', glv4Dashboard.other],
+          ['Sống đạo', glv4Dashboard.SD],
+          ['Rước lễ', glv4Dashboard.RL],
+          ['Khai tâm', glv4Dashboard.KT]
         ]);
 
         var option = {
             title: 'Giáo lý viên'
         };
         var dataTN = google.visualization.arrayToDataTable([
-                  ['Task', 'person'],
-                  ['Thêm sức', 11],
-                  ['Other', 2],
-                  ['Sống đạo', 2],
-                  ['Rước lễ', 12],
-                  ['Khai tâm', 7]
+         ['Task', 'person'],
+         ['Thêm sức', tn4Dashboard.TS],
+         ['Other', tn4Dashboard.other],
+         ['Sống đạo', tn4Dashboard.SD],
+         ['Rước lễ', tn4Dashboard.RL],
+         ['Khai tâm', tn4Dashboard.KT]
         ]);
         var option1 = {
             title: 'Thiếu nhi'
@@ -138,4 +139,5 @@
         </div>
     </div>
 </div>
+
 
