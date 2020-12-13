@@ -31,7 +31,7 @@ namespace tnda_fix.Controllers
                     Session.Add("accountName", username);
                     Session.Timeout = 1440;
                     Logger.create("LOGIN", username + " has logged in", (int)Session["personId"]);
-                    return Redirect("~/Admin/dashboard");
+                    return Redirect("~/Admin/index");
                 }
                 else
                 {

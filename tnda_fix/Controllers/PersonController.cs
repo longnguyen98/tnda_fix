@@ -114,20 +114,12 @@ namespace tnda_fix.Controllers
             List<object> json = new List<object>();
             foreach (Person child in people)
             {
-                //Family family = db.Families.Find(child.ID_Farmily);
-                ////
-                //Person father = db.People.Find(family.ID_Dad);
-                ////            
-                //Person mother = db.People.Where(p => p.ID_Farmily == family.ID && p.ID != father.ID && p.ID != child.ID).FirstOrDefault();
                 string img = child.Image;
                 if (string.IsNullOrEmpty(img))
                 {
                     img = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                 }
                 string birthString = child.Birth != null ? child.Birth.Value.ToString("dd.MM.yyy") : "";
-                //
-                //var fatherJson = new { fa_id = father.ID, ch_name = father.ChristianName, fname = father.FirstName, name = father.Name, role = father.Role.RoleName, phone = father.Phone };
-                //var motherJson = new { mo_id = mother.ID, ch_name = mother.ChristianName, fname = mother.FirstName, name = mother.Name, role = mother.Role.RoleName, phone = mother.Phone, role_id = child.ID_role };
                 var ob = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, birth = birthString };
                 json.Add(ob);
             }
@@ -316,78 +308,7 @@ namespace tnda_fix.Controllers
             }
             return Redirect(form["current-location"].ToString());
         }
-        //[HttpPost]
-        //public void SetStatus()
-        //{
-        //    tndaEntities db = new tndaEntities();
-        //    List<Person> list = db.People.ToList();
-        //    int id = int.Parse(Request.QueryString["query"]);
-        //    //bool status = Request.QueryString["query"];
-        //    foreach (Person p in list)
-        //    {
-        //        if (p.ID == id)
-        //        {
-        //            if (p.Status == false)
-        //            {
-        //                p.Status = true;
-        //                db.SaveChanges();
-        //            }
-        //            else
-        //            {
-        //                p.Status = false;
-        //                db.SaveChanges();
-        //            }
-        //        }
-        //    }
-        //}
-        //[HttpPost]
-        //public void EditName()
-        //{
-        //    tndaEntities db = new tndaEntities();
-        //    List<Person> list = db.People.ToList();
-        //    string id = Request.QueryString["query"];
-        //    string name = Request.QueryString["query"];
-        //    foreach (Person p in list)
-        //    {
-        //        if (p.ID == int.Parse(id))
-        //        {
-        //            p.Name = name;
-        //            db.SaveChanges();
-        //        }
-        //    }
-        //}
-        //[HttpPost]
-        //public void EditFistName()
-        //{
-        //    tndaEntities db = new tndaEntities();
-        //    List<Person> list = db.People.ToList();
-        //    string id = Request.QueryString["query"];
-        //    string fname = Request.QueryString["query"];
-        //    foreach (Person p in list)
-        //    {
-        //        if (p.ID == int.Parse(id))
-        //        {
-        //            p.FirstName = fname;
-        //            db.SaveChanges();
-        //        }
-        //    }
-        //}
-        //[HttpPost]
-        //public void EditGender()
-        //{
-        //    tndaEntities db = new tndaEntities();
-        //    List<Person> list = db.People.ToList();
-        //    string id = Request.QueryString["query"];
-        //    bool gender = bool.Parse(Request.QueryString["query"]);
-        //    foreach (Person p in list)
-        //    {
-        //        if (p.ID == int.Parse(id))
-        //        {
-        //            p.Gender = gender;
-        //            db.SaveChanges();
-        //        }
-        //    }
-        //}
+        
         [HttpPost]
         public ActionResult EditClass(FormCollection form)
         {
