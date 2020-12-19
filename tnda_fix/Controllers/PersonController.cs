@@ -68,8 +68,8 @@ namespace tnda_fix.Controllers
             //
             using(tndaEntities db = new tndaEntities())
             {
-                String sql = "SELECT * FROM Person p WHERE p.for_search LIKE '%"+query+"%'";
-                List<Person> list = db.People.SqlQuery(sql).ToList();                
+                String sql = "SELECT * FROM Person p WHERE p.for_search LIKE CONCAT('%',@query,'%') AND p.ID_role = 4 ";
+                List<Person> list = db.People.SqlQuery(sql,new SqlParameter("@query",query)).ToList();                
                 List<object> objects = new List<object>();
                 foreach (Person p in list)
                 {

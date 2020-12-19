@@ -28,7 +28,7 @@
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
     <script>
         $(document).ready(function () {
-            $.LoadingOverlay("show");
+            $('#login_btn').LoadingOverlay("show");
             $.ajax({
                 url: "/auth/getAuthStatus",
                 success: function (result) {
@@ -57,12 +57,12 @@
                         });
                         $('#login_btn').css("display", "inline");
                     }
-                    $.LoadingOverlay("hide");
+                    $('#login_btn').LoadingOverlay("hide");
                 }
             });
         });
-        function Loading(attr) {
-            $.LoadingOverlay(attr);
+        function Loading(el,attr) {
+            $(el).LoadingOverlay(attr);
         }
     </script>
 </head>
@@ -130,7 +130,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="w-100 btn btn-primary" onclick="Loading('show')">Đăng nhập</button>
+                        <button type="submit" class="w-100 btn btn-primary" onclick="Loading('.modal-content','show')">Đăng nhập</button>
                     </div>
                 </form>
             </div>

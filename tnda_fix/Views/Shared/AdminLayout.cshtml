@@ -31,7 +31,7 @@
         var glv_name;
         var glv;
         $(document).ready(function () {
-            $.LoadingOverlay("show");
+            $("#display_name_glv").LoadingOverlay("show");
             $.ajax({
                 url: '/auth/getPersonFromSession',
                 success: function (glv) {
@@ -44,7 +44,7 @@
                             glv_name: glv.ch_name.trim() + ' ' + glv.fname.trim() + ' ' + glv.name.trim()
                         }
                     });
-                    $.LoadingOverlay("hide");
+                    $("#display_name_glv").LoadingOverlay("hide");
                 }
             });
         });
