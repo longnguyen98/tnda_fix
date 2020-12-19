@@ -11,7 +11,7 @@ using tnda_fix.Models;
 namespace tnda_fix.Controllers
 {
     public class ExternalController : Controller
-    {
+    {       
         // GET: External
         public ActionResult Index()
         {
@@ -107,18 +107,7 @@ namespace tnda_fix.Controllers
             result += "ID lớp mới " + new_class_id;
             return result;
         }
-
-        [HttpPost]
-        public string testPost(FormCollection form)
-        {
-            string s = "";
-            foreach (object key in form.Keys)
-            {
-                s += form[key.ToString()].ToString();
-            }
-            s += "\t Hello there :)))";
-            return s;
-        }
+       
         [HttpPost]
         public async System.Threading.Tasks.Task<string> uploadXlsAsync(int id, HttpPostedFileBase file)
         {

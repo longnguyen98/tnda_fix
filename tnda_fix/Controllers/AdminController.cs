@@ -8,6 +8,7 @@ using tnda_fix.Models.filters;
 namespace tnda_fix.Controllers
 {
     [Auth]
+    [AdminAuth]
     public class AdminController : Controller
     {
         // GET: Admin
