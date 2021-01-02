@@ -1,6 +1,5 @@
 ﻿@{
-    Layout = null;
-}
+    Layout = null;}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,35 +16,9 @@
     <!-- Custom styles for this template -->
     <link href="~/Content/landing-page.min.css" rel="stylesheet">
     <link href="~/Content/simple-line-icons.css" />
-    <link rel="stylesheet" href="~/css/open-iconic-bootstrap.min.css">
-    <link rel="stylesheet" href="~/css/animate.css">
-    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="~/css/magnific-popup.css">
-    <link rel="stylesheet" href="~/css/aos.css">
-    <link rel="stylesheet" href="~/css/ionicons.min.css">
-    <link rel="stylesheet" href="~/css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" href="~/css/nouislider.css">
-    <link rel="stylesheet" href="~/css/flaticon.css">
-    <link rel="stylesheet" href="~/css/icomoon.css">
-    <link rel="stylesheet" href="~/css/style.css">
     <!-- Bootstrap core JavaScript -->
     <script src="~/Scripts/jquery-3.5.1.min.js"></script>
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
-    <script src="~/js/jquery.min.js"></script>
-    <script src="~/js/jquery-migrate-3.0.1.min.js"></script>
-    <script src="~/js/popper.min.js"></script>
-    <script src="~/js/bootstrap.min.js"></script>
-    <script src="~/js/jquery.easing.1.3.js"></script>
-    <script src="~/js/jquery.waypoints.min.js"></script>
-    <script src="~/js/jquery.stellar.min.js"></script>
-    <script src="~/js/owl.carousel.min.js"></script>
-    <script src="~/js/jquery.magnific-popup.min.js"></script>
-    <script src="~/js/aos.js"></script>
-    <script src="~/js/nouislider.min.js"></script>
-    <script src="~/js/moment-with-locales.min.js"></script>
-    <script src="~/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="~/js/main.js"></script>
     @*Datatable*@
     <link href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet" />
     <script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
@@ -88,7 +61,7 @@
                 }
             });
         });
-        function Loading(el, attr) {
+        function Loading(el,attr) {
             $(el).LoadingOverlay(attr);
         }
     </script>
@@ -98,7 +71,7 @@
     <nav class="navbar navbar-light bg-light static-top">
         <div id="vue_app_layout" class="container">
             <a class="navbar-brand" href="~/external/index"><i class="fas fa-church mr-1"></i>Thiếu nhi Giáo xứ Dĩ An</a>
-            <button id="login_btn" v-if="!status" style="display:none" data-toggle="modal" data-target="#login_modal" class="btn btn-sm btn-primary font-weight-bold">
+            <button id="login_btn" v-if="!status" style="display:none" data-toggle="modal" data-target="#login_modal" class="btn btn-primary font-weight-bold">
                 Đăng nhập GLV
             </button>
             <a href="/internal/index" id="glv_name" style="display:none" v-if="status">Xin chào <b>{{person.ch_name}} {{person.fname}} {{person.name}}</b></a>
@@ -146,25 +119,18 @@
                 </div>
                 <form action="/Auth/login" method="post">
                     <div class="modal-body">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="ion-ios-contact"></i>
-                                </span>
-                            </div>
+
+                        <div class="form-group">
+                            <label>Tài khoản</label>
                             <input type="text" name="username" class="form-control" placeholder="username">
                         </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="ion-ios-lock"></i>
-                                </span>
-                            </div>
+                        <div class="form-group">
+                            <label>Mật khẩu</label>
                             <input type="password" name="password" class="form-control" placeholder="password">
                         </div>
                     </div>
-                    <div class="modal-footer d-flex justify-content-center">
-                        <button type="submit" class="w-50 btn btn-primary" onclick="Loading('.modal-content','show')">Đăng nhập</button>
+                    <div class="modal-footer">
+                        <button type="submit" class="w-100 btn btn-primary" onclick="Loading('.modal-content','show')">Đăng nhập</button>
                     </div>
                 </form>
             </div>

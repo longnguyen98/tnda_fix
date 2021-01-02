@@ -32,9 +32,5 @@ namespace tnda_fix.Controllers
         {
             return View();
         }
-        public ActionResult duplicates()
-        {
-            return View("duplicates");
-        }
     }
 }
