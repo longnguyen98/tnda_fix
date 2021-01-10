@@ -45,7 +45,7 @@ namespace tnda_fix.Controllers
 
         //import from excel
         [HttpPost]
-        public async System.Threading.Tasks.Task<string> uploadXlsAsync(int id, HttpPostedFileBase file)
+        public async System.Threading.Tasks.Task<string> uploadXlsAsync(HttpPostedFileBase file)
         {
             //save to temp
             string temp_path = Path.Combine(Server.MapPath("~/temp_xls"), (DateTime.Now.Millisecond.ToString() + file.FileName).Trim());
@@ -77,8 +77,8 @@ namespace tnda_fix.Controllers
                 keys.Add("child-birth");
                 keys.Add("child-gender");
                 keys.Add("child-class");
-                keys.Add("child-address");
-                keys.Add("fa-ch-name");
+                keys.Add("child-address");                
+                keys.Add("fa-ch-name");                
                 keys.Add("fa-fname");
                 keys.Add("fa-name");
                 keys.Add("fa-phone");
@@ -106,6 +106,7 @@ namespace tnda_fix.Controllers
                         form.Add(keys[count], col.StringValue);
                         count++;
                     }
+                    form.Add("child-role", "4");
                     //call service
                     FormUrlEncodedContent content = new FormUrlEncodedContent(form);
                     HttpResponseMessage response = await client.PostAsync(post_request, content);

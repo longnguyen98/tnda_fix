@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "import";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<form action="/admin/uploadXlsAsync" method="post" enctype="multipart/form-data">
+    <h6>
+        Chọn file Excel
+    </h6>
+    <div class="input-group">
+        <div class="custom-file">
+            <input required type="file" name="file" class="custom-file-input h-100" id="file_input">
+            <label class="custom-file-label" for="file_input">Chọn file</label>
+        </div>
+        <div class="input-group-append">
+            <button class="btn btn-sm btn-outline-success" type="submit">Xử lý</button>
+        </div>
+    </div>
+</form>
+
