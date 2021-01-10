@@ -22,7 +22,7 @@ namespace tnda_fix.Controllers
 
                 int slKT, slRL, slTS, slSD;
                 slKT = db.People.SqlQuery(sql, new SqlParameter("@gId", 1)).Count();
-                slRL = db.People.SqlQuery(sql, new SqlParameter("@gId", 2)).Count();
+                slRL = db.People.SqlQuery(sql, new SqlParameter("@gId", 2)).Count(); 
                 slTS = db.People.SqlQuery(sql, new SqlParameter("@gId", 3)).Count();
                 slSD = db.People.SqlQuery(sql, new SqlParameter("@gId", 4)).Count();
                 int count = slKT + slRL + slTS + slSD;
