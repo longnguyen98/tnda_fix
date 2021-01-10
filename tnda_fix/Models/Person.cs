@@ -22,7 +22,7 @@ namespace tnda_fix.Models
             this.PersonLogs = new HashSet<PersonLog>();
             this.Registrations = new HashSet<Registration>();
             this.Reports = new HashSet<Report>();
-            this.Reports1 = new HashSet<Report>();
+            this.Reports1 = new HashSet<Report>();           
         }
     
         public int ID { get; set; }
@@ -41,7 +41,8 @@ namespace tnda_fix.Models
         public Nullable<System.DateTime> UpdateTime { get; set; }
         public string ChristianName { get; set; }
         public string Note { get; set; }
-    
+        public string for_search { get; set; }
+            
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACC> ACCs { get; set; }
         public virtual Class Class { get; set; }
@@ -56,5 +57,5 @@ namespace tnda_fix.Models
         public virtual ICollection<Report> Reports { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Report> Reports1 { get; set; }
-    }
+    }    
 }

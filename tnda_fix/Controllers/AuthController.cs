@@ -24,22 +24,28 @@ namespace tnda_fix.Controllers
             username = Request["username"];
             password = Request["password"];
             if (auth(username, password))
+            {
                 //admin
-                if(username.EndsWith("admin"))
+                if (username.EndsWith("admin"))
                 {
                     Session.Add("accountName", username);
                     Session.Timeout = 1440;
-                    return Redirect("~/Admin/dashboard");
+                    Logger.create("LOGIN", username + " has logged in", (int)Session["personId"]);
+                    return Redirect("~/Admin/index");
                 }
+                else
+                {
+                    Session.Add("accountName", username);
+                    Session.Timeout = 1440;
+                    Logger.create("LOGIN", username + " has logged in", (int)Session["personId"]);
+                    return Redirect("~/internal/index?id=" + (int)Session["personId"]);
+                }
+            }
             //
             else
             {
-                Session.Add("accountName", username);
-                Session.Timeout = 1440;
-
+                return Redirect("~/external/index");
             }
-            Logger.create("LOGIN",username +" has logged in", (int)Session["personId"]);
-            return Redirect("~/internal/index?id=" + (int)Session["personId"]);
         }
         public ActionResult logout()
         {
@@ -49,25 +55,27 @@ namespace tnda_fix.Controllers
         }
         private bool auth(string username, string password)
         {
-            tndaEntities db = new tndaEntities();
-            ACC account = db.ACCs.Where(acc => acc.UserName.Equals(username)).FirstOrDefault();
-            //
-            if (account != null)
+            ACC account = null;
+            using (tndaEntities db = new tndaEntities())
             {
-                if (account.Pwd.Trim().Equals(password))
+                account = db.ACCs.Where(acc => acc.UserName.Equals(username)).FirstOrDefault();
+                if (account != null)
                 {
-                    Person p = account.Person;
-                    Session.Add("personId", p.ID);
-                    return true;
+                    if (account.Pwd.Trim().Equals(password))
+                    {
+                        Person p = account.Person;
+                        Session.Add("personId", p.ID);
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
                     return false;
                 }
-            }
-            else
-            {
-                return false;
             }
         }
     }

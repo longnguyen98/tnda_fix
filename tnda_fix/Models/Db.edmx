@@ -84,6 +84,7 @@
           <Property Name="UpdateTime" Type="datetime" />
           <Property Name="ChristianName" Type="nvarchar" MaxLength="50" />
           <Property Name="Note" Type="nvarchar(max)" />
+          <Property Name="for_search" Type="varchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="PersonLog">
           <Key>
@@ -486,6 +487,7 @@
           <NavigationProperty Name="Registrations" Relationship="tndaModel.FK_Registration_Person" FromRole="Person" ToRole="Registration" />
           <NavigationProperty Name="Reports" Relationship="tndaModel.FK_Report_Person" FromRole="Person" ToRole="Report" />
           <NavigationProperty Name="Reports1" Relationship="tndaModel.FK_Report_Person1" FromRole="Person" ToRole="Report" />
+          <Property Name="for_search" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="PersonLog">
           <Key>
@@ -753,6 +755,7 @@
           <EntitySetMapping Name="People">
             <EntityTypeMapping TypeName="tndaModel.Person">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="for_search" ColumnName="for_search" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
                 <ScalarProperty Name="ChristianName" ColumnName="ChristianName" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />

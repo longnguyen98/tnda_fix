@@ -16,14 +16,14 @@ namespace tnda_fix.Models.filters
         }
         public void OnAuthenticationChallenge(AuthenticationChallengeContext filterContext)
         {
-            if(filterContext.Result == null || filterContext.Result is HttpUnauthorizedResult)
+            if (filterContext.Result == null || filterContext.Result is HttpUnauthorizedResult)
             {
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary
             {
                 {"controller","External" },
                 {"action","Index" }
             });
-            }           
+            }
         }
     }
 }

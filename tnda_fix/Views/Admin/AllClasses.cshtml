@@ -3,41 +3,83 @@
     ViewBag.Title = "AllClasses";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
-<script>
-    var grade_id;
+<script>       
+    $.LoadingOverlay("show");
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var id_class = url.searchParams.get("id_class") != null ? url.searchParams.get("id_class") : 1;
+    var vue_edit;
+    var grades_and_classes = new Array();    
     $(document).ready(function () {
-        $.LoadingOverlay("show");
+        var fatherJson = { fa_id: '', ch_name: '', fname: '', name: '', role: '', phone: '' };
+        var motherJson = { mo_id: '', ch_name: '', fname: '', name: '', role: '', phone: '' };
+        var glvId = '';
+        var json = { id: '', ch_name: '', fname: '', name: '', pclass: '', role: '', glv: '', id_class: '', birth: '', address: '', father: fatherJson, mother: motherJson, role_id: '', glv_id: glvId, img: '', note: '' };
+        vue_edit = new Vue({
+            el: '#edit_modal',
+            data: {
+                detail: json,
+                current: url_string
+            }
+        });
+        load_page();
+        $.LoadingOverlay("hide");
+    });
+    function load_page() {        
         $.ajax({
+            async: false,
             url: "/GradeAndClass/getAllGrades",
             success: function (result) {
                 for (var i = 0; i < result.length; i++) {
-                    $("#grades").append(new Option(result[i].gradeName, result[i].ID));
-                }                
-                getClasses(1);
-                $.LoadingOverlay("hide");
+                    var grade_id = result[i].ID;
+                    var grade_name = result[i].gradeName;
+                    $.ajax({
+                        async: false,
+                        url: "/GradeAndClass/getClassByGrade",
+                        data: { id: grade_id },
+                        success: function (resultClss) {
+                            var classes = new Array();
+                            for (var j = 0; j < resultClss.length; j++) {
+                                var clss = { "ID": resultClss[j].ID, "class_name": grade_name + " " + resultClss[j].className };
+                                classes.push(clss);
+                            }
+                            var grade = { "ID": grade_id, "grade_name": grade_name, "classes": classes };
+                            grades_and_classes.push(grade);
+                            
+                        }
+                    });
+                }
             }
         });
-    });
-    function getClasses(grade_id) {
-        $.LoadingOverlay("show");
-        if (grade_id == null) {
-            grade_id = $('#grades').val();
-        }
-        $.ajax({
-            url: "/GradeAndClass/getClassByGrade",
-            data: { id: grade_id },
-            success: function (result) {
-                $("#classes").empty();
-                for (var i = 0; i < result.length; i++) {
-                    $("#classes").append(new Option(result[i].className, result[i].ID));
-                }
-                $.LoadingOverlay("hide");
+        console.log(grades_and_classes);
+        grades_and_classes.forEach(function (grade, index) {
+            $("#grades").append(new Option(grade.grade_name, index));
+            $("#grades_edit").append(new Option(grade.grade_name, index));
+        });
+        getClasses(0);
+        detailClass(id_class);
+        
+    }
+    function getClasses(grade_index, is_modal) {        
+        if (grade_index != null) {
+            if (is_modal == null ? false : is_modal) {
+                grade_index = $("#grades_edit").val();
             }
-        });       
+        }else{
+            grade_index = $("#grades").val();
+        }
+        $("#classes").empty();
+        $("#classes_edit").empty();
+        grades_and_classes[grade_index].classes.forEach(function (clss){
+            $("#classes").append(new Option(clss.class_name, clss.ID));
+            $("#classes_edit").append(new Option(clss.class_name, clss.ID));
+        });              
+    }
+    function navigate() {
+        window.location.replace(url.origin +url.pathname + '?id_class=' + $('#classes').val());
     }
     function detailClass() {
-        var id_class = $("#classes").val();
-        //window.location.href = "/internal/listByClass?id_class=" + classId;
+        $.LoadingOverlay("show");
         $.ajax({
             url: '/gradeAndClass/getClassbyId',
             data: { id_class: id_class },
@@ -56,22 +98,20 @@
                     data: { id_class: id_class },
                     success: function (result) {
                         console.log(result);
-                        if (!$.trim(result)) {
-                            $("#notfound").show();
-                        }
-                        $("#loading").hide();
-                        $("#content").show();
                         new Vue({
                             el: "#vue_app"
                             ,
-                            data: {
-                                persons: result,
-                                link: '/internal/detail?id='
+                            data: { 
+                                persons: result
                             }
                             , mounted: function () {
                                 $('#table').DataTable();
                             }
                         });
+                        //vue_edit = new Vue({
+                        //    el: "#edit_modal",
+                        //    data: { detail: result[0] }
+                        //});
                         $('#table_wrapper').addClass("w-100");
                         $.LoadingOverlay("hide");
                     }
@@ -80,6 +120,19 @@
 
         });
     }
+    function load_modal(id) {
+        $.LoadingOverlay("show");
+        $.ajax({
+            url: "/Person/getPersonDetail?id=" + id,
+            success: function (result) {
+                console.log(result);
+                Vue.set(vue_edit, 'detail', result);
+                $("#edit_modal").modal();
+                $.LoadingOverlay("hide");
+            }
+        });       
+    }
+
 </script>
 <div class="card-body">
     <div class="form-group">
@@ -92,8 +145,8 @@
                     <div class="col-lg-5 col-sm-1">
                         <select id="classes" class="form-control" name="child-class"></select>
                     </div>
-                    <div><button type="button" class="btn btn-info" onclick="detailClass()">Xem</button></div>
-                 </div>
+                    <div><button type="button" class="btn btn-info" onclick="navigate()">Xem</button></div>
+                </div>
             </div>
         </div>
     </div>
@@ -116,16 +169,90 @@
                 <th scope="col">Chi tiết</th>
             </tr>
         </thead>
-        <tbody style="display:none" id="content">
+        <tbody>
             <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
                 <th scope="row">{{p.id}}</th>
                 <td>{{p.ch_name}}</td>
                 <td>{{p.fname}} {{p.name}}</td>
                 <td>{{p.birth}}</td>
-                <td><button type="button" class="btn btn-info" onclick="'load_modal('+p.id+')'">Chi tiết</button></td>
+                <td><button type="button" class="btn btn-info" :onclick="'load_modal('+p.id+')'">Chi tiết</button></td>
             </tr>
         </tbody>
     </table>
+</div>
+<div class="modal fade bd-example-modal-lg" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content p-5">
+            <form action="/person/EditClass" method="post">
+                <input hidden name="current_location" type="text" :value="current" />
+                <div class="d-flex justify-content-center bg-light rounded">
+                    <img id="loading" style="display:none" src="~/img/loading.gif" />
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <div class="card d-flex">
+                            <div class="card-body row d-flex justify-content-center">
+                                <div class="col-lg-2 col-sm-6 mb-2">
+                                    <img class="card-img-top rounded" :src="detail.img" alt="Img" />
+                                </div>
+                                <div>
+                                    <input hidden type="text" class="form-control" v-bind:value=detail.id name="child-id">
+                                    <p><h5 class="card-title">{{detail.ch_name}} {{detail.fname}} {{detail.name}}</h5></p>
+                                    <h6 class="card-subtitle mb-2 text-muted">{{detail.role}}</h6>
+                                    <p class="card-text">Ngày sinh: <b>{{detail.birth}}</b></p>
+                                </div>
+                                <div class="col-lg-5 col-sm-1">
+                                    <p class="card-text"></p>
+                                    <p class="card-text">Lớp: <b>{{detail.pclass}}</b></p>
+                                    <p class="card-text">Địa chỉ: <b>{{detail.address}}</b></p>
+                                    <p class="card-text">Note: <b>{{detail.note}}</b></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <br />
+                    <div class="col-lg-12">
+                        <div class="card d-flex">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-6 col-sm-12">
+                                        <h5 class="card-title">{{detail.father.ch_name}} {{detail.father.fname}} {{detail.father.name}}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">Phụ huynh</h6>
+                                        <p class="card-text">Số điện thoại: <b>{{detail.father.phone}}</b></p>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-12">
+                                        <h5 class="card-title">{{detail.mother.ch_name}} {{detail.mother.fname}} {{detail.mother.name}}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">Phụ huynh</h6>
+                                        <p class="card-text">
+                                            Số điện thoại: <b>{{detail.mother.phone}}</b>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-lg-12 col-sm-12 mb-2">
+                            <div class="card d-flex">
+                                <div class="card-body">
+                                    <h6> Xếp lớp</h6>
+                                    <div class="form-group">
+                                        <label>Khối</label>
+                                        <select id="grades_edit" onchange="getClasses(0,true)" class="form-control" name="child-grade"></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Lớp</label>
+                                        <select id="classes_edit" class="form-control" name="child-class"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Lưu</button>
+            </form>
+        </div>
+    </div>
 </div>
 
 

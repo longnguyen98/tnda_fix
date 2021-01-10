@@ -235,6 +235,7 @@
     <Compile Include="Models\FamilyLinkInfo.cs">
       <DependentUpon>Db.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\filters\AdminAuth.cs" />
     <Compile Include="Models\filters\Auth.cs" />
     <Compile Include="Models\Grade.cs">
       <DependentUpon>Db.tt</DependentUpon>
