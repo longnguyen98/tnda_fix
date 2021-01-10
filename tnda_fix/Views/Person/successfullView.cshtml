@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = "successfullView";
+    Layout = "~/Views/Shared/ExternalLayout.cshtml";
+}
+<script>
+    var vue_edit;
+    $(document).ready(function () {
+        $.LoadingOverlay("show");
+        var url_string = window.location.href;
+        console.log(url_string);
+        var url = new URL(url_string);
+        var id = url.searchParams.get("id");
+        console.log(url);
+        $.ajax({
+            url: "/Person/getPersonDetail?id=" + id,
+            success: function (result) {
+                console.log(result);
+                new Vue({
+                    el: '#vue_app',
+                    data: {
+                        detail: result,
+                    }
+                });
+                $.LoadingOverlay("hide");
+            }
+        });
+    });
+</script>
+<header class="masthead" style="background:url('../img/bg_ex_index.jpg');background-size:cover;">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="modal-dialog modal-lg" id="vue_app">
+            <div class="modal-content p-5">
+                <form >
+                    <div class="text-center">
+                    <h1 class="mb-5">Cổng thông tin<br /> thiếu nhi Giáo xứ Dĩ An</h1>
+                    </div>
+                    <br />
+                    <div class="masthead text-center col-lg-12">
+                        <div class="card d-flex">
+                            <div class="card-body">
+                                <h3>Đăng ký thành công</h3><h5>Phụ huynh vui lòng mang theo Sổ gia đình công giáo và giấy xác nhận học giáo lý (nếu có) vào 8h45 sáng Chúa Nhật gần nhất để làm thủ tục nhập học cho bé.</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            <div class="card d-flex">
+                                <div class="text-center"><h3>Thông tin thiếu nhi</h3></div>
+                                <div class="card-body row d-flex justify-content-center">
+                                    <div class="col-lg-2 col-sm-6 mb-2">
+                                        <img class="card-img-top rounded" :src="detail.img" alt="Img" />
+                                    </div>
+                                    <div>
+                                        <input hidden type="text" class="form-control" value=detail.id name="child-id">
+                                        <p><h5 class="card-title">{{detail.ch_name}} {{detail.fname}} {{detail.name}}</h5></p>
+                                        <h6 class="card-subtitle mb-2 text-muted">{{detail.role}}</h6>
+                                        <p class="card-text">Ngày sinh: <b>{{detail.birth}}</b></p>
+                                    </div>
+                                    <div class="col-lg-5 col-sm-1">
+                                        <p class="card-text"></p>
+                                        <p class="card-text">Địa chỉ: <b>{{detail.address}}</b></p>
+                                        <p class="card-text">Note: <b>{{detail.note}}</b></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="col-lg-12">
+                        <div class="card d-flex">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-6 col-sm-12">
+                                        <h5 class="card-title">{{detail.father.ch_name}} {{detail.father.fname}} {{detail.father.name}}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">Phụ huynh</h6>
+                                        <p class="card-text">Số điện thoại: <b>{{detail.father.phone}}</b></p>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-12">
+                                        <h5 class="card-title">{{detail.mother.ch_name}} {{detail.mother.fname}} {{detail.mother.name}}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">Phụ huynh</h6>
+                                        <p class="card-text">
+                                            Số điện thoại: <b>{{detail.mother.phone}}</b>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <br />
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+

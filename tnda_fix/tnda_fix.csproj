@@ -489,7 +489,7 @@
     <Content Include="Views\Admin\CheckNew.cshtml" />
     <Content Include="Views\Admin\AllClasses.cshtml" />
     <Content Include="Views\Admin\dashBoard.cshtml" />
-    <Content Include="Views\Person\SucessfullView.cshtml" />
+    <Content Include="Views\Person\successfullView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

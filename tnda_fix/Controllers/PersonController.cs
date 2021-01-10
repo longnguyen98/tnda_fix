@@ -253,7 +253,8 @@ namespace tnda_fix.Controllers
             p.for_search = Tools.convert(p.ChristianName + p.FirstName + p.Name).ToUpper();
             db.People.Add(p);
             db.SaveChanges();
-            
+            if (p.ID_role == 7)
+                return View("~/person/seccessfullView?id=" + p.ID);
             return Redirect(form["current_location"].ToString());
         }
         //Edit Person
@@ -494,6 +495,10 @@ namespace tnda_fix.Controllers
                 map.Add(key, form[key]);
             }
             return Json(map, JsonRequestBehavior.AllowGet);
+        }
+        public ViewResult successfullView()
+        {
+            return View();
         }
     }
 
