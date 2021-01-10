@@ -272,7 +272,7 @@ namespace tnda_fix.Controllers
                 p.Note = form["child-gp"] + " " + form["child-gx"] + " " + form["child-grade"] + " " + form["child-class"];
             db.People.Add(p);
             db.SaveChanges();
-            //
+            
             return Redirect(form["current_location"].ToString());
         }
         //Edit Person
