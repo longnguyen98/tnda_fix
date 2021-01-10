@@ -264,6 +264,8 @@ namespace tnda_fix.Controllers
                 p.Note = form["child-gp"] + " " + form["child-gx"] + " " + form["child-grade"] + " " + form["child-class"];
             db.People.Add(p);
             db.SaveChanges();
+            if (p.ID_role == 7)
+                return View();
             //
             return Redirect(form["current_location"].ToString());
         }
