@@ -253,7 +253,7 @@ namespace tnda_fix.Controllers
             p.for_search = Tools.convert(p.ChristianName + p.FirstName + p.Name).ToUpper();
             db.People.Add(p);
             db.SaveChanges();
-            //
+            
             return Redirect(form["current_location"].ToString());
         }
         //Edit Person
