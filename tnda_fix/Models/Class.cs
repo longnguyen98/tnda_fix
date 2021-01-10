@@ -24,6 +24,8 @@ namespace tnda_fix.Models
         public string ClassName { get; set; }
         public Nullable<int> ID_Grade { get; set; }
         public Nullable<bool> Status { get; set; }
+        public Nullable<int> students_count { get; set; }
+        public string teacher_names { get; set; }
     
         public virtual Grade Grade { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -22,6 +22,8 @@
           <Property Name="ClassName" Type="nchar" MaxLength="10" />
           <Property Name="ID_Grade" Type="int" />
           <Property Name="Status" Type="bit" />
+          <Property Name="students_count" Type="int" />
+          <Property Name="teacher_names" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Family">
           <Key>
@@ -421,6 +423,8 @@
           <Property Name="Status" Type="Boolean" />
           <NavigationProperty Name="Grade" Relationship="tndaModel.FK_Class_Grade" FromRole="Class" ToRole="Grade" />
           <NavigationProperty Name="People" Relationship="tndaModel.FK_Person_Class" FromRole="Class" ToRole="Person" />
+          <Property Name="students_count" Type="Int32" />
+          <Property Name="teacher_names" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Family">
           <Key>
@@ -710,6 +714,8 @@
           <EntitySetMapping Name="Classes">
             <EntityTypeMapping TypeName="tndaModel.Class">
               <MappingFragment StoreEntitySet="Class">
+                <ScalarProperty Name="teacher_names" ColumnName="teacher_names" />
+                <ScalarProperty Name="students_count" ColumnName="students_count" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="ID_Grade" ColumnName="ID_Grade" />
                 <ScalarProperty Name="ClassName" ColumnName="ClassName" />

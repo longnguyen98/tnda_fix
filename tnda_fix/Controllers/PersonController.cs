@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -152,109 +153,129 @@ namespace tnda_fix.Controllers
         //
         [HttpPost]
         public ActionResult AddPerson(FormCollection form)
-        {
-            tndaEntities db = new tndaEntities();
-            int id_family_lead = -1;
-            int id_family = -1;
-            Person dad = null;
-            Person mom = null;
-            if (!(form["fa-ch-name"].ToString().Length == 0 && form["fa-fname"].ToString().Length == 0 && form["fa-name"].ToString().Length == 0))
+        {           
+            using(tndaEntities db = new tndaEntities())
             {
-                dad = new Person
+                using (DbContextTransaction trans = db.Database.BeginTransaction())
                 {
-                    ChristianName = form.Get("fa-ch-name"),
-                    FirstName = form.Get("fa-fname"),
-                    Name = form.Get("fa-name"),
-                    Phone = form.Get("fa-phone"),
-                    ID_role = 3
-                };
-                db.People.Add(dad);
-                db.SaveChanges();
-                int dad_id = dad.ID;
+                    try
+                    {
+                        int id_family_lead = -1;
+                        int id_family = -1;
+                        Person dad = null;
+                        Person mom = null;
+                        if (!(form["fa-ch-name"].ToString().Length == 0 && form["fa-fname"].ToString().Length == 0 && form["fa-name"].ToString().Length == 0))
+                        {
+                            dad = new Person
+                            {
+                                ChristianName = form.Get("fa-ch-name"),
+                                FirstName = form.Get("fa-fname"),
+                                Name = form.Get("fa-name"),
+                                Phone = form.Get("fa-phone"),
+                                ID_role = 3
+                            };
+                            db.People.Add(dad);
+                            db.SaveChanges();
+                            int dad_id = dad.ID;
 
+                        }
+                        if (!(form["mo-ch-name"].ToString().Length == 0 && form["mo-fname"].ToString().Length == 0 && form["mo-name"].ToString().Length == 0))
+                        {
+                            mom = new Person
+                            {
+                                ChristianName = form.Get("mo-ch-name"),
+                                FirstName = form.Get("mo-fname"),
+                                Name = form.Get("mo-name"),
+                                Phone = form.Get("mo-phone"),
+                                ID_role = 3
+                            };
+                            db.People.Add(mom);
+                            db.SaveChanges();
+                            int mom_id = mom.ID;
+                        }
+                        //
+                        if (dad == null)
+                        {
+                            id_family_lead = mom.ID;
+                        }
+                        else
+                        {
+                            id_family_lead = dad.ID;
+                        }
+                        //
+                        if (id_family_lead != -1)
+                        {
+                            Family fl = new Family
+                            {
+                                ID_Dad = id_family_lead,
+                            };
+                            db.Families.Add(fl);
+                            db.SaveChanges();
+                            id_family = fl.ID;
+                            if (dad != null)
+                            {
+                                dad.ID_Farmily = id_family;
+                                db.SaveChanges();
+                            }
+                            if (mom != null)
+                            {
+                                mom.ID_Farmily = id_family;
+                                db.SaveChanges();
+                            }
+                        }
+                        Person p = new Person
+                        {
+                            ChristianName = form["child-ch-name"],
+                            FirstName = form["child-fname"],
+                            Name = form["child-name"],
+                            Birth = Convert.ToDateTime(form["child-birth"]), //
+                            Address = form["child-address"],
+                            ID_Class = int.Parse(form["child-class"]),
+                            //set later ID_Farmily = id_family,
+                            ID_role = int.Parse(form["child-role"]),
+                            //Image = "",
+                            //Phone = "",
+                            Status = false,
+                            Gender = bool.Parse(form["child-gender"].ToUpper()),
+                            CreateDate = DateTime.Now
+                        };
+                        if (id_family != -1)
+                        {
+                            p.ID_Farmily = id_family;
+                        }
+                        if (dad != null)
+                        {
+                            dad.Address = p.Address;
+                        }
+                        if (mom != null)
+                        {
+                            mom.Address = p.Address;
+                        }
+                        if (form["check-box"] != null && bool.Parse(form["check-box"]))
+                            p.Note = form["child-gp"] + " " + form["child-gx"] + " " + form["child-grade"] + " " + form["child-class"];
+                        p.for_search = Tools.convert(p.ChristianName + p.FirstName + p.Name).ToUpper();
+                        db.People.Add(p);
+                        db.SaveChanges();
+                        trans.Commit();
+                    }
+                    catch(Exception e)
+                    {
+                        Logger.create("ERROR", e.Message, 0);
+                        trans.Rollback();
+                    }
+                    
+                }
+           
             }
-            if (!(form["mo-ch-name"].ToString().Length == 0 && form["mo-fname"].ToString().Length == 0 && form["mo-name"].ToString().Length == 0))
+            if (form["current_location"] != null)
             {
-                mom = new Person
-                {
-                    ChristianName = form.Get("mo-ch-name"),
-                    FirstName = form.Get("mo-fname"),
-                    Name = form.Get("mo-name"),
-                    Phone = form.Get("mo-phone"),
-                    ID_role = 3
-                };
-                db.People.Add(mom);
-                db.SaveChanges();
-                int mom_id = mom.ID;
-            }
-            //
-            if (dad == null)
-            {
-                id_family_lead = mom.ID;
+                return Redirect(form["current_location"].ToString());
             }
             else
             {
-                id_family_lead = dad.ID;
+                return null;
             }
-            //
-            if (id_family_lead != -1)
-            {
-                Family fl = new Family
-                {
-                    ID_Dad = id_family_lead,
-                };
-                db.Families.Add(fl);
-                db.SaveChanges();
-                id_family = fl.ID;
-                if (dad != null)
-                {
-                    dad.ID_Farmily = id_family;
-                    db.SaveChanges();
-                }
-                if (mom != null)
-                {
-                    mom.ID_Farmily = id_family;
-                    db.SaveChanges();
-                }
-            }
-            //
-
-            //
-            Person p = new Person
-            {
-                ChristianName = form["child-ch-name"],
-                FirstName = form["child-fname"],
-                Name = form["child-name"],
-                Birth = Convert.ToDateTime(form["child-birth"]), //
-                Address = form["child-address"],
-                ID_Class = int.Parse(form["child-class"]),
-                //set later ID_Farmily = id_family,
-                ID_role = int.Parse(form["child-role"]),
-                //Image = "",
-                //Phone = "",
-                Status = false,
-                Gender = bool.Parse(form["child-gender"]),
-                CreateDate = DateTime.Now
-            };
-            if (id_family != -1)
-            {
-                p.ID_Farmily = id_family;
-            }
-            if (dad != null)
-            {
-                dad.Address = p.Address;
-            }
-            if (mom != null)
-            {
-                mom.Address = p.Address;
-            }
-            if (form["check-box"] != null && bool.Parse(form["check-box"]))
-                p.Note = form["child-gp"] + " " + form["child-gx"] + " " + form["child-grade"] + " " + form["child-class"];
-            p.for_search = Tools.convert(p.ChristianName + p.FirstName + p.Name).ToUpper();
-            db.People.Add(p);
-            db.SaveChanges();
             
-            return Redirect(form["current_location"].ToString());
         }
         //Edit Person
         [HttpPost]
