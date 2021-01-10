@@ -36,12 +36,19 @@ namespace tnda_fix.Controllers
             return View();
         }
 
+        public ActionResult import()
+        {
+            return View();
+        }
+
+
+
         //import from excel
         [HttpPost]
         public async System.Threading.Tasks.Task<string> uploadXlsAsync(int id, HttpPostedFileBase file)
         {
             //save to temp
-            string temp_path = Path.Combine(Server.MapPath("~/temp_xls"), (System.DateTime.Now.Millisecond.ToString() + file.FileName).Trim());
+            string temp_path = Path.Combine(Server.MapPath("~/temp_xls"), (DateTime.Now.Millisecond.ToString() + file.FileName).Trim());
             file.SaveAs(temp_path);
             string errorString = "";
             string read_data = "";
