@@ -27,7 +27,7 @@ namespace tnda_fix.Controllers
         {
             return View();
         }
-        public ActionResult AllClasses()
+        public ActionResult allClasses()
         {
             return View();
         }
@@ -70,22 +70,24 @@ namespace tnda_fix.Controllers
             {
                 WorkBook wb = WorkBook.Load(temp_path);
                 WorkSheet ws = wb.WorkSheets.First();
-                List<string> keys = new List<string>();
-                keys.Add("child-ch-name");
-                keys.Add("child-fname");
-                keys.Add("child-name");
-                keys.Add("child-birth");
-                keys.Add("child-gender");
-                keys.Add("child-class");
-                keys.Add("child-address");                
-                keys.Add("fa-ch-name");                
-                keys.Add("fa-fname");
-                keys.Add("fa-name");
-                keys.Add("fa-phone");
-                keys.Add("mo-ch-name");
-                keys.Add("mo-fname");
-                keys.Add("mo-name");
-                keys.Add("mo-phone");
+                List<string> keys = new List<string>
+                {
+                    "child-ch-name",
+                    "child-fname",
+                    "child-name",
+                    "child-birth",
+                    "child-gender",
+                    "child-class",
+                    "child-address",
+                    "fa-ch-name",
+                    "fa-fname",
+                    "fa-name",
+                    "fa-phone",
+                    "mo-ch-name",
+                    "mo-fname",
+                    "mo-name",
+                    "mo-phone"
+                };
                 //
                 int count = 0;
                 bool firstRow = true;
@@ -96,13 +98,17 @@ namespace tnda_fix.Controllers
                         firstRow = false;
                         continue;
                     }
+                    if (row.IsEmpty)
+                    {
+                        break;
+                    }
                     foreach (RangeColumn col in row.Columns)
                     {
                         //logging for error
                         errorString = col.RangeAddressAsString;
 
                         //add value to form
-                        read_data += col.RangeAddressAsString + ": " + col.StringValue + "\t";
+                        read_data += col.RangeAddressAsString + ": " + col.StringValue + "\n";
                         form.Add(keys[count], col.StringValue);
                         count++;
                     }
@@ -121,7 +127,7 @@ namespace tnda_fix.Controllers
             {
                 return e.Message + "\n" + errorString;
             }
-            return "Process complete! \t" + read_data;
+            return "Process complete! \n" + read_data;
         }
     }
 }

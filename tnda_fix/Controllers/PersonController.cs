@@ -253,24 +253,23 @@ namespace tnda_fix.Controllers
                         }
                         Class clazz = db.Classes.Find(p.ID_Class);
                         clazz.students_count++;
+
                         if (form["check-box"] != null && bool.Parse(form["check-box"]))
                         {
                             p.Note = form["child-gp"] + " " + form["child-gx"] + " " + form["child-grade"] + " " + form["child-class"];
                         }
-
                         p.for_search = Tools.convert(p.ChristianName + p.FirstName + p.Name).ToUpper();
                         db.People.Add(p);
                         db.SaveChanges();
                         trans.Commit();
+                        Logger.create("SUCCESS", "Created Person " + p.ID, 0);
                     }
                     catch (Exception e)
                     {
                         Logger.create("ERROR", e.Message, 0);
                         trans.Rollback();
                     }
-
                 }
-
             }
             if (form["current_location"] != null)
             {
@@ -280,7 +279,6 @@ namespace tnda_fix.Controllers
             {
                 return null;
             }
-
         }
         //Edit Person
         [HttpPost]

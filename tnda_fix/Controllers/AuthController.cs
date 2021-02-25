@@ -7,7 +7,7 @@ namespace tnda_fix.Controllers
     public class AuthController : Controller
     {
         public JsonResult getAuthStatus()
-        {
+        {   
             bool login = Session["accountName"] != null;
             return Json(login, JsonRequestBehavior.AllowGet);
         }
