@@ -516,6 +516,10 @@ namespace tnda_fix.Controllers
             }
             return Json(map, JsonRequestBehavior.AllowGet);
         }
+        public ViewResult successfullView()
+        {
+            return View();
+        }
     }
 
 }
