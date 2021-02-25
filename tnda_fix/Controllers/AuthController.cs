@@ -7,7 +7,7 @@ namespace tnda_fix.Controllers
     public class AuthController : Controller
     {
         public JsonResult getAuthStatus()
-        {
+        {   
             bool login = Session["accountName"] != null;
             return Json(login, JsonRequestBehavior.AllowGet);
         }
@@ -25,19 +25,16 @@ namespace tnda_fix.Controllers
             password = Request["password"];
             if (auth(username, password))
             {
+                Session.Add("accountName", username);
+                Session.Timeout = 1440;
+                Logger.create("LOGIN", username + " has logged in", (int)Session["personId"]);
                 //admin
                 if (username.EndsWith("admin"))
                 {
-                    Session.Add("accountName", username);
-                    Session.Timeout = 1440;
-                    Logger.create("LOGIN", username + " has logged in", (int)Session["personId"]);
                     return Redirect("~/Admin/index");
                 }
                 else
                 {
-                    Session.Add("accountName", username);
-                    Session.Timeout = 1440;
-                    Logger.create("LOGIN", username + " has logged in", (int)Session["personId"]);
                     return Redirect("~/internal/index?id=" + (int)Session["personId"]);
                 }
             }

@@ -31,7 +31,7 @@
         var glv_name;
         var glv;
         $(document).ready(function () {
-            $.LoadingOverlay("show");
+            $("#display_name_glv").LoadingOverlay("show");
             $.ajax({
                 url: '/auth/getPersonFromSession',
                 success: function (glv) {
@@ -44,7 +44,7 @@
                             glv_name: glv.ch_name.trim() + ' ' + glv.fname.trim() + ' ' + glv.name.trim()
                         }
                     });
-                    $.LoadingOverlay("hide");
+                    $("#display_name_glv").LoadingOverlay("hide");
                 }
             });
         });
@@ -93,6 +93,11 @@
                         <li class="nav-item m-2">
                             <a class="btn btn-info font-weight-bold w-100 text-left" href="/admin/dashboard">
                                 <i class="fa fa-list mr-2"></i>Thống kê
+                            </a>
+                        </li>
+                        <li class="nav-item m-2">
+                            <a class="btn btn-info font-weight-bold w-100 text-left" href="/admin/import">
+                                <i class="fa fa-table mr-2"></i>Nhập bằng Excel
                             </a>
                         </li>
                         <li class="nav-item m-2">

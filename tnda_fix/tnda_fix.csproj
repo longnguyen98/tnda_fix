@@ -235,6 +235,7 @@
     <Compile Include="Models\FamilyLinkInfo.cs">
       <DependentUpon>Db.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\filters\AdminAuth.cs" />
     <Compile Include="Models\filters\Auth.cs" />
     <Compile Include="Models\Grade.cs">
       <DependentUpon>Db.tt</DependentUpon>
@@ -486,16 +487,15 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\AllGLV.cshtml" />
     <Content Include="Views\Admin\CheckNew.cshtml" />
-    <Content Include="Views\Admin\AllClasses.cshtml" />
     <Content Include="Views\Admin\dashBoard.cshtml" />
+    <Content Include="Views\Admin\import.cshtml" />
+    <Content Include="Views\Person\successfullView.cshtml" />
+    <Content Include="Views\Admin\allClasses.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="img\upload\" />
     <Folder Include="temp_xls\" />
-    <Folder Include="Views\Account\" />
-    <Folder Include="Views\DashBoard\" />
-    <Folder Include="Views\GradeAndClass\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

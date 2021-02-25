@@ -41,6 +41,7 @@ namespace tnda_fix.Models
         public Nullable<System.DateTime> UpdateTime { get; set; }
         public string ChristianName { get; set; }
         public string Note { get; set; }
+        public string for_search { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACC> ACCs { get; set; }

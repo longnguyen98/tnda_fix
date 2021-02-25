@@ -22,6 +22,8 @@
           <Property Name="ClassName" Type="nchar" MaxLength="10" />
           <Property Name="ID_Grade" Type="int" />
           <Property Name="Status" Type="bit" />
+          <Property Name="students_count" Type="int" />
+          <Property Name="teacher_names" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Family">
           <Key>
@@ -84,6 +86,7 @@
           <Property Name="UpdateTime" Type="datetime" />
           <Property Name="ChristianName" Type="nvarchar" MaxLength="50" />
           <Property Name="Note" Type="nvarchar(max)" />
+          <Property Name="for_search" Type="varchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="PersonLog">
           <Key>
@@ -420,6 +423,8 @@
           <Property Name="Status" Type="Boolean" />
           <NavigationProperty Name="Grade" Relationship="tndaModel.FK_Class_Grade" FromRole="Class" ToRole="Grade" />
           <NavigationProperty Name="People" Relationship="tndaModel.FK_Person_Class" FromRole="Class" ToRole="Person" />
+          <Property Name="students_count" Type="Int32" />
+          <Property Name="teacher_names" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Family">
           <Key>
@@ -486,6 +491,7 @@
           <NavigationProperty Name="Registrations" Relationship="tndaModel.FK_Registration_Person" FromRole="Person" ToRole="Registration" />
           <NavigationProperty Name="Reports" Relationship="tndaModel.FK_Report_Person" FromRole="Person" ToRole="Report" />
           <NavigationProperty Name="Reports1" Relationship="tndaModel.FK_Report_Person1" FromRole="Person" ToRole="Report" />
+          <Property Name="for_search" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="PersonLog">
           <Key>
@@ -708,6 +714,8 @@
           <EntitySetMapping Name="Classes">
             <EntityTypeMapping TypeName="tndaModel.Class">
               <MappingFragment StoreEntitySet="Class">
+                <ScalarProperty Name="teacher_names" ColumnName="teacher_names" />
+                <ScalarProperty Name="students_count" ColumnName="students_count" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="ID_Grade" ColumnName="ID_Grade" />
                 <ScalarProperty Name="ClassName" ColumnName="ClassName" />
@@ -753,6 +761,7 @@
           <EntitySetMapping Name="People">
             <EntityTypeMapping TypeName="tndaModel.Person">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="for_search" ColumnName="for_search" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
                 <ScalarProperty Name="ChristianName" ColumnName="ChristianName" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />

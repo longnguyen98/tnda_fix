@@ -53,7 +53,7 @@
                 });
             }
 
-        });        
+        });
         $.ajax({
             url: "/GradeAndClass/getAllGrades",
             success: function (result) {
@@ -67,7 +67,7 @@
             data: { id: 1 },
             success: function (result) {
                 for (var i = 0; i < result.length; i++) {
-                    $("#classes").append(new Option(result[i].className, result[i].ID));
+                    $("#classes").append(new Option(result[i].gradeName + " " +result[i].className, result[i].ID));
                 }
             }
         });
@@ -82,13 +82,13 @@
             data: { id: grade_id },
             success: function (result) {
                 for (var i = 0; i < result.length; i++) {
-                    $("#classes").append(new Option(result[i].className, result[i].ID));
+                    $("#classes").append(new Option(result[i].gradeName + " " + result[i].className, result[i].ID));
                 }
             }
         });
     }
     $(document).ready(function () {
-       
+
     });
 </script>
 <br />
@@ -117,11 +117,11 @@
                     <th scope="row">{{p.id}}</th>
                     <td>{{p.ch_name}}</td>
                     <td>{{p.fname}} {{p.name}}</td>
-                    <td>{{p.birth}}</td>    
+                    <td>{{p.birth}}</td>
                     <td><a :href="link+p.id" class="btn btn-sm btn-info">Chi tiết</a></td>
                 </tr>
             </tbody>
-        </table>    
+        </table>
     </div>
 </div>
 <div class="modal fade bd-example-modal-lg" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -201,7 +201,7 @@
                 </div>
                 <div class="form-group">
                     <label>SDT</label>
-                    <input type="number" class="form-control" placeholder="Số điện thoại" name="mo-phone" required >
+                    <input type="number" class="form-control" placeholder="Số điện thoại" name="mo-phone" required>
                 </div>
                 <button type="submit" class="btn btn-info w-100">Thêm</button>
                 <button type="submit" data-dismiss="modal" class="btn btn-danger w-100 mt-2">Hủy</button>

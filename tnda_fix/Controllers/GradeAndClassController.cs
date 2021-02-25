@@ -13,7 +13,7 @@ namespace tnda_fix.Controllers
             List<object> grades = new List<object>();
             foreach (Grade g in db.Grades.ToList())
             {
-                var ob = new { ID = g.ID, gradeName = g.GradeName.Trim()};
+                var ob = new { ID = g.ID, gradeName = g.GradeName.Trim() };
                 grades.Add(ob);
             }
             return Json(grades, JsonRequestBehavior.AllowGet);
@@ -21,14 +21,18 @@ namespace tnda_fix.Controllers
         public JsonResult getClassByGrade()
         {
             int grade_id = int.Parse(Request.QueryString["id"]);
-            tndaEntities db = new tndaEntities();
             List<object> classes = new List<object>();
-            //
-            foreach (Class c in db.Classes.Where(c => c.ID_Grade == grade_id).ToList())
+            using (tndaEntities db = new tndaEntities())
             {
-                var ob = new { ID = c.ID, className = c.ClassName.Trim() };
-                classes.Add(ob);
+                Grade grade = db.Grades.Find(grade_id);
+                foreach (Class c in db.Classes.Where(c => c.ID_Grade == grade_id).ToList())
+                {
+                    var ob = new { ID = c.ID, className = c.ClassName.Trim(), gradeName = grade.GradeName };
+                    classes.Add(ob);
+                }
             }
+            //
+
             return Json(classes, JsonRequestBehavior.AllowGet);
         }
         public JsonResult getClassById()
@@ -68,7 +72,7 @@ namespace tnda_fix.Controllers
 
                 }
                 //int total = cl.People.Where(p => p.ID_role == 4).Count();
-                var ob = new { name = name.Trim(), id = cl.ID, color = color, /*tn_total = total*/ };
+                var ob = new { name = name.Trim(), id = cl.ID, color = color, glv = cl.teacher_names, total = cl.students_count /*tn_total = total*/ };
                 list.Add(ob);
             }
             return Json(list, JsonRequestBehavior.AllowGet);
