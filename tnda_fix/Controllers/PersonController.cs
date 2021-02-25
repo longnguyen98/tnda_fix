@@ -18,7 +18,7 @@ namespace tnda_fix.Controllers
         }
         public JsonResult getPersonDetailWithArg(int id)
         {
-            using(tndaEntities db = new tndaEntities())
+            using (tndaEntities db = new tndaEntities())
             {
                 Person child = db.People.Find(id);
                 //
@@ -42,7 +42,7 @@ namespace tnda_fix.Controllers
                     //
                     var fatherJson = new { fa_id = father.ID, ch_name = father.ChristianName, fname = father.FirstName, name = father.Name, role = father.Role.RoleName, phone = father.Phone };
                     var motherJson = new { mo_id = mother.ID, ch_name = mother.ChristianName, fname = mother.FirstName, name = mother.Name, role = mother.Role.RoleName, phone = mother.Phone, role_id = child.ID_role };
-                    var glvId = glv != null ? glv.ID : 91;
+                    int glvId = glv != null ? glv.ID : 91;
                     var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, pclass = classString, role = child.Role.RoleName, glv = glv_name, id_class = child.ID_Class, birth = birthString, address = child.Address, father = fatherJson, mother = motherJson, role_id = child.ID_role, glv_id = glvId, img = img, note = child.Note };
                     //
                     return Json(json, JsonRequestBehavior.AllowGet);
@@ -59,18 +59,18 @@ namespace tnda_fix.Controllers
                     var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, pclass = classString, id_class = child.ID_Class, role = child.Role.RoleName, birth = birthString, address = child.Address, phone = child.Phone, role_id = child.ID_role, img = image };
                     return Json(json, JsonRequestBehavior.AllowGet);
                 }
-            }                        
+            }
         }
-        
+
         public JsonResult getPersonByQuery()
         {
             string query = Request.QueryString["query"];
             query = Tools.convert(query).ToUpper();
             //
-            using(tndaEntities db = new tndaEntities())
+            using (tndaEntities db = new tndaEntities())
             {
-                String sql = "SELECT * FROM Person p WHERE p.for_search LIKE CONCAT('%',@query,'%') AND p.ID_role = 4 ";
-                List<Person> list = db.People.SqlQuery(sql,new SqlParameter("@query",query)).ToList();                
+                string sql = "SELECT * FROM Person p WHERE p.for_search LIKE CONCAT('%',@query,'%') AND p.ID_role = 4 ";
+                List<Person> list = db.People.SqlQuery(sql, new SqlParameter("@query", query)).ToList();
                 List<object> objects = new List<object>();
                 foreach (Person p in list)
                 {
@@ -78,11 +78,11 @@ namespace tnda_fix.Controllers
                     string classString = p.Class != null ? (p.Class.Grade.GradeName + " " + p.Class.ClassName) : "";
                     var ob = new { id = p.ID, ch_name = p.ChristianName, fname = p.FirstName, name = p.Name, pclass = classString, birth = birthString, role = p.Role.RoleName };
                     //
-                    objects.Add(ob);                    
+                    objects.Add(ob);
                 }
                 return Json(objects, JsonRequestBehavior.AllowGet);
-            }           
-            
+            }
+
         }
         public JsonResult getPersonByClass()
         {
@@ -133,7 +133,7 @@ namespace tnda_fix.Controllers
             }
             return Json(json, JsonRequestBehavior.AllowGet);
         }
-        
+
         [HttpPost]
         public ActionResult setImg(FormCollection form, HttpPostedFileBase file)
         {
@@ -153,8 +153,8 @@ namespace tnda_fix.Controllers
         //
         [HttpPost]
         public ActionResult AddPerson(FormCollection form)
-        {           
-            using(tndaEntities db = new tndaEntities())
+        {
+            using (tndaEntities db = new tndaEntities())
             {
                 using (DbContextTransaction trans = db.Database.BeginTransaction())
                 {
@@ -251,21 +251,26 @@ namespace tnda_fix.Controllers
                         {
                             mom.Address = p.Address;
                         }
+                        Class clazz = db.Classes.Find(p.ID_Class);
+                        clazz.students_count++;
                         if (form["check-box"] != null && bool.Parse(form["check-box"]))
+                        {
                             p.Note = form["child-gp"] + " " + form["child-gx"] + " " + form["child-grade"] + " " + form["child-class"];
+                        }
+
                         p.for_search = Tools.convert(p.ChristianName + p.FirstName + p.Name).ToUpper();
                         db.People.Add(p);
                         db.SaveChanges();
                         trans.Commit();
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         Logger.create("ERROR", e.Message, 0);
                         trans.Rollback();
                     }
-                    
+
                 }
-           
+
             }
             if (form["current_location"] != null)
             {
@@ -275,7 +280,7 @@ namespace tnda_fix.Controllers
             {
                 return null;
             }
-            
+
         }
         //Edit Person
         [HttpPost]
@@ -318,7 +323,7 @@ namespace tnda_fix.Controllers
             }
             return Redirect(form["current-location"].ToString());
         }
-        
+
         [HttpPost]
         public ActionResult EditClass(FormCollection form)
         {
@@ -331,7 +336,10 @@ namespace tnda_fix.Controllers
                 {
                     p.ID_Class = int.Parse(form["child-class"]);
                     if (form["child-role"] != null)
+                    {
                         p.ID_role = int.Parse(form["child-role"]);
+                    }
+
                     db.SaveChanges();
                 }
             }
