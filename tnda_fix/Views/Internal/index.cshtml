@@ -32,7 +32,7 @@
     <br />
     <div class="bg-light">
         <div class="my-content">
-            <div class="row mb-2 shadow" style="width:80%">
+            <div class="row mb-2 shadow" style="width:100%">
                 <div class="col-lg-12">
                     <div class="card d-flex">
                         <div class="card-body row d-flex justify-content-center">
@@ -64,10 +64,10 @@
                     </div>
                 </div>
             </div>
-            <div class="row mb-2 shadow" style="width:80%">
+            <div class="row mb-2 shadow" style="width:100%">
                 <div class="col-lg-12 col-sm-12 mb-2">
                     <div class="card d-flex">
-                        <div class="card-body">
+                        <div class="card-body  d-flex flex-row-reverse">
                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#edit-modal">Sửa thông tin</button>                            
                         </div>
                     </div>
@@ -110,7 +110,11 @@
                         <label>Địa chỉ</label>
                         <input type="text" class="form-control" :value=detail.address name="child-address" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Lưu</button>
+                    <div class="d-flex flex-row-reverse">
+                        <button type="submit" class="btn btn-primary m-2">Lưu</button>
+                        <button class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                    </div>
+                    
                 </form>
             </div>
         </div>

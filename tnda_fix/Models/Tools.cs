@@ -55,7 +55,7 @@ namespace tnda_fix.Models
             h = 400;
             w = 300;
             //
-            imf.Resize(new System.Drawing.Size(w, h));
+            imf.Resize(new System.Drawing.Size(w, h));            
             imf.Save(outStream);
             //
             return "/img/upload/" + _filename;
