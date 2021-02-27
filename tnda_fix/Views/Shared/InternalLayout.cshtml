@@ -40,10 +40,13 @@
                             glv_name: glv.ch_name.trim() + ' ' + glv.fname.trim() + ' ' + glv.name.trim()
                         }
                     });
+        	        if(glv.id ==4){
+					    window.alert('Xin chao Thuy Tien xinh dep');
+					}
                     $("#display_name_glv").LoadingOverlay("hide");
                 }
             });
-        });        
+        });
         function Loading(attr) {
             $.LoadingOverlay(attr);
         }
@@ -54,7 +57,7 @@
         <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#"><i class="fa fa-church mr-3"></i>GLV GX Dĩ An</a>
         <button class="navbar-toggler position-absolute d-md-none collapsed mt-1 text-white" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fa fa-bars mr-2"></i> Menu
-        </button>              
+        </button>
     </nav>
     <div class="container-fluid">
         <div class="row">
@@ -89,7 +92,7 @@
                                 <i class="fa fa-power-off mr-2"></i>Đăng xuất
                             </a>
                         </li>
-                    </ul>                   
+                    </ul>
                 </div>
             </nav>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">

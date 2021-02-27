@@ -6,12 +6,11 @@
 <script>
     $(document).ready(function () {
         $.LoadingOverlay("show");
-        var url_string = window.location.href;
-        console.log(url_string);
-        var url = new URL(url_string);
-        console.log(url);
+        var url_string = window.location.href;        
+        var url = new URL(url_string);        
         var id_class = url.searchParams.get("id_class");
         $('#current_location').val(url_string);
+        $('#classes').val(id_class);
         //
         $.ajax({
             url: '/gradeAndClass/getClassbyId',
@@ -54,23 +53,23 @@
             }
 
         });
-        $.ajax({
-            url: "/GradeAndClass/getAllGrades",
-            success: function (result) {
-                for (var i = 0; i < result.length; i++) {
-                    $("#grades").append(new Option(result[i].gradeName, result[i].ID));
-                }
-            }
-        });
-        $.ajax({
-            url: "/GradeAndClass/getClassByGrade",
-            data: { id: 1 },
-            success: function (result) {
-                for (var i = 0; i < result.length; i++) {
-                    $("#classes").append(new Option(result[i].gradeName + " " +result[i].className, result[i].ID));
-                }
-            }
-        });
+        //$.ajax({
+        //    url: "/GradeAndClass/getAllGrades",
+        //    success: function (result) {
+        //        for (var i = 0; i < result.length; i++) {
+        //            $("#grades").append(new Option(result[i].gradeName, result[i].ID));
+        //        }
+        //    }
+        //});
+        //$.ajax({
+        //    url: "/GradeAndClass/getClassByGrade",
+        //    data: { id: 1 },
+        //    success: function (result) {
+        //        for (var i = 0; i < result.length; i++) {
+        //            $("#classes").append(new Option(result[i].gradeName + " " +result[i].className, result[i].ID));
+        //        }
+        //    }
+        //});
     });
 </script>
 <script>
@@ -143,7 +142,7 @@
                 </div>
                 <div class="form-group">
                     <label>Ngày tháng năm sinh</label>
-                    <input type="date" class="form-control" name="child-birth" required>
+                    <input type="date" class="form-control" name="child-birth">
                 </div>
                 <div class="form-group">
                     <label>Giới tính</label>
@@ -152,13 +151,13 @@
                         <option value="false">Nữ</option>
                     </select>
                 </div>
-                <div class="form-group">
+                @*<div class="form-group">
                     <label>Khối</label>
                     <select id="grades" onchange="getClasses()" class="form-control" name="child-grade"></select>
-                </div>
+                </div>*@
                 <div class="form-group">
-                    <label>Lớp</label>
-                    <select id="classes" class="form-control" value="1" name="child-class"></select>
+                    @*<label>Lớp</label>*@
+                    <select type="hidden" id="classes" class="form-control" value="1" name="child-class"></select>
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ</label>
@@ -171,37 +170,37 @@
                 <h4 class="font-weight-bold">Bố</h4>
                 <div class="form-group">
                     <label>Tên Thánh</label>
-                    <input type="text" class="form-control" placeholder="Tên Thánh" name="fa-ch-name" required pattern="\S+.*">
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="fa-ch-name" pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Họ và đệm</label>
-                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="fa-fname" required pattern="\S+.*">
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="fa-fname" pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Tên</label>
-                    <input type="text" class="form-control" placeholder="A" name="fa-name" required pattern="\S+.*">
+                    <input type="text" class="form-control" placeholder="A" name="fa-name" pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>SDT</label>
-                    <input type="number" class="form-control" placeholder="Số điện thoại" name="fa-phone" required>
+                    <input type="number" class="form-control" placeholder="Số điện thoại" name="fa-phone">
                 </div>
                 <br />
                 <h4 class="font-weight-bold">Mẹ</h4>
                 <div class="form-group">
                     <label>Tên Thánh</label>
-                    <input type="text" class="form-control" placeholder="Tên Thánh" name="mo-ch-name" required pattern="\S+.*">
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="mo-ch-name" pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Họ và đệm</label>
-                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="mo-fname" required pattern="\S+.*">
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="mo-fname" pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Tên</label>
-                    <input type="text" class="form-control" placeholder="A" name="mo-name" required pattern="\S+.*">
+                    <input type="text" class="form-control" placeholder="A" name="mo-name" pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>SDT</label>
-                    <input type="number" class="form-control" placeholder="Số điện thoại" name="mo-phone" required>
+                    <input type="number" class="form-control" placeholder="Số điện thoại" name="mo-phone">
                 </div>
                 <button type="submit" class="btn btn-info w-100">Thêm</button>
                 <button type="submit" data-dismiss="modal" class="btn btn-danger w-100 mt-2">Hủy</button>

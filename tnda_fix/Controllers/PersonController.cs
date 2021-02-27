@@ -228,13 +228,10 @@ namespace tnda_fix.Controllers
                             ChristianName = form["child-ch-name"],
                             FirstName = form["child-fname"],
                             Name = form["child-name"],
-                            Birth = Convert.ToDateTime(form["child-birth"]), //
+                            Birth = Convert.ToDateTime(form["child-birth"]),
                             Address = form["child-address"],
-                            ID_Class = int.Parse(form["child-class"]),
-                            //set later ID_Farmily = id_family,
+                            ID_Class = int.Parse(form["child-class"]),                            
                             ID_role = int.Parse(form["child-role"]),
-                            //Image = "",
-                            //Phone = "",
                             Status = false,
                             Gender = bool.Parse(form["child-gender"].ToUpper()),
                             CreateDate = DateTime.Now
@@ -258,7 +255,7 @@ namespace tnda_fix.Controllers
                         {
                             p.Note = form["child-gp"] + " " + form["child-gx"] + " " + form["child-grade"] + " " + form["child-class"];
                         }
-                        p.for_search = Tools.convert(p.ChristianName + p.FirstName + p.Name).ToUpper();
+                        p.for_search = Tools.convert(p.ChristianName.Trim() + p.FirstName.Trim() + p.Name.Trim()).ToUpper();
                         db.People.Add(p);
                         db.SaveChanges();
                         trans.Commit();
@@ -294,7 +291,7 @@ namespace tnda_fix.Controllers
                     try
                     {
                         Person p = db.People.Find(id);
-                        Person fP= db.People.Find(fa_id);
+                        Person fP = db.People.Find(fa_id);
                         Person mP = db.People.Find(mo_id);
                         //
                         p.Name = form.Get("child-name");
@@ -302,7 +299,7 @@ namespace tnda_fix.Controllers
                         p.Birth = DateTime.Parse(form["child-birth"]);
                         p.FirstName = form.Get("child-fname");
                         p.Address = form.Get("child-address");
-                        p.Gender = bool.Parse(form["child-gender"]);      
+                        p.Gender = bool.Parse(form["child-gender"]);
                         //fa
                         fP.ChristianName = form.Get("fa-ch-name");
                         fP.FirstName = form.Get("fa-fname");
@@ -323,7 +320,7 @@ namespace tnda_fix.Controllers
                         trans.Rollback();
                     }
                 }
-            }          
+            }
             return Redirect(form["current_location"].ToString());
         }
 
