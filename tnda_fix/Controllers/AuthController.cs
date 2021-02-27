@@ -25,12 +25,9 @@ namespace tnda_fix.Controllers
                 address = p.Address,
                 phone = p.Phone,
                 role_id = p.ID_role,
-                id_class = (int)Session["classId"]
+                id_class = p.ID_Class
             };
             return Json(json, JsonRequestBehavior.AllowGet);
-            //int person_id = (int)Session["personId"];
-            //PersonController personController = new PersonController();
-            //return personController.getPersonDetailWithArg(person_id);
         }
         [HttpPost]
         public ActionResult login()
@@ -78,7 +75,10 @@ namespace tnda_fix.Controllers
                         Person p = account.Person;
                         Session.Add("personId", p.ID);
                         Session.Add("person", p);
-                        Session.Add("classId", p.Class.ID);
+                        if (p.ID_Class != null)
+                        {
+                            Session.Add("classId", p.Class.ID);
+                        }
                         return true;
                     }
                     else

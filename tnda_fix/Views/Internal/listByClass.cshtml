@@ -10,69 +10,54 @@
         var url = new URL(url_string);        
         var id_class = url.searchParams.get("id_class");
         $('#current_location').val(url_string);
-        $('#classes').val(id_class);
-        //
-        $.ajax({
-            url: '/gradeAndClass/getClassbyId',
-            data: { id_class: id_class },
-            success: function (result) {
-                var glv_name = result.glv_name;
-                var class_name = result.className;
-                new Vue({
-                    el: '#class_info',
-                    data: {
-                        glv_name: glv_name,
-                        class_name: class_name
-                    }
-                });
-                $.ajax({
-                    url: "/Person/getPersonByClass",
-                    data: { id_class: id_class },
-                    success: function (result) {
-                        console.log(result);
-                        if (!$.trim(result)) {
-                            $("#notfound").show();
+        $('#classes').val(id_class);                         
+        if (id_class == 'null') {
+            $('#view').hide();
+            $.LoadingOverlay("hide");
+        } else {
+            $.ajax({
+                url: '/gradeAndClass/getClassbyId',
+                data: { id_class: id_class },
+                success: function (result) {
+                    var glv_name = result.glv_name;
+                    var class_name = result.className;
+                    new Vue({
+                        el: '#class_info',
+                        data: {
+                            glv_name: glv_name,
+                            class_name: class_name
                         }
-                        $("#loading").hide();
-                        $("#content").show();
-                        new Vue({
-                            el: "#vue_app"
-                            ,
-                            data: {
-                                persons: result,
-                                link: '/internal/detail?id='
+                    });
+                    $.ajax({
+                        url: "/Person/getPersonByClass",
+                        data: { id_class: id_class },
+                        success: function (result) {
+                            console.log(result);
+                            if (!$.trim(result)) {
+                                $("#notfound").show();
                             }
-                            , mounted: function () {
-                                $('#table').DataTable();
-                            }
-                        });
-                        $('#table_wrapper').addClass("w-100");
-                        $.LoadingOverlay("hide");
-                    }
-                });
-            }
+                            $("#loading").hide();
+                            $("#content").show();
+                            new Vue({
+                                el: "#vue_app"
+                                ,
+                                data: {
+                                    persons: result,
+                                    link: '/internal/detail?id='
+                                }
+                                , mounted: function () {
+                                    $('#table').DataTable();
+                                }
+                            });
+                            $('#table_wrapper').addClass("w-100");
+                            $.LoadingOverlay("hide");
+                        }
+                    });
+                }
 
-        });
-        //$.ajax({
-        //    url: "/GradeAndClass/getAllGrades",
-        //    success: function (result) {
-        //        for (var i = 0; i < result.length; i++) {
-        //            $("#grades").append(new Option(result[i].gradeName, result[i].ID));
-        //        }
-        //    }
-        //});
-        //$.ajax({
-        //    url: "/GradeAndClass/getClassByGrade",
-        //    data: { id: 1 },
-        //    success: function (result) {
-        //        for (var i = 0; i < result.length; i++) {
-        //            $("#classes").append(new Option(result[i].gradeName + " " +result[i].className, result[i].ID));
-        //        }
-        //    }
-        //});
+            });
+        }       
     });
-</script>
-<script>
     function getClasses() {
         var grade_id = $('#grades').val();
         $('#classes').html('');
@@ -86,12 +71,8 @@
             }
         });
     }
-    $(document).ready(function () {
-
-    });
 </script>
-<br />
-<div class="container bg-info">
+<div id="view" class="container bg-info">
     <div class="row bg-light rounded p-3">
         <div id="class_info" class="col-lg-6 col-sm-6 mb-2 d-flex flex-row">
             <h4>{{class_name}} <span class="lead ml-5">GLV: {{glv_name}}</span></h4>
