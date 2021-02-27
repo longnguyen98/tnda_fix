@@ -56,7 +56,8 @@ namespace tnda_fix.Controllers
                     }
                     string birthString = child.Birth != null ? child.Birth.Value.ToString("dd.MM.yyy") : "";
                     string classString = child.Class != null ? (child.Class.Grade.GradeName + " " + child.Class.ClassName) : "";
-                    var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, pclass = classString, id_class = child.ID_Class, role = child.Role.RoleName, birth = birthString, address = child.Address, phone = child.Phone, role_id = child.ID_role, img = image };
+                    string gender = child.Gender.Value ? "Nam" : "Nữ";
+                    var json = new { id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name, pclass = classString, id_class = child.ID_Class, role = child.Role.RoleName, birth = birthString, address = child.Address, phone = child.Phone, role_id = child.ID_role, img = image, gender = gender, genderValue = child.Gender.Value };
                     return Json(json, JsonRequestBehavior.AllowGet);
                 }
             }
@@ -230,7 +231,7 @@ namespace tnda_fix.Controllers
                             Name = form["child-name"],
                             Birth = Convert.ToDateTime(form["child-birth"]),
                             Address = form["child-address"],
-                            ID_Class = int.Parse(form["child-class"]),                            
+                            ID_Class = int.Parse(form["child-class"]),
                             ID_role = int.Parse(form["child-role"]),
                             Status = false,
                             Gender = bool.Parse(form["child-gender"].ToUpper()),
@@ -282,8 +283,7 @@ namespace tnda_fix.Controllers
         public ActionResult EditPerson(FormCollection form)
         {
             int id = int.Parse(form["child-id"]);
-            int fa_id = int.Parse(form["fa-id"]);
-            int mo_id = int.Parse(form["mo-id"]);
+          
             using (tndaEntities db = new tndaEntities())
             {
                 using (DbContextTransaction trans = db.Database.BeginTransaction())
@@ -291,25 +291,32 @@ namespace tnda_fix.Controllers
                     try
                     {
                         Person p = db.People.Find(id);
-                        Person fP = db.People.Find(fa_id);
-                        Person mP = db.People.Find(mo_id);
-                        //
                         p.Name = form.Get("child-name");
                         p.ChristianName = form.Get("child-ch-name");
                         p.Birth = DateTime.Parse(form["child-birth"]);
                         p.FirstName = form.Get("child-fname");
                         p.Address = form.Get("child-address");
                         p.Gender = bool.Parse(form["child-gender"]);
-                        //fa
-                        fP.ChristianName = form.Get("fa-ch-name");
-                        fP.FirstName = form.Get("fa-fname");
-                        fP.Name = form.Get("fa-name");
-                        fP.Phone = form.Get("fa-phone");
-                        //mo
-                        mP.ChristianName = form.Get("mo-ch-name");
-                        mP.FirstName = form.Get("mo-fname");
-                        mP.Name = form.Get("mo-name");
-                        mP.Phone = form.Get("mo-phone");
+
+                        if(p.ID_role == 4 || p.ID_role == 7)
+                        {
+                            int fa_id = int.Parse(form["fa-id"]);
+                            int mo_id = int.Parse(form["mo-id"]);
+                            //
+                            Person fP = db.People.Find(fa_id);
+                            Person mP = db.People.Find(mo_id);
+                            //                      
+                            //fa
+                            fP.ChristianName = form.Get("fa-ch-name");
+                            fP.FirstName = form.Get("fa-fname");
+                            fP.Name = form.Get("fa-name");
+                            fP.Phone = form.Get("fa-phone");
+                            //mo
+                            mP.ChristianName = form.Get("mo-ch-name");
+                            mP.FirstName = form.Get("mo-fname");
+                            mP.Name = form.Get("mo-name");
+                            mP.Phone = form.Get("mo-phone");
+                        }                        
                         //save
                         db.SaveChanges();
                         trans.Commit();
@@ -318,6 +325,7 @@ namespace tnda_fix.Controllers
                     {
                         Logger.create("ERROR", e.Message, 0);
                         trans.Rollback();
+                        throw new Exception();
                     }
                 }
             }
