@@ -7,15 +7,27 @@ namespace tnda_fix.Controllers
     public class AuthController : Controller
     {
         public JsonResult getAuthStatus()
-        {   
-            bool login = Session["accountName"] != null;
+        {
+            bool login = Session["personId"] != null;
             return Json(login, JsonRequestBehavior.AllowGet);
         }
         public JsonResult getPersonFromSession()
         {
             int person_id = (int)Session["personId"];
-            PersonController personController = new PersonController();
-            return personController.getPersonDetailWithArg(person_id);
+            Person p = (Person)Session["person"];
+            var json = new
+            {
+                id = p.ID,
+                ch_name = p.ChristianName,
+                fname = p.FirstName,
+                name = p.Name,
+                birth = p.Birth.Value.ToShortDateString(),
+                address = p.Address,
+                phone = p.Phone,
+                role_id = p.ID_role,
+                id_class = p.ID_Class
+            };
+            return Json(json, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public ActionResult login()
@@ -62,6 +74,11 @@ namespace tnda_fix.Controllers
                     {
                         Person p = account.Person;
                         Session.Add("personId", p.ID);
+                        Session.Add("person", p);
+                        if (p.ID_Class != null)
+                        {
+                            Session.Add("classId", p.Class.ID);
+                        }
                         return true;
                     }
                     else

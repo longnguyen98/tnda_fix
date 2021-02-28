@@ -32,6 +32,7 @@ namespace tnda_fix.Controllers
             return View();
         }
         [HttpPost]
+        
         public JsonResult upload(HttpPostedFileBase file)
         {
             string _FileName = Tools.getUniqueNum() + Path.GetExtension(file.FileName);
