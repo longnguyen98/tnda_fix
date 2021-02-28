@@ -1,11 +1,21 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using tnda_fix.Models;
+using tnda_fix.Services;
 
 namespace tnda_fix.Controllers
 {
     public class AuthController : Controller
     {
+        [HttpPost]
+        public JsonResult changePassword(int personId, string oldPassword, string newPassword)
+        {
+            using (AuthService authService = new AuthService())
+            {
+                Response res = authService.changePassword(personId, oldPassword, newPassword);
+                return Json(new { res.success, res.message }, JsonRequestBehavior.AllowGet);
+            }
+        }
         public JsonResult getAuthStatus()
         {
             bool login = Session["personId"] != null;

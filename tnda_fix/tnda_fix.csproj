@@ -256,11 +256,13 @@
     <Compile Include="Models\Report.cs">
       <DependentUpon>Db.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Response.cs" />
     <Compile Include="Models\Role.cs">
       <DependentUpon>Db.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Tools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AuthService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
