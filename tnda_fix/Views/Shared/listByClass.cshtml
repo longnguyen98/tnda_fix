@@ -1,63 +1,79 @@
 ﻿
 @{
     ViewBag.Title = "listByClass";
-    Layout = "~/Views/Shared/InternalLayout.cshtml";
+    Layout = ViewBag.controller == "Internal" ? "~/Views/Shared/InternalLayout.cshtml" : "~/Views/Shared/AdminLayout.cshtml";
 }
 <script>
     $(document).ready(function () {
         $.LoadingOverlay("show");
-        var url_string = window.location.href;        
-        var url = new URL(url_string);        
+        var url_string = window.location.href;
+        console.log(url_string);
+        var url = new URL(url_string);
+        console.log(url);
         var id_class = url.searchParams.get("id_class");
         $('#current_location').val(url_string);
-        $('#classes').val(id_class);
-        if (id_class == 'null') {
-            $('#view').hide();
-            $.LoadingOverlay("hide");
-        } else {
-            $.ajax({
-                url: '/gradeAndClass/getClassbyId',
-                data: { id_class: id_class },
-                success: function (result) {
-                    var glv_name = result.glv_name;
-                    var class_name = result.className;
-                    new Vue({
-                        el: '#class_info',
-                        data: {
-                            glv_name: glv_name,
-                            class_name: class_name
+        //
+        $.ajax({
+            url: '/gradeAndClass/getClassbyId',
+            data: { id_class: id_class },
+            success: function (result) {
+                var glv_name = result.glv_name;
+                var class_name = result.className;
+                new Vue({
+                    el: '#class_info',
+                    data: {
+                        glv_name: glv_name,
+                        class_name: class_name
+                    }
+                });
+                $.ajax({
+                    url: "/Person/getPersonByClass",
+                    data: { id_class: id_class },
+                    success: function (result) {
+                        console.log(result);
+                        if (!$.trim(result)) {
+                            $("#notfound").show();
                         }
-                    });
-                    $.ajax({
-                        url: "/Person/getPersonByClass",
-                        data: { id_class: id_class },
-                        success: function (result) {
-                            console.log(result);
-                            if (!$.trim(result)) {
-                                $("#notfound").show();
+                        $("#loading").hide();
+                        $("#content").show();
+                        new Vue({
+                            el: "#vue_app"
+                            ,
+                            data: {
+                                persons: result,
+                                link: '/internal/detail?id='
                             }
-                            $("#loading").hide();
-                            $("#content").show();
-                            new Vue({
-                                el: "#vue_app"
-                                ,
-                                data: {
-                                    persons: result,
-                                    link: '/internal/detail?id='
-                                }
-                                , mounted: function () {
-                                    $('#table').DataTable();
-                                }
-                            });
-                            $('#table_wrapper').addClass("w-100");
-                            $.LoadingOverlay("hide");
-                        }
-                    });
-                }
+                            , mounted: function () {
+                                $('#table').DataTable();
+                            }
+                        });
+                        $('#table_wrapper').addClass("w-100");
+                        $.LoadingOverlay("hide");
+                    }
+                });
+            }
 
-            });
-        }       
+        });
+        $.ajax({
+            url: "/GradeAndClass/getAllGrades",
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#grades").append(new Option(result[i].gradeName, result[i].ID));
+                }
+            }
+        });
+        $.ajax({
+            url: "/GradeAndClass/getClassByGrade",
+            data: { id: 1 },
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#classes").append(new Option(result[i].gradeName + " " + result[i].className, result[i].ID));
+                }
+            }
+        });
     });
+</script>
+<script>
     function getClasses() {
         var grade_id = $('#grades').val();
         $('#classes').html('');
@@ -71,8 +87,12 @@
             }
         });
     }
+    $(document).ready(function () {
+
+    });
 </script>
-<div id="view" class="container bg-info">
+<br />
+<div class="container bg-info">
     <div class="row bg-light rounded p-3">
         <div id="class_info" class="col-lg-6 col-sm-6 mb-2 d-flex flex-row">
             <h4>{{class_name}} <span class="lead ml-5">GLV: {{glv_name}}</span></h4>
@@ -84,7 +104,8 @@
     <div id="vue_app" class="row bg-light rounded p-3">
         <table id="table" class="table table-striped" style="width:100%">
             <thead>
-                <tr>                    
+                <tr>
+                    <th scope="col">ID</th>
                     <th scope="col">Tên Thánh</th>
                     <th scope="col">Họ & Tên</th>
                     <th scope="col">Ngày sinh</th>
@@ -92,7 +113,8 @@
                 </tr>
             </thead>
             <tbody style="display:none" id="content">
-                <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">                    
+                <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
+                    <th scope="row">{{p.id}}</th>
                     <td>{{p.ch_name}}</td>
                     <td>{{p.fname}} {{p.name}}</td>
                     <td>{{p.birth}}</td>
@@ -121,7 +143,7 @@
                 </div>
                 <div class="form-group">
                     <label>Ngày tháng năm sinh</label>
-                    <input type="date" class="form-control" name="child-birth">
+                    <input type="date" class="form-control" name="child-birth" required>
                 </div>
                 <div class="form-group">
                     <label>Giới tính</label>
@@ -130,9 +152,13 @@
                         <option value="false">Nữ</option>
                     </select>
                 </div>
-                <div class="form-group" style="display: none">
-                    <label>Lớp</label>
-                    <input id="classes" class="form-control" value="1" name="child-class"/>
+                @*<div class="form-group">
+                    <label>Khối</label>
+                    <select id="grades" onchange="getClasses()" class="form-control" name="child-grade"></select>
+                </div>*@
+                <div class="form-group">
+                    @*<label>Lớp</label>*@
+                    <select type="hidden" id="classes" class="form-control" value="1" name="child-class"></select>
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ</label>
@@ -145,37 +171,37 @@
                 <h4 class="font-weight-bold">Bố</h4>
                 <div class="form-group">
                     <label>Tên Thánh</label>
-                    <input type="text" class="form-control" placeholder="Tên Thánh" name="fa-ch-name" pattern="\S+.*">
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="fa-ch-name" required pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Họ và đệm</label>
-                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="fa-fname" pattern="\S+.*">
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="fa-fname" required pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Tên</label>
-                    <input type="text" class="form-control" placeholder="A" name="fa-name" pattern="\S+.*">
+                    <input type="text" class="form-control" placeholder="A" name="fa-name" required pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>SDT</label>
-                    <input type="number" class="form-control" placeholder="Số điện thoại" name="fa-phone">
+                    <input type="number" class="form-control" placeholder="Số điện thoại" name="fa-phone" required>
                 </div>
                 <br />
                 <h4 class="font-weight-bold">Mẹ</h4>
                 <div class="form-group">
                     <label>Tên Thánh</label>
-                    <input type="text" class="form-control" placeholder="Tên Thánh" name="mo-ch-name" pattern="\S+.*">
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="mo-ch-name" required pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Họ và đệm</label>
-                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="mo-fname" pattern="\S+.*">
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="mo-fname" required pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Tên</label>
-                    <input type="text" class="form-control" placeholder="A" name="mo-name" pattern="\S+.*">
+                    <input type="text" class="form-control" placeholder="A" name="mo-name" required pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>SDT</label>
-                    <input type="number" class="form-control" placeholder="Số điện thoại" name="mo-phone">
+                    <input type="number" class="form-control" placeholder="Số điện thoại" name="mo-phone" required>
                 </div>
                 <button type="submit" class="btn btn-info w-100">Thêm</button>
                 <button type="submit" data-dismiss="modal" class="btn btn-danger w-100 mt-2">Hủy</button>
