@@ -282,34 +282,37 @@ namespace tnda_fix.Controllers
         public ActionResult EditPerson(FormCollection form)
         {
             int id = int.Parse(form["child-id"]);
-
+           
             using (tndaEntities db = new tndaEntities())
             {
-                if (p.ID == id)
+                Person child = db.People.Find(id);
+                Person dad = db.People.Find(int.Parse(form["fa-id"]));
+                Person mom = db.People.Find(int.Parse(form["mo-id"]));
+                if (child != null)
                 {
-                    p.Name = form.Get("child-name");
-                    p.ChristianName = form.Get("child-ch-name");
-                    p.Birth = DateTime.Parse(form["child-birth"]);
-                    p.FirstName = form.Get("child-fname");
-                    p.Address = form.Get("child-address");
-                    p.Gender = bool.Parse(form["child-gender"]);
-                    //p.ID_Class = int.Parse(form["child-class"]);
+                    child.Name = form.Get("child-name");
+                    child.ChristianName = form.Get("child-ch-name");
+                    child.Birth = DateTime.Parse(form["child-birth"]);
+                    child.FirstName = form.Get("child-fname");
+                    child.Address = form.Get("child-address");
+                    child.Gender = bool.Parse(form["child-gender"]);
+                    //child.ID_Class = int.Parse(form["child-class"]);
                     db.SaveChanges();
                 }
-                else if (p.ID == fa_id)
+                else if (dad != null)
                 {
-                    p.ChristianName = form.Get("fa-ch-name");
-                    p.FirstName = form.Get("fa-fname");
-                    p.Name = form.Get("fa-name");
-                    p.Phone = form.Get("fa-phone");
+                    dad.ChristianName = form.Get("fa-ch-name");
+                    dad.FirstName = form.Get("fa-fname");
+                    dad.Name = form.Get("fa-name");
+                    dad.Phone = form.Get("fa-phone");
                     db.SaveChanges();
                 }
-                else if (p.ID == mo_id)
+                else if (mom != null)
                 {
-                    p.ChristianName = form.Get("mo-ch-name");
-                    p.FirstName = form.Get("mo-fname");
-                    p.Name = form.Get("mo-name");
-                    p.Phone = form.Get("mo-phone");
+                    mom.ChristianName = form.Get("mo-ch-name");
+                    mom.FirstName = form.Get("mo-fname");
+                    mom.Name = form.Get("mo-name");
+                    mom.Phone = form.Get("mo-phone");
                     db.SaveChanges();
                 }
             }
