@@ -216,13 +216,12 @@ namespace tnda_fix.Controllers
                             if (dad != null)
                             {
                                 dad.ID_Farmily = id_family;
-                                db.SaveChanges();
                             }
                             if (mom != null)
                             {
                                 mom.ID_Farmily = id_family;
-                                db.SaveChanges();
                             }
+                            db.SaveChanges();
                         }
                         Person p = new Person
                         {
@@ -283,7 +282,7 @@ namespace tnda_fix.Controllers
         public ActionResult EditPerson(FormCollection form)
         {
             int id = int.Parse(form["child-id"]);
-          
+
             using (tndaEntities db = new tndaEntities())
             {
                 using (DbContextTransaction trans = db.Database.BeginTransaction())
@@ -298,7 +297,7 @@ namespace tnda_fix.Controllers
                         p.Address = form.Get("child-address");
                         p.Gender = bool.Parse(form["child-gender"]);
 
-                        if(p.ID_role == 4 || p.ID_role == 7)
+                        if (p.ID_role == 4 || p.ID_role == 7)
                         {
                             int fa_id = int.Parse(form["fa-id"]);
                             int mo_id = int.Parse(form["mo-id"]);
@@ -316,7 +315,7 @@ namespace tnda_fix.Controllers
                             mP.FirstName = form.Get("mo-fname");
                             mP.Name = form.Get("mo-name");
                             mP.Phone = form.Get("mo-phone");
-                        }                        
+                        }
                         //save
                         db.SaveChanges();
                         trans.Commit();

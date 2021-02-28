@@ -10,7 +10,7 @@
         var url = new URL(url_string);        
         var id_class = url.searchParams.get("id_class");
         $('#current_location').val(url_string);
-        $('#classes').val(id_class);                         
+        $('#classes').val(id_class);
         if (id_class == 'null') {
             $('#view').hide();
             $.LoadingOverlay("hide");
@@ -84,8 +84,7 @@
     <div id="vue_app" class="row bg-light rounded p-3">
         <table id="table" class="table table-striped" style="width:100%">
             <thead>
-                <tr>
-                    <th scope="col">ID</th>
+                <tr>                    
                     <th scope="col">Tên Thánh</th>
                     <th scope="col">Họ & Tên</th>
                     <th scope="col">Ngày sinh</th>
@@ -93,8 +92,7 @@
                 </tr>
             </thead>
             <tbody style="display:none" id="content">
-                <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
-                    <th scope="row">{{p.id}}</th>
+                <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">                    
                     <td>{{p.ch_name}}</td>
                     <td>{{p.fname}} {{p.name}}</td>
                     <td>{{p.birth}}</td>
@@ -132,13 +130,9 @@
                         <option value="false">Nữ</option>
                     </select>
                 </div>
-                @*<div class="form-group">
-                    <label>Khối</label>
-                    <select id="grades" onchange="getClasses()" class="form-control" name="child-grade"></select>
-                </div>*@
-                <div class="form-group">
-                    @*<label>Lớp</label>*@
-                    <select type="hidden" id="classes" class="form-control" value="1" name="child-class"></select>
+                <div class="form-group" style="display: none">
+                    <label>Lớp</label>
+                    <input id="classes" class="form-control" value="1" name="child-class"/>
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ</label>
