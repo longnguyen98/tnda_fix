@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using tnda_fix.Models;
+using tnda_fix.Models.filters;
 using tnda_fix.Services;
 
 namespace tnda_fix.Controllers
@@ -8,6 +9,7 @@ namespace tnda_fix.Controllers
     public class AuthController : Controller
     {
         [HttpPost]
+        [Auth]
         public JsonResult changePassword(int personId, string oldPassword, string newPassword)
         {
             using (AuthService authService = new AuthService())
@@ -21,6 +23,7 @@ namespace tnda_fix.Controllers
             bool login = Session["personId"] != null;
             return Json(login, JsonRequestBehavior.AllowGet);
         }
+        [Auth]
         public JsonResult getPersonFromSession()
         {
             int person_id = (int)Session["personId"];
@@ -49,7 +52,6 @@ namespace tnda_fix.Controllers
             {
                 Session.Add("accountName", username);
                 Session.Timeout = 1440;
-                Logger.create("LOGIN", username + " has logged in", (int)Session["personId"]);
                 //admin
                 if (username.EndsWith("admin"))
                 {
@@ -68,7 +70,6 @@ namespace tnda_fix.Controllers
         }
         public ActionResult logout()
         {
-            Logger.create("LOGOUT", Session["accountName"] + " has logged out", (int)Session["personId"]);
             Session.Clear();
             return Redirect("~/external/index");
         }

@@ -20,10 +20,6 @@ namespace tnda.Controllers
         {
             return View();
         }
-        public ActionResult addPerson()
-        {
-            return View();
-        }
         public ActionResult detail()
         {
             return View();
