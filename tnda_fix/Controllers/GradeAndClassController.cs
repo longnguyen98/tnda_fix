@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using tnda_fix.Models;
 
 namespace tnda_fix.Controllers
-{
+{    
     public class GradeAndClassController : Controller
     {
         public JsonResult getAllGrades()
