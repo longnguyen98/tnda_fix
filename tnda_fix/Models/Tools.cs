@@ -60,5 +60,13 @@ namespace tnda_fix.Models
             //
             return "/img/upload/" + _filename;
         }
+        public static string encodeBase64(string input)
+        {            
+            return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(input));
+        }
+        public static string decodeBase64(string input)
+        {            
+            return System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(input));
+        }
     }
 }

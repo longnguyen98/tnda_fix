@@ -34,7 +34,7 @@ namespace tnda_fix.Services
                             res.message = "WRONG_CURRENT_PASSWORD";
                             return res;
                         }
-                        acc.Pwd = newPass;
+                        acc.Pwd = Tools.encodeBase64(newPass);
                     }
                     db.SaveChanges();
                     transaction.Commit();

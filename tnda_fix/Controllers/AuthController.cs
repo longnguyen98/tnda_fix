@@ -81,7 +81,7 @@ namespace tnda_fix.Controllers
                 account = db.ACCs.Where(acc => acc.UserName.Equals(username)).FirstOrDefault();
                 if (account != null)
                 {
-                    if (account.Pwd.Trim().Equals(password))
+                    if (account.Pwd.Trim().Equals(Tools.encodeBase64(password)))
                     {
                         Person p = account.Person;
                         Session.Add("personId", p.ID);
