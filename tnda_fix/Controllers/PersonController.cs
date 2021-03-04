@@ -29,7 +29,7 @@ namespace tnda_fix.Controllers
                     Family family = db.Families.Find(child.ID_Farmily);
                     //
                     Person father = db.People.Find(family.ID_Dad);
-                    //            
+                    //
                     Person mother = db.People.FirstOrDefault(p =>
                         p.ID_Farmily == family.ID && p.ID != father.ID && p.ID != child.ID);
                     //
@@ -49,21 +49,42 @@ namespace tnda_fix.Controllers
                     //
                     var fatherJson = new
                     {
-                        fa_id = father.ID, ch_name = father.ChristianName, fname = father.FirstName, name = father.Name,
-                        role = father.Role.RoleName, phone = father.Phone
+                        fa_id = father.ID,
+                        ch_name = father.ChristianName,
+                        fname = father.FirstName,
+                        name = father.Name,
+                        role = father.Role.RoleName,
+                        phone = father.Phone
                     };
                     var motherJson = new
                     {
-                        mo_id = mother.ID, ch_name = mother.ChristianName, fname = mother.FirstName, name = mother.Name,
-                        role = mother.Role.RoleName, phone = mother.Phone, role_id = child.ID_role
+                        mo_id = mother.ID,
+                        ch_name = mother.ChristianName,
+                        fname = mother.FirstName,
+                        name = mother.Name,
+                        role = mother.Role.RoleName,
+                        phone = mother.Phone,
+                        role_id = child.ID_role
                     };
                     int glvId = glv?.ID ?? 91;
                     var json = new
                     {
-                        id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name,
-                        pclass = classString, role = child.Role.RoleName, glv = glv_name, id_class = child.ID_Class,
-                        birth = birthString, address = child.Address, father = fatherJson, mother = motherJson,
-                        role_id = child.ID_role, glv_id = glvId, img = img, note = child.Note
+                        id = child.ID,
+                        ch_name = child.ChristianName,
+                        fname = child.FirstName,
+                        name = child.Name,
+                        pclass = classString,
+                        role = child.Role.RoleName,
+                        glv = glv_name,
+                        id_class = child.ID_Class,
+                        birth = birthString,
+                        address = child.Address,
+                        father = fatherJson,
+                        mother = motherJson,
+                        role_id = child.ID_role,
+                        glv_id = glvId,
+                        img = img,
+                        note = child.Note
                     };
                     //
                     return Json(json, JsonRequestBehavior.AllowGet);
@@ -83,10 +104,20 @@ namespace tnda_fix.Controllers
                     string gender = child.Gender.Value ? "Nam" : "Nữ";
                     var json = new
                     {
-                        id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name,
-                        pclass = classString, id_class = child.ID_Class, role = child.Role.RoleName,
-                        birth = birthString, address = child.Address, phone = child.Phone, role_id = child.ID_role,
-                        img = image, gender = gender, genderValue = child.Gender.Value
+                        id = child.ID,
+                        ch_name = child.ChristianName,
+                        fname = child.FirstName,
+                        name = child.Name,
+                        pclass = classString,
+                        id_class = child.ID_Class,
+                        role = child.Role.RoleName,
+                        birth = birthString,
+                        address = child.Address,
+                        phone = child.Phone,
+                        role_id = child.ID_role,
+                        img = image,
+                        gender = gender,
+                        genderValue = child.Gender.Value
                     };
                     return Json(json, JsonRequestBehavior.AllowGet);
                 }
@@ -98,20 +129,25 @@ namespace tnda_fix.Controllers
             string query = Request.QueryString["query"];
             query = Tools.convert(query).ToUpper();
             //
-            using (var db = new tndaEntities())
+            using (tndaEntities db = new tndaEntities())
             {
                 const string sql =
                     "SELECT * FROM Person p WHERE p.for_search LIKE CONCAT('%',@query,'%') AND p.ID_role = 4 ";
-                var list = db.People.SqlQuery(sql, new SqlParameter("@query", query)).ToList();
-                var objects = new List<object>();
+                List<Person> list = db.People.SqlQuery(sql, new SqlParameter("@query", query)).ToList();
+                List<object> objects = new List<object>();
                 foreach (Person p in list)
                 {
                     string birthString = p.Birth != null ? p.Birth.Value.ToString("dd.MM.yyy") : "";
                     string classString = p.Class != null ? (p.Class.Grade.GradeName + " " + p.Class.ClassName) : "";
                     var ob = new
                     {
-                        id = p.ID, ch_name = p.ChristianName, fname = p.FirstName, name = p.Name, pclass = classString,
-                        birth = birthString, role = p.Role.RoleName
+                        id = p.ID,
+                        ch_name = p.ChristianName,
+                        fname = p.FirstName,
+                        name = p.Name,
+                        pclass = classString,
+                        birth = birthString,
+                        role = p.Role.RoleName
                     };
                     //
                     objects.Add(ob);
@@ -123,15 +159,18 @@ namespace tnda_fix.Controllers
 
         public JsonResult getPersonByClass()
         {
-            var id_class = int.Parse(Request.QueryString["id_class"]);
-            var db = new tndaEntities();
-            var json = new List<object>();
-            var people = db.People.Where(p => p.ID_role == 4 && p.ID_Class == id_class).ToList();
-            foreach (var p in people)
+            int id_class = int.Parse(Request.QueryString["id_class"]);
+            tndaEntities db = new tndaEntities();
+            List<object> json = new List<object>();
+            List<Person> people = db.People.Where(p => p.ID_role == 4 && p.ID_Class == id_class).ToList();
+            foreach (Person p in people)
             {
                 var ob = new
                 {
-                    id = p.ID, ch_name = p.ChristianName, fname = p.FirstName, name = p.Name,
+                    id = p.ID,
+                    ch_name = p.ChristianName,
+                    fname = p.FirstName,
+                    name = p.Name,
                     pclass = p.Class.Grade.GradeName + " " + p.Class.ClassName,
                     birth = p.Birth != null ? p.Birth.Value.ToShortDateString() : "",
                     role = p.Role.RoleName
@@ -160,7 +199,10 @@ namespace tnda_fix.Controllers
                 string birthString = child.Birth != null ? child.Birth.Value.ToString("dd.MM.yyy") : "";
                 var ob = new
                 {
-                    id = child.ID, ch_name = child.ChristianName, fname = child.FirstName, name = child.Name,
+                    id = child.ID,
+                    ch_name = child.ChristianName,
+                    fname = child.FirstName,
+                    name = child.Name,
                     birth = birthString
                 };
                 json.Add(ob);
@@ -180,7 +222,11 @@ namespace tnda_fix.Controllers
                 string classString = p.Class != null ? (p.Class.Grade.GradeName + " " + p.Class.ClassName) : "";
                 var ob = new
                 {
-                    id = p.ID, ch_name = p.ChristianName, fname = p.FirstName, name = p.Name, pclass = classString,
+                    id = p.ID,
+                    ch_name = p.ChristianName,
+                    fname = p.FirstName,
+                    name = p.Name,
+                    pclass = classString,
                     birth = birthString
                 };
                 //
@@ -202,7 +248,7 @@ namespace tnda_fix.Controllers
             tndaEntities db = new tndaEntities();
             db.People.Find(id).Image = result;
             db.SaveChanges();
-            //       
+            //
             return Redirect("~/internal/index?id=" + id);
         }
 
@@ -210,10 +256,10 @@ namespace tnda_fix.Controllers
         [HttpPost]
         public JsonResult addPerson(FormCollection form)
         {
-            using (var personService = new PersonService())
+            using (PersonService personService = new PersonService())
             {
-                var response = personService.addPerson(form);
-                return Json(new {success = response.success, message = response.message},
+                Response response = personService.addPerson(form);
+                return Json(new { success = response.success, message = response.message },
                     JsonRequestBehavior.AllowGet);
             }
         }
@@ -245,7 +291,7 @@ namespace tnda_fix.Controllers
                             //
                             Person fP = db.People.Find(fa_id);
                             Person mP = db.People.Find(mo_id);
-                            //                      
+                            //
                             //fa
                             fP.ChristianName = form.Get("fa-ch-name");
                             fP.FirstName = form.Get("fa-fname");
@@ -262,7 +308,7 @@ namespace tnda_fix.Controllers
                         db.SaveChanges();
                         trans.Commit();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         trans.Rollback();
                         throw new Exception();

@@ -18,7 +18,7 @@ namespace tnda_fix.Controllers
 
                 int slKT, slRL, slTS, slSD;
                 slKT = db.People.SqlQuery(sql, new SqlParameter("@gId", 1)).Count();
-                slRL = db.People.SqlQuery(sql, new SqlParameter("@gId", 2)).Count(); 
+                slRL = db.People.SqlQuery(sql, new SqlParameter("@gId", 2)).Count();
                 slTS = db.People.SqlQuery(sql, new SqlParameter("@gId", 3)).Count();
                 slSD = db.People.SqlQuery(sql, new SqlParameter("@gId", 4)).Count();
                 int count = slKT + slRL + slTS + slSD;
@@ -28,13 +28,14 @@ namespace tnda_fix.Controllers
             }
             return Json(json, JsonRequestBehavior.AllowGet);
         }
+
         public JsonResult countTN()
         {
             List<object> json = new List<object>();
             using (tndaEntities db = new tndaEntities())
             {
                 string sql = "SELECT * FROM Person p JOIN Class c ON p.ID_Class = c.ID JOIN Grade g ON c.ID_Grade = g.ID WHERE g.ID = @gId AND p.ID_role = 4";
-                
+
                 int slKT, slRL, slTS, slSD;
                 slKT = db.People.SqlQuery(sql, new SqlParameter("@gId", 1)).Count();
                 slRL = db.People.SqlQuery(sql, new SqlParameter("@gId", 2)).Count();
@@ -47,6 +48,7 @@ namespace tnda_fix.Controllers
             }
             return Json(json, JsonRequestBehavior.AllowGet);
         }
+
         public JsonResult countByClass()
         {
             int idGr = int.Parse(Request.QueryString["id_grade"]);
@@ -86,6 +88,7 @@ namespace tnda_fix.Controllers
             }
             return ps;
         }
+
         public JsonResult allTN()
         {
             tndaEntities db = new tndaEntities();
@@ -101,11 +104,10 @@ namespace tnda_fix.Controllers
                 List<object> ob = new List<object>();
                 foreach (Person p in children)
                 {
-
                     Family family = db.Families.Find(p.ID_Farmily);
                     //
                     Person father = db.People.Find(family.ID_Dad);
-                    //            
+                    //
                     Person mother = db.People.Where(mo => mo.ID_Farmily == family.ID && mo.ID != father.ID && mo.ID != p.ID).FirstOrDefault();
                     //
                     Person gv = db.People.Where(glv => glv.ID_Class == p.ID_Class && (glv.ID_role == 1 || glv.ID_role == 2) && glv.ID_Class != null).FirstOrDefault();

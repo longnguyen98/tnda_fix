@@ -9,7 +9,7 @@ namespace tnda_fix.Models.filters
     {
         public void OnAuthentication(AuthenticationContext filterContext)
         {
-            String username = Convert.ToString(filterContext.HttpContext.Session["accountName"]);
+            string username = Convert.ToString(filterContext.HttpContext.Session["accountName"]);
             if (!username.EndsWith("admin"))
             {
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary
@@ -22,7 +22,6 @@ namespace tnda_fix.Models.filters
 
         public void OnAuthenticationChallenge(AuthenticationChallengeContext filterContext)
         {
-           
         }
     }
 }

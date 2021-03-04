@@ -15,12 +15,12 @@ namespace tnda_fix.Services
 
         public Response addPerson(FormCollection form)
         {
-            using (var trans = db.Database.BeginTransaction())
+            using (System.Data.Entity.DbContextTransaction trans = db.Database.BeginTransaction())
             {
                 try
                 {
-                    var id_family_lead = -1;
-                    var id_family = -1;
+                    int id_family_lead = -1;
+                    int id_family = -1;
                     Person dad = null;
                     Person mom = null;
                     dad = new Person
@@ -42,8 +42,8 @@ namespace tnda_fix.Services
                     };
                     db.People.Add(mom);
                     db.SaveChanges();
-                    var mom_id = mom.ID;
-                    var dad_id = dad.ID;
+                    int mom_id = mom.ID;
+                    int dad_id = dad.ID;
                     //
                     if (dad.Phone == null || dad.Phone.Length == 0)
                     {
@@ -57,7 +57,7 @@ namespace tnda_fix.Services
                     //
                     if (id_family_lead != -1)
                     {
-                        var fl = new Family
+                        Family fl = new Family
                         {
                             ID_Dad = id_family_lead,
                         };
@@ -70,7 +70,7 @@ namespace tnda_fix.Services
                         db.SaveChanges();
                     }
 
-                    var p = new Person
+                    Person p = new Person
                     {
                         ChristianName = form["child-ch-name"],
                         FirstName = form["child-fname"],
@@ -86,7 +86,7 @@ namespace tnda_fix.Services
                     {
                         p.Birth = Convert.ToDateTime(form["child-birth"]);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         p.Birth = null;
                     }
@@ -94,7 +94,7 @@ namespace tnda_fix.Services
                     dad.Address = p.Address;
                     mom.Address = p.Address;
                     //
-                    var clazz = db.Classes.Find(p.ID_Class);
+                    Class clazz = db.Classes.Find(p.ID_Class);
                     clazz.students_count++;
                     //
                     if (form["check-box"] != null && bool.Parse(form["check-box"]))

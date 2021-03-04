@@ -18,11 +18,13 @@ namespace tnda_fix.Controllers
                 return Json(new { res.success, res.message }, JsonRequestBehavior.AllowGet);
             }
         }
+
         public JsonResult getAuthStatus()
         {
             bool login = Session["personId"] != null;
             return Json(login, JsonRequestBehavior.AllowGet);
         }
+
         [Auth]
         public JsonResult getPersonFromSession()
         {
@@ -42,6 +44,7 @@ namespace tnda_fix.Controllers
             };
             return Json(json, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         public ActionResult login()
         {
@@ -68,11 +71,13 @@ namespace tnda_fix.Controllers
                 return Redirect("~/external/index");
             }
         }
+
         public ActionResult logout()
         {
             Session.Clear();
             return Redirect("~/external/index");
         }
+
         private bool auth(string username, string password)
         {
             ACC account = null;

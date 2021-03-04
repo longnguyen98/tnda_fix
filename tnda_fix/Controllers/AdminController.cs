@@ -1,7 +1,6 @@
 ﻿using IronXL;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -20,18 +19,22 @@ namespace tnda_fix.Controllers
         {
             return View();
         }
+
         public ActionResult AllGLV()
         {
             return View();
         }
+
         public ActionResult CheckNew()
         {
             return View();
         }
+
         public ActionResult allClasses()
         {
             return View();
         }
+
         public ActionResult dashBoard()
         {
             return View();
@@ -42,15 +45,13 @@ namespace tnda_fix.Controllers
             return View();
         }
 
-
-
         //import from excel
         [HttpPost]
         public async System.Threading.Tasks.Task<string> UploadXlsAsync(HttpPostedFileBase file)
         {
-            var errorString = "";
-            var readData = "";
-            //data for service            
+            string errorString = "";
+            string readData = "";
+            //data for service
             FormCollection formCollection = new FormCollection();
 
             //process
@@ -114,7 +115,6 @@ namespace tnda_fix.Controllers
                     //clear before add new record
                     count = 0;
                     formCollection.Clear();
-
                 }
             }
             catch (Exception e)

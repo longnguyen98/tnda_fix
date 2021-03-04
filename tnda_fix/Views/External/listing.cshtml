@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "listing";
     Layout = "~/Views/Shared/ExternalLayout.cshtml";
 }
@@ -14,7 +13,7 @@
             url: "/Person/getPersonByQuery",
             data: { query: query },
             success: function (result) {
-                console.log(result);            
+                console.log(result);
                 new Vue({
                     el: "#vue_app",
                     data: {
@@ -57,7 +56,6 @@
                     <th scope="col">Ngày sinh</th>
                     <th scope="col">Lớp</th>
                     <th scope="col">Chi tiết</th>
-
                 </tr>
             </thead>
             <tbody id="content">
@@ -73,6 +71,3 @@
         </table>
     </div>
 </div>
-
-
-

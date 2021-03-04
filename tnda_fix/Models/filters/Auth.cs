@@ -14,6 +14,7 @@ namespace tnda_fix.Models.filters
                 filterContext.Result = new HttpUnauthorizedResult();
             }
         }
+
         public void OnAuthenticationChallenge(AuthenticationChallengeContext filterContext)
         {
             if (filterContext.Result == null || filterContext.Result is HttpUnauthorizedResult)

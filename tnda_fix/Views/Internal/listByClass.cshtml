@@ -1,12 +1,14 @@
 ﻿@{
-    ViewBag.Title = "listByClass";
-    Layout = "~/Views/Shared/InternalLayout.cshtml";
+                /**/
+
+                ViewBag.Title = "listByClass";
+                Layout = "~/Views/Shared/InternalLayout.cshtml";
 }
 <script>
     $(document).ready(function () {
         $.LoadingOverlay("show");
-        var url_string = window.location.href;        
-        var url = new URL(url_string);        
+        var url_string = window.location.href;
+        var url = new URL(url_string);
         var id_class = url.searchParams.get("id_class");
         $('#current_location').val(url_string);
         $('#classes').val(id_class);
@@ -55,7 +57,7 @@
                 }
 
             });
-        }       
+        }
     });
     function getClasses() {
         var grade_id = $('#grades').val();
@@ -77,8 +79,8 @@
             url: "/person/addPerson",
             method: "POST",
             data: data,
-            success: function(response) {
-            	console.log(response);
+            success: function (response) {
+                console.log(response);
                 if (response.success) {
                     jAlert('Thêm thành công');
                     window.location.reload();
@@ -103,22 +105,22 @@
     <div id="vue_app" class="row bg-light rounded p-3">
         <table id="table" class="table table-striped" style="width:100%">
             <thead>
-            <tr>
-                <th scope="col">Tên Thánh</th>
-                <th scope="col">Họ & Tên</th>
-                <th scope="col">Ngày sinh</th>
-                <th scope="col">Chi tiết</th>
-            </tr>
+                <tr>
+                    <th scope="col">Tên Thánh</th>
+                    <th scope="col">Họ & Tên</th>
+                    <th scope="col">Ngày sinh</th>
+                    <th scope="col">Chi tiết</th>
+                </tr>
             </thead>
             <tbody style="display:none" id="content">
-            <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
-                <td>{{p.ch_name}}</td>
-                <td>{{p.fname}} {{p.name}}</td>
-                <td>{{p.birth}}</td>
-                <td>
-                    <a :href="link+p.id" class="btn btn-sm btn-info">Chi tiết</a>
-                </td>
-            </tr>
+                <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
+                    <td>{{p.ch_name}}</td>
+                    <td>{{p.fname}} {{p.name}}</td>
+                    <td>{{p.birth}}</td>
+                    <td>
+                        <a :href="link+p.id" class="btn btn-sm btn-info">Chi tiết</a>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -127,7 +129,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content p-5">
             <form id="addPersonForm">
-                <input hidden name="current_location" id="current_location" type="text"/>
+                <input hidden name="current_location" id="current_location" type="text" />
                 <div class="form-group">
                     <label>Tên thánh</label>
                     <input type="text" class="form-control" placeholder="Tên Thánh" name="child-ch-name" required pattern="\S+.*">
@@ -153,7 +155,7 @@
                 </div>
                 <div class="form-group" style="display: none">
                     <label>Lớp</label>
-                    <input id="classes" class="form-control" value="1" name="child-class"/>
+                    <input id="classes" class="form-control" value="1" name="child-class" />
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ</label>
@@ -162,7 +164,7 @@
                 <div class="form-group">
                     <input hidden type="text" class="form-control" name="child-role" value="4">
                 </div>
-                <br/>
+                <br />
                 <h4 class="font-weight-bold">Bố</h4>
                 <div class="form-group">
                     <label>Tên Thánh</label>
@@ -180,7 +182,7 @@
                     <label>SDT</label>
                     <input type="number" class="form-control" placeholder="Số điện thoại" name="fa-phone">
                 </div>
-                <br/>
+                <br />
                 <h4 class="font-weight-bold">Mẹ</h4>
                 <div class="form-group">
                     <label>Tên Thánh</label>

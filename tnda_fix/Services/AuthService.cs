@@ -41,16 +41,14 @@ namespace tnda_fix.Services
                     res.success = true;
                     return res;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     res.success = false;
                     res.message = e.Message;
                     transaction.Rollback();
                     return res;
                 }
-                
             }
-            
         }
 
         public void Dispose()
