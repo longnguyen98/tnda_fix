@@ -23,7 +23,7 @@
                     }
                 });
                 if (result.id == 4) {
-                    window.alert('Xin chào Thủy Tiên xinh đẹp <3');
+                    jAlert('Xin chào Thủy Tiên xinh đẹp <i class="far fa-kiss-wink-heart"></i>');
                 }
                 $("#vue_app").show();
             }
@@ -61,7 +61,7 @@
         var validated = false;
         if (newPassword.length < 3 || newPassword.length > 15) {
             $('#newPassError').show();
-            validated = false;            
+            validated = false;
         } else {
             $('#newPassError').hide();
             validated = true;
@@ -89,30 +89,18 @@
             <div class="row mb-2 shadow" style="width:100%">
                 <div class="col-lg-12">
                     <div class="card d-flex">
-                        <div class="card-body row d-flex justify-content-center">
-                            <div class="col-lg-4 col-sm-6 mb-2">
-                                <img class="card-img-top rounded mb-1" :src="detail.img" alt="Img" />
-                                <form action="/person/setimg" method="post" enctype="multipart/form-data">
-                                    <input type="text" hidden name="id" :value="id" />
-                                    <div class="input-group">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-sm btn-outline-success" type="submit">Cập nhật</button>
-                                        </div>
-                                        <div class="custom-file">
-                                            <label for="file_input" class="custom-file-label">hình ảnh</label>
-                                            <input id="file_input" required type="file" name="file" class="custom-file-input h-100">
-                                        </div>
-
-                                    </div>
-                                </form>
+                        <div class="card-body row d-flex justify-content-start">
+                            <div class="col-lg-auto col-sm-6 mb-2">                                
+                                    <img class="card-img-top rounded mb-1 w-100" :src="detail.img" alt="Img" />                                
                             </div>
-                            <div class="col-lg-8 col-sm-12 mb-2">
+                            <div class="col-lg-auto col-sm-12 mb-2">
                                 <p><h5 class="card-title">{{detail.ch_name}} {{detail.fname}} {{detail.name}}</h5></p>
                                 <h6 class="card-subtitle mb-2 text-muted">{{detail.role}}</h6>
                                 <p class="card-text">Ngày sinh: <b>{{detail.birth}}</b></p>
                                 <p class="card-text">Địa chỉ: <b>{{detail.address}}</b></p>
                                 <p class="card-text">Số điện thoại: <b>{{detail.phone}}</b></p>
                                 <p class="card-text">Lớp: <b>{{detail.pclass}}</b></p>
+
                             </div>
                         </div>
                     </div>
@@ -121,9 +109,22 @@
             <div class="row mb-2 shadow" style="width:100%">
                 <div class="col-lg-12 col-sm-12 mb-2">
                     <div class="card d-flex">
-                        <div class="card-body  d-flex flex-row-reverse">
-                            <button type="button" class="btn btn-info ml-2" data-toggle="modal" data-target="#edit-modal">Sửa thông tin</button>
-                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#password-modal">Đổi mật khẩu</button>
+                        <div class="card-body d-lg-flex flex-lg-row-reverse d-flex flex-column-reverse">
+                            <button type="button" class="btn btn-info m-1" data-toggle="modal" data-target="#edit-modal">Sửa thông tin</button>
+                            <button type="button" class="btn btn-secondary m-1" data-toggle="modal" data-target="#password-modal">Đổi mật khẩu</button>
+                            <form class="m-1" action="/person/setimg" method="post" enctype="multipart/form-data">
+                                <input type="text" hidden name="id" :value="id" />
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-sm btn-outline-success" type="submit">Cập nhật</button>
+                                    </div>
+                                    <div class="custom-file">
+                                        <label for="file_input" class="custom-file-label"> ảnh đại diện</label>
+                                        <input id="file_input" required type="file" name="file" class="custom-file-input h-100">
+                                    </div>
+
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -183,7 +184,7 @@
                     </div>
                     <div class="form-group">
                         <label>Mật khẩu mới </label>
-                        <input id="newPassword" oninput="validatePassword()" type="password" class="form-control" required  maxlength="15">
+                        <input id="newPassword" oninput="validatePassword()" type="password" class="form-control" required maxlength="15">
                         <label id="newPassError" class="text-danger font-italic">Độ dài mật khẩu phải lớn hơn 3 và bé hơn 15 ký tự</label>
                     </div>
                     <div class="form-group">

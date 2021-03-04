@@ -14,7 +14,7 @@ namespace tnda_fix.Controllers
     {       
         // GET: External
         public ActionResult Index()
-        {
+        {            
             return View();
         }
         public ActionResult listing()

@@ -80,11 +80,11 @@
             success: function(response) {
             	console.log(response);
                 if (response.success) {
-                    window.alert('Thêm thành công');
+                    jAlert('Thêm thành công');
                     window.location.reload();
                 } else {
-                    window.alert('Lỗi! Thêm thất bại');
-                    window.alert(response.message);
+                    jAlert('Lỗi! Thêm thất bại');
+                    jAlert(response.message);
                 }
                 $.LoadingOverlay('hide');
             }

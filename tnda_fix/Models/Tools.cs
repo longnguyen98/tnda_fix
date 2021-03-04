@@ -52,20 +52,20 @@ namespace tnda_fix.Models
             };
             imf.Load(file.InputStream);
             int h, w;
-            h = 400;
             w = 300;
-            //
-            imf.Resize(new System.Drawing.Size(w, h));            
+            h = (imf.Image.Size.Height * w) / imf.Image.Size.Width;
+            //            
+            imf.Resize(new System.Drawing.Size(w, h));
             imf.Save(outStream);
             //
             return "/img/upload/" + _filename;
         }
         public static string encodeBase64(string input)
-        {            
+        {
             return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(input));
         }
         public static string decodeBase64(string input)
-        {            
+        {
             return System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(input));
         }
     }
