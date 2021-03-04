@@ -71,10 +71,23 @@
                             </h6>
                         </li>
                         <li class="nav-item m-2">
+                            <form action="~/Internal/listingWithQuery">
+                                <div class="d-flex flex-column">
+                                    <div class="">
+                                        <input type="text" required name="query" class="form-control" placeholder="Tra cứu thông tin">
+                                    </div>
+                                    <div class="mt-2">
+                                        <button type="submit" class="btn font-weight-bold w-100 text-left btn-secondary"><i class="fa fa-search mr-2"></i>Tìm kiếm</button>
+                                    </div>
+                                </div>                
+                            </form>
+                        </li>
+                        <li class="nav-item m-2">
                             <a class="btn btn-info font-weight-bold w-100 text-left" :href="'/internal/index?id='+glv.id">
                                 <i class="fa fa-home mr-2"></i>Trang chính
                             </a>
                         </li>
+
                         <li class="nav-item m-2">
                             <a class="btn btn-info font-weight-bold w-100 text-left" :href="'/internal/listbyclass?id_class=' + glv.id_class">
                                 <i class="fa fa-list mr-2"></i>Danh sách thiếu nhi

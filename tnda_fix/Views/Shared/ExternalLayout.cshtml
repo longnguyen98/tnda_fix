@@ -31,8 +31,7 @@
             $('#login_btn').LoadingOverlay("show");
             $.ajax({
                 url: "/auth/getAuthStatus",
-                success: function (result) {
-                    console.log(result);
+                success: function (result) {                    
                     if (result == true) {
                         $.ajax({
                             url: "/auth/getPersonFromSession",
@@ -74,7 +73,7 @@
             <button id="login_btn" v-if="!status" style="display:none" data-toggle="modal" data-target="#login_modal" class="btn btn-primary font-weight-bold">
                 Đăng nhập GLV
             </button>
-            <a href="/internal/index" id="glv_name" style="display:none" v-if="status">Xin chào <b>{{person.ch_name}} {{person.fname}} {{person.name}}</b></a>
+            <a :href="'/internal/index?id='+ person.id" id="glv_name" style="display:none" v-if="status">Xin chào <b>{{person.ch_name}} {{person.fname}} {{person.name}}</b></a>
         </div>
     </nav>
     <section class="features-icons bg-info" style="padding-top:0px;padding-bottom:2%">

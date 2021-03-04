@@ -241,7 +241,7 @@ namespace tnda_fix.Controllers
         {
             int id = int.Parse(form["id"]);
             //
-            string _FileName = Tools.getUniqueNum() + Path.GetExtension(file.FileName);
+            string _FileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
             string _path = Path.Combine(Server.MapPath("~/img/upload"), _FileName);
             string result = Tools.uploadAndResizeImg(file, _path, _FileName);
             //

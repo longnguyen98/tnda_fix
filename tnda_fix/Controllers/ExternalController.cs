@@ -20,9 +20,7 @@ namespace tnda_fix.Controllers
 
         public ActionResult listingWithQuery()
         {
-            string query = Request.QueryString["query"];
-            query = Tools.convert(query);
-            return Redirect("~/External/Listing?query=" + query);
+            return Redirect("~/External/Listing?query=" + Tools.convert(Request.QueryString["query"]));
         }
 
         public ActionResult detail()

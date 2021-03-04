@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using tnda_fix.Models;
 using tnda_fix.Models.filters;
 
 namespace tnda.Controllers
@@ -26,6 +27,14 @@ namespace tnda.Controllers
         public ActionResult allClasses()
         {
             return View();
+        }
+        public ActionResult listingInternal()
+        {
+            return View();
+        }
+        public ActionResult listingWithQuery()
+        {
+            return Redirect("~/Internal/ListingInternal?query=" + Tools.convert(Request.QueryString["query"]));
         }
     }
 }
