@@ -1,8 +1,4 @@
 ﻿using Owin;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace tnda_fix
 {
@@ -10,7 +6,6 @@ namespace tnda_fix
     {
         public void Configuration(IAppBuilder app)
         {
-            
         }
     }
 }

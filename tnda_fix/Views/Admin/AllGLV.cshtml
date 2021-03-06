@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "AllGLV";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
@@ -35,16 +34,16 @@
                     }
                 });
                 vue_edit = new Vue({
-                    el: "#edit_modal",  
+                    el: "#edit_modal",
                     data: {detail:result[0]}
                 });
                 $('#table_wrapper').addClass("w-100");
                 $.LoadingOverlay("hide");
             }
         });
-       
+
     });
-    
+
     function load_modal(id) {
         $.LoadingOverlay("show");
         $.ajax({
@@ -121,7 +120,7 @@
         <div class="modal-dialog modal-lg">
         <div class="modal-content p-5">
             <form action="/person/EditClass" method="post">
-                <input hidden name="current_location" type="text" value="/admin/allglv"/>
+                <input hidden name="current_location" type="text" value="/admin/allglv" />
                 <div class="d-flex justify-content-center bg-light rounded">
                     <img id="loading" style="display:none" src="~/img/loading.gif" />
                 </div>

@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
@@ -9,12 +8,12 @@
     var glv4Dashboard;
     var tn4Dashboard;
     var start = Date.now();
-    $(document).ready(function () {        
+    $(document).ready(function () {
         $('#body_index').LoadingOverlay("show");
         $.ajax({
             url: "/dashboard/countGLV",
             success: function (result) {
-                console.log("count GLV:" +(Date.now() - start));                
+                console.log("count GLV:" +(Date.now() - start));
                 new Vue({
                     el: '#vue_app',
                     data: {
@@ -295,7 +294,3 @@
         </div>
     </div>
 </div>*@
-
-
-
-

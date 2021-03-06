@@ -25,9 +25,10 @@ namespace tnda_fix.Models
         "ýỳỵỷỹ",
         "ÝỲỴỶỸ"
   };
+
         public static string convert(string str)
         {
-            //Thay thế và lọc dấu từng char      
+            //Thay thế và lọc dấu từng char
             for (int i = 1; i < VietNamChar.Length; i++)
             {
                 for (int j = 0; j < VietNamChar[i].Length; j++)
@@ -37,11 +38,13 @@ namespace tnda_fix.Models
             }
             return str;
         }
+
         public static string getUniqueNum()
         {
-            string s = DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + DateTime.Now.Millisecond.ToString();
+            string s = DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + DateTime.Now.Millisecond.ToString();            
             return s;
         }
+
         public static string uploadAndResizeImg(HttpPostedFileBase file, string _path, string _filename)
         {
             Stream outStream = new FileStream(_path, FileMode.Create, FileAccess.ReadWrite);
@@ -52,13 +55,23 @@ namespace tnda_fix.Models
             };
             imf.Load(file.InputStream);
             int h, w;
-            h = 400;
             w = 300;
+            h = (imf.Image.Size.Height * w) / imf.Image.Size.Width;
             //
-            imf.Resize(new System.Drawing.Size(w, h));            
+            imf.Resize(new System.Drawing.Size(w, h));
             imf.Save(outStream);
             //
             return "/img/upload/" + _filename;
+        }
+
+        public static string encodeBase64(string input)
+        {
+            return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(input));
+        }
+
+        public static string decodeBase64(string input)
+        {
+            return System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(input));
         }
     }
 }
