@@ -404,7 +404,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="fonts\" />
     <Folder Include="img\upload\" />
-    <Folder Include="temp_xls\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css.map" />
