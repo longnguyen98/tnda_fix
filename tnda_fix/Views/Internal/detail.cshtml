@@ -2,6 +2,78 @@
     ViewBag.Title = "detail";
     Layout = "~/Views/Shared/InternalLayout.cshtml";
 }
+<script>
+    $.LoadingOverlay("show");
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var id = url.searchParams.get("id");
+    $(document).ready(function () {
+        $.ajax({
+            url: "/person/getPersonDetail",
+            data: { id: id },
+            success: function (result) {
+                $('.my-content').addClass("d-flex");
+                $('.my-content').addClass("justify-content-center");
+                $('.my-content').addClass("row");
+                $('.my-content').show();
+                $.ajax({
+                    url: "/GradeAndClass/getAllGrades",
+                    success: function (result2) {
+                        for (var i = 0; i < result2.length; i++) {
+                            if (result.grade == result2[i].gradeName) {
+                                $("#grades").append('<option value="' + result2[i].ID + '" selected>' + result2[i].gradeName + '</option>');
+                            } else {
+                                $("#grades").append(new Option(result2[i].gradeName, result2[i].ID));
+                            }
+                        }
+                        getClasses();
+                    }
+                });
+                new Vue({
+                    el: '#vue-app',
+                    data: {
+                        detail: result,
+                        glvlink: '/external/detail?id=' + result.glv_id
+                    }
+                });
+                new Vue({
+                    el: '#edit-modal',
+                    data: {
+                        detail: result,
+                        glvlink: '/external/detail?id=' + result.glv_id
+                    },
+                    mounted: function () {
+
+                    }
+                });
+                new Vue({
+                    el: '#edit-class-modal',
+                    data: {
+                        detail: result,
+                        glvlink: '/external/detail?id=' + result.glv_id
+                    },
+                    mounted: function () {
+
+                    }
+                });
+            }
+        });
+    });
+    function getClasses() {
+        var grade_id = $('#grades').val();
+        $('#classes').html('');
+        $.ajax({
+            url: "/GradeAndClass/getClassByGrade",
+            data: { id: grade_id },
+            success: function (result) {
+                for (var i = 0; i < result.length; i++) {
+                    $("#classes").append(new Option(result[i].className, result[i].ID));
+                }
+                $.LoadingOverlay("hide");
+            }
+        });
+    }
+</script>
 <br />
 <div class="bg-light" id="vue-app">
     <div v-if="detail.role_id==4" class="my-content" style="display:none">
@@ -58,10 +130,10 @@
                         <input type="text" hidden name="id" :value="detail.id"/>
                         <div class="input-group">
                             <div class="input-group-append">
-                                <button class="btn btn-sm btn-outline-success" type="submit">Cập nhật</button>
+                                <button type="button" class="btn btn-outline-success" onclick="updateAvatar()">Cập nhật</button>
                             </div>
                             <div class="custom-file">
-                                <label for="file_input" class="custom-file-label"> ảnh đại diện</label>
+                                <label for="file_input" class="custom-file-label btn"> ảnh đại diện</label>
                                 <input id="file_input" required type="file" name="file" class="custom-file-input h-100">
                             </div>
                         </div>
@@ -178,77 +250,3 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-        $.LoadingOverlay("show");
-        var url_string = window.location.href;
-        var url = new URL(url_string);
-        $('#current_location').val(url_string);
-        var id = url.searchParams.get("id");
-        $.ajax({
-            url: "/person/getPersonDetail",
-            data: { id: id },
-            success: function (result) {
-                $('.my-content').addClass("d-flex");
-                $('.my-content').addClass("justify-content-center");
-                $('.my-content').addClass("row");
-                $('.my-content').show();
-                $.ajax({
-                    url: "/GradeAndClass/getAllGrades",
-                    success: function (result2) {
-                        for (var i = 0; i < result2.length; i++) {
-                            if (result.grade == result2[i].gradeName) {
-                                $("#grades").append('<option value="' + result2[i].ID + '" selected>' + result2[i].gradeName + '</option>');
-                            } else {
-                                $("#grades").append(new Option(result2[i].gradeName, result2[i].ID));
-                            }
-                        }
-                        getClasses();
-                    }
-                });
-                new Vue({
-                    el: '#vue-app',
-                    data: {
-                        detail: result,
-                        glvlink: '/external/detail?id=' + result.glv_id
-                    }
-                });
-                new Vue({
-                    el: '#edit-modal',
-                    data: {
-                        detail: result,
-                        glvlink: '/external/detail?id=' + result.glv_id
-                    },
-                    mounted: function () {
-
-                    }
-                });
-                new Vue({
-                    el: '#edit-class-modal',
-                    data: {
-                        detail: result,
-                        glvlink: '/external/detail?id=' + result.glv_id
-                    },
-                    mounted: function () {
-
-                    }
-                });
-            }
-        });
-        $("#idForImg").val(id);
-    });
-    function getClasses() {
-        var grade_id = $('#grades').val();
-        $('#classes').html('');
-        $.ajax({
-            url: "/GradeAndClass/getClassByGrade",
-            data: { id: grade_id },
-            success: function (result) {
-                for (var i = 0; i < result.length; i++) {
-                    $("#classes").append(new Option(result[i].className, result[i].ID));
-                }
-                $.LoadingOverlay("hide");
-            }
-        });
-    }
-</script>

@@ -237,11 +237,12 @@ namespace tnda_fix.Controllers
         }
 
         [HttpPost]
-        public JsonResult setImg(FormCollection form, HttpPostedFileBase file)
+        public JsonResult setImg(FormCollection form)
         {
             try
             {
                 int id = int.Parse(form["id"]);
+                HttpPostedFileBase file = Request.Files[0];
                 //
                 string _FileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                 string _path = Path.Combine(Server.MapPath("~/img/upload"), _FileName);

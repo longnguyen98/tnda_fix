@@ -80,27 +80,6 @@
             $('#changePassBtn').prop('disabled', true);
         }
     }
-    function updateAvatar() {
-        $.LoadingOverlay('show');
-        var formData = new FormData();
-        formData.append('file', $('#file_input'));
-        formData.append('id', id);
-        console.log(formData);
-        $.ajax({
-            url: '/person/setImg',
-            method: 'POST',
-            data: formData,
-            success: function (response) {
-                $.LoadingOverlay('hide');
-                console.log(response);
-                if (response.success) {
-                    // window.location.reload();
-                } else {
-                    jAlert('ERROR ' + response.message);
-                }
-            }
-        });
-    }
 </script>
 <div id="vue_app" style="display:none">
     <br />
@@ -111,7 +90,7 @@
                     <div class="card d-flex">
                         <div class="card-body row d-flex justify-content-start">
                             <div class="col-lg-auto col-sm-6 mb-2">
-                                <img class="card-img-top rounded mb-1 w-100" :src="detail.img" alt="Img" />
+                                <img class="card-img-top rounded mb-1 w-100" style="max-width:200px" :src="detail.img" alt="Img" />
                             </div>
                             <div class="col-lg-auto col-sm-12 mb-2">
                                 <p><h5 class="card-title">{{detail.ch_name}} {{detail.fname}} {{detail.name}}</h5></p>
@@ -135,10 +114,10 @@
                                 <input type="text" hidden name="id" :value="id" />
                                 <div class="input-group">
                                     <div class="input-group-append">
-                                        <button type="button" class="btn btn-sm btn-outline-success" onclick="updateAvatar()">Cập nhật</button>
+                                        <button type="button" class="btn btn-outline-success" onclick="updateAvatar()">Cập nhật</button>
                                     </div>
                                     <div class="custom-file">
-                                        <label for="file_input" class="custom-file-label"> ảnh đại diện</label>
+                                        <label for="file_input" class="custom-file-label btn"> ảnh đại diện</label>
                                         <input id="file_input" required type="file" name="file" class="custom-file-input h-100">
                                     </div>
                                 </div>
