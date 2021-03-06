@@ -1,15 +1,13 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "detail";
     Layout = "~/Views/Shared/InternalLayout.cshtml";
 }
 <script>
+    $.LoadingOverlay("show");
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var id = url.searchParams.get("id");
     $(document).ready(function () {
-        $.LoadingOverlay("show");
-        var url_string = window.location.href;
-        var url = new URL(url_string);
-        $('#current_location').val(url_string);
-        var id = url.searchParams.get("id");
         $.ajax({
             url: "/person/getPersonDetail",
             data: { id: id },
@@ -22,8 +20,6 @@
                     url: "/GradeAndClass/getAllGrades",
                     success: function (result2) {
                         for (var i = 0; i < result2.length; i++) {
-                            console.log(result.grade);
-                            console.log(result2[i].gradeName);
                             if (result.grade == result2[i].gradeName) {
                                 $("#grades").append('<option value="' + result2[i].ID + '" selected>' + result2[i].gradeName + '</option>');
                             } else {
@@ -86,7 +82,7 @@
                 <div class="card d-flex">
                     <div class="card-body row d-flex justify-content-center">
                         <div class="col-lg-2 col-sm-6 mb-2">
-                            <img class="card-img-top rounded" :src="detail.img" alt="Img" />
+                            <img class="card-img-top rounded" style="max-width:200px" :src="detail.img" alt="Img" />
                         </div>
                         <div class="col-lg-5 col-sm-12 mb-2">
                             <p><h5 class="card-title">{{detail.ch_name}} {{detail.fname}} {{detail.name}}</h5></p>
@@ -127,11 +123,21 @@
         </div>
         <div class="row mb-2 shadow" style="width:80%">
             <div class="col-lg-12 col-sm-12 mb-2">
-                <div class="card d-flex">
-                    <div class="card-body">
-                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#edit-modal">Sửa thông tin</button>
-                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#edit-class-modal">Sửa lớp</button>
-                    </div>
+                <div class="card d-lg-flex flex-lg-row-reverse d-flex flex-column-reverse">
+                    <button type="button" class="btn btn-info m-1" data-toggle="modal" data-target="#edit-modal">Sửa thông tin</button>
+                    <button type="button" class="btn btn-info m-1" data-toggle="modal" data-target="#edit-class-modal">Sửa lớp</button>
+                    <form class="m-1" action="/person/setimg" method="post" enctype="multipart/form-data">
+                        <input type="text" hidden name="id" :value="detail.id"/>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-outline-success" onclick="updateAvatar()">Cập nhật</button>
+                            </div>
+                            <div class="custom-file">
+                                <label for="file_input" class="custom-file-label btn"> ảnh đại diện</label>
+                                <input id="file_input" required type="file" name="file" class="custom-file-input h-100">
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -159,7 +165,7 @@
                 </div>
                 <div class="form-group">
                     <label>Ngày tháng năm sinh</label>
-                    <input type="text" class="form-control" :value=detail.birth name="child-birth" required>
+                    <input type="date" class="form-control" :value=detail.birth name="child-birth" >
                 </div>
                 <div class="form-group">
                     <label>Giới tính</label>
@@ -170,50 +176,50 @@
                 </div>
                 <div class="form-group">
                     <label>Lớp hiện tại</label>
-                    <input type="text" class="form-control" :value=detail.pclass  readonly>
+                    <input type="text" class="form-control" :value=detail.pclass readonly>
                     @*<select id="classes" class="form-control" name="child-class"></select>*@
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ</label>
-                    <input type="text" class="form-control" :value=detail.address name="child-address" required>
+                    <input type="text" class="form-control" :value=detail.address name="child-address" >
                 </div>
                 <br />
                 <h4 class="font-weight-bold">Bố</h4>
                 <div class="form-group">
                     <input hidden type="text" class="form-control" :value=detail.father.fa_id name="fa-id" readonly>
                     <label>Tên Thánh</label>
-                    <input type="text" class="form-control" :value=detail.father.ch_name name="fa-ch-name" required pattern="\S+.*">
+                    <input type="text" class="form-control" :value=detail.father.ch_name name="fa-ch-name"  pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Họ và đệm</label>
-                    <input type="text" class="form-control" :value=detail.father.fname name="fa-fname" required pattern="\S+.*">
+                    <input type="text" class="form-control" :value=detail.father.fname name="fa-fname"  pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Tên</label>
-                    <input type="text" class="form-control" :value=detail.father.name name="fa-name" required pattern="\S+.*">
+                    <input type="text" class="form-control" :value=detail.father.name name="fa-name"  pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>SDT</label>
-                    <input type="text" class="form-control" :value=detail.father.phone name="fa-phone" required>
+                    <input type="text" class="form-control" :value=detail.father.phone name="fa-phone" >
                 </div>
                 <br />
                 <h4 class="font-weight-bold">Mẹ</h4>
                 <div class="form-group">
                     <input hidden type="text" class="form-control" :value=detail.mother.mo_id name="mo-id" readonly>
                     <label>Tên Thánh</label>
-                    <input type="text" class="form-control" :value=detail.mother.ch_name name="mo-ch-name" required pattern="\S+.*">
+                    <input type="text" class="form-control" :value=detail.mother.ch_name name="mo-ch-name"  pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Họ và đệm</label>
-                    <input type="text" class="form-control" :value=detail.mother.fname name="mo-fname" required pattern="\S+.*">
+                    <input type="text" class="form-control" :value=detail.mother.fname name="mo-fname"  pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Tên</label>
-                    <input type="text" class="form-control" :value=detail.mother.name name="mo-name" required pattern="\S+.*">
+                    <input type="text" class="form-control" :value=detail.mother.name name="mo-name"  pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>SDT</label>
-                    <input type="text" class="form-control" :value=detail.mother.phone name="mo-phone" required>
+                    <input type="text" class="form-control" :value=detail.mother.phone name="mo-phone" >
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Lưu</button>
             </form>
@@ -244,8 +250,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-

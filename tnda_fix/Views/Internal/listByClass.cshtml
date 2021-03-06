@@ -1,13 +1,14 @@
-﻿
-@{
-    ViewBag.Title = "listByClass";
-    Layout = "~/Views/Shared/InternalLayout.cshtml";
+﻿@{
+                /**/
+
+                ViewBag.Title = "listByClass";
+                Layout = "~/Views/Shared/InternalLayout.cshtml";
 }
 <script>
     $(document).ready(function () {
         $.LoadingOverlay("show");
-        var url_string = window.location.href;        
-        var url = new URL(url_string);        
+        var url_string = window.location.href;
+        var url = new URL(url_string);
         var id_class = url.searchParams.get("id_class");
         $('#current_location').val(url_string);
         $('#classes').val(id_class);
@@ -50,13 +51,15 @@
                                 }
                             });
                             $('#table_wrapper').addClass("w-100");
+                            $('#table_length').addClass("text-right");
+                            $('#table_filter').addClass("text-right");
                             $.LoadingOverlay("hide");
                         }
                     });
                 }
 
             });
-        }       
+        }
     });
     function getClasses() {
         var grade_id = $('#grades').val();
@@ -71,20 +74,43 @@
             }
         });
     }
+    function addPerson() {
+        $.LoadingOverlay('show');
+        var data = $('#addPersonForm').serialize();
+        $.ajax({
+            url: "/person/addPerson",
+            method: "POST",
+            data: data,
+            success: function (response) {
+                console.log(response);
+                if (response.success) {
+                    jAlert('Thêm thành công');
+                    window.location.reload();
+                } else {
+                    jAlert('Lỗi! Thêm thất bại');
+                    jAlert(response.message);
+                }
+                $.LoadingOverlay('hide');
+            }
+        });
+    }
 </script>
-<div id="view" class="container bg-info">
-    <div class="row bg-light rounded p-3">
-        <div id="class_info" class="col-lg-6 col-sm-6 mb-2 d-flex flex-row">
-            <h4>{{class_name}} <span class="lead ml-5">GLV: {{glv_name}}</span></h4>
+<div id="view" class="container ">
+    <div class="row bg-light pl-3 pr-3">
+        <div id="class_info" class="col-lg-8 col-12">
+            <h4>{{class_name}} </h4>
+            <h6 class="lead">GLV: {{glv_name}}</h6>
         </div>
-        <div class="col-lg-6 col-sm-6 mb-2 d-flex flex-row-reverse">
+    </div>
+    <div class="row bg-light pl-3 pr-3 d-flex">
+        <div class="col-lg-12 col-12 mb-2 d-flex flex-row-reverse">
             <button type="button" class="btn btn-info font-weight-bold" data-toggle="modal" data-target="#add-modal"><i class="fa fa-plus mr-2"></i> Thêm thiếu nhi</button>
         </div>
     </div>
     <div id="vue_app" class="row bg-light rounded p-3">
-        <table id="table" class="table table-striped" style="width:100%">
+        <table id="table" class="table table-striped align-content-end" style="width:100%">
             <thead>
-                <tr>                    
+                <tr>
                     <th scope="col">Tên Thánh</th>
                     <th scope="col">Họ & Tên</th>
                     <th scope="col">Ngày sinh</th>
@@ -92,11 +118,13 @@
                 </tr>
             </thead>
             <tbody style="display:none" id="content">
-                <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">                    
+                <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
                     <td>{{p.ch_name}}</td>
                     <td>{{p.fname}} {{p.name}}</td>
                     <td>{{p.birth}}</td>
-                    <td><a :href="link+p.id" class="btn btn-sm btn-info">Chi tiết</a></td>
+                    <td>
+                        <a :href="link+p.id" class="btn btn-sm btn-info">Chi tiết</a>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -105,7 +133,7 @@
 <div class="modal fade bd-example-modal-lg" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content p-5">
-            <form action="/person/AddPerson" method="post">
+            <form id="addPersonForm">
                 <input hidden name="current_location" id="current_location" type="text" />
                 <div class="form-group">
                     <label>Tên thánh</label>
@@ -132,7 +160,7 @@
                 </div>
                 <div class="form-group" style="display: none">
                     <label>Lớp</label>
-                    <input id="classes" class="form-control" value="1" name="child-class"/>
+                    <input id="classes" class="form-control" value="1" name="child-class" />
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ</label>
@@ -177,11 +205,9 @@
                     <label>SDT</label>
                     <input type="number" class="form-control" placeholder="Số điện thoại" name="mo-phone">
                 </div>
-                <button type="submit" class="btn btn-info w-100">Thêm</button>
-                <button type="submit" data-dismiss="modal" class="btn btn-danger w-100 mt-2">Hủy</button>
+                <button type="button" onclick="addPerson()" class="btn btn-info w-100">Thêm</button>
+                <button data-dismiss="modal" class="btn btn-danger w-100 mt-2">Hủy</button>
             </form>
         </div>
     </div>
 </div>
-
-

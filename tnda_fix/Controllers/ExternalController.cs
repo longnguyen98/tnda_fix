@@ -1,46 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Web;
 using System.Web.Mvc;
-using IronXL;
 using tnda_fix.Models;
 
 namespace tnda_fix.Controllers
 {
     public class ExternalController : Controller
-    {       
+    {
         // GET: External
         public ActionResult Index()
         {
             return View();
         }
+
         public ActionResult listing()
         {
             return View();
         }
+
         public ActionResult listingWithQuery()
         {
-            string query = Request.QueryString["query"];
-            query = Tools.convert(query);
-            return Redirect("~/External/Listing?query=" + query);
+            return Redirect("~/External/Listing?query=" + Tools.convert(Request.QueryString["query"]));
         }
+
         public ActionResult detail()
         {
             return View();
         }
+
         [HttpPost]
-        
-        public JsonResult upload(HttpPostedFileBase file)
-        {
-            string _FileName = Tools.getUniqueNum() + Path.GetExtension(file.FileName);
-            string _path = Path.Combine(Server.MapPath("~/img/upload"), _FileName);
-            string result = Tools.uploadAndResizeImg(file, _path, _FileName);
-            //
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
         public string upClass()
         {
             string result = "";
@@ -84,7 +72,6 @@ namespace tnda_fix.Controllers
                     new_class_name = 1 + charArray[1].ToString();
                     new_class_id = db.Classes.Where(c => c.ID_Grade == new_grade_id && c.ClassName == new_class_name).FirstOrDefault().ID;
                 }
-
             }
             catch (Exception e)
             {
@@ -108,7 +95,5 @@ namespace tnda_fix.Controllers
             result += "ID lớp mới " + new_class_id;
             return result;
         }
-       
-        
     }
 }

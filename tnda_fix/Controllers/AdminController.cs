@@ -1,12 +1,12 @@
 ﻿using IronXL;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
+using tnda_fix.Models;
 using tnda_fix.Models.filters;
+using tnda_fix.Services;
 
 namespace tnda_fix.Controllers
 {
@@ -19,18 +19,22 @@ namespace tnda_fix.Controllers
         {
             return View();
         }
+
         public ActionResult AllGLV()
         {
             return View();
         }
+
         public ActionResult CheckNew()
         {
             return View();
         }
+
         public ActionResult allClasses()
         {
             return View();
         }
+
         public ActionResult dashBoard()
         {
             return View();
@@ -41,34 +45,19 @@ namespace tnda_fix.Controllers
             return View();
         }
 
-
-
         //import from excel
         [HttpPost]
-        public async System.Threading.Tasks.Task<string> uploadXlsAsync(HttpPostedFileBase file)
+        public async System.Threading.Tasks.Task<string> UploadXlsAsync(HttpPostedFileBase file)
         {
-            //save to temp
-            string temp_path = Path.Combine(Server.MapPath("~/temp_xls"), (DateTime.Now.Millisecond.ToString() + file.FileName).Trim());
-            file.SaveAs(temp_path);
             string errorString = "";
-            string read_data = "";
-
+            string readData = "";
             //data for service
-            Dictionary<string, string> form = new Dictionary<string, string>();
-
-            //service caller
-            string protocol = System.Web.HttpContext.Current.Request.Url.Scheme;
-            string host = System.Web.HttpContext.Current.Request.Url.Host;
-            string port = System.Web.HttpContext.Current.Request.Url.Port.ToString();
-            string controller = "Person";
-            string method = "addPerson";
-            string post_request = protocol + "://" + host + ":" + port + "/" + controller + "/" + method;
-            HttpClient client = new HttpClient();
+            FormCollection formCollection = new FormCollection();
 
             //process
             try
             {
-                WorkBook wb = WorkBook.Load(temp_path);
+                WorkBook wb = WorkBook.Load(file.InputStream);
                 WorkSheet ws = wb.WorkSheets.First();
                 List<string> keys = new List<string>
                 {
@@ -108,26 +97,31 @@ namespace tnda_fix.Controllers
                         errorString = col.RangeAddressAsString;
 
                         //add value to form
-                        read_data += col.RangeAddressAsString + ": " + col.StringValue + "\n";
-                        form.Add(keys[count], col.StringValue);
+                        readData += col.RangeAddressAsString + ": " + col.StringValue + "\n";
+                        formCollection.Set(keys[count], col.StringValue);
                         count++;
                     }
-                    form.Add("child-role", "4");
+                    formCollection.Set("child-role", "4");
                     //call service
-                    FormUrlEncodedContent content = new FormUrlEncodedContent(form);
-                    HttpResponseMessage response = await client.PostAsync(post_request, content);
 
+                    using (PersonService personService = new PersonService())
+                    {
+                        Response res = personService.addPerson(formCollection);
+                        if (!res.success)
+                        {
+                            readData += "---" + res.message + "---";
+                        }
+                    }
                     //clear before add new record
                     count = 0;
-                    form.Clear();
-
+                    formCollection.Clear();
                 }
             }
             catch (Exception e)
             {
                 return e.Message + "\n" + errorString;
             }
-            return "Process complete! \n" + read_data;
+            return "Processed" + readData;
         }
     }
 }

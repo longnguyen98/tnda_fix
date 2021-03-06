@@ -18,6 +18,7 @@ namespace tnda_fix.Controllers
             }
             return Json(grades, JsonRequestBehavior.AllowGet);
         }
+
         public JsonResult getClassByGrade()
         {
             int grade_id = int.Parse(Request.QueryString["id"]);
@@ -35,6 +36,7 @@ namespace tnda_fix.Controllers
 
             return Json(classes, JsonRequestBehavior.AllowGet);
         }
+
         public JsonResult getClassById()
         {
             int id = int.Parse(Request.QueryString["id_class"]);
@@ -47,6 +49,7 @@ namespace tnda_fix.Controllers
             var json = new { className = g.GradeName + " " + c.ClassName, glv_name = glv_name };
             return Json(json, JsonRequestBehavior.AllowGet);
         }
+
         public JsonResult getAllClasses()
         {
             tndaEntities db = new tndaEntities();
@@ -60,16 +63,18 @@ namespace tnda_fix.Controllers
                     case 1:
                         color = "#EEB0AC";
                         break;
+
                     case 2:
                         color = "#9BF14F";
                         break;
+
                     case 3:
                         color = "#7BA6EF";
                         break;
+
                     case 4:
                         color = "#ECC100";
                         break;
-
                 }
                 //int total = cl.People.Where(p => p.ID_role == 4).Count();
                 var ob = new { name = name.Trim(), id = cl.ID, color = color, glv = cl.teacher_names, total = cl.students_count /*tn_total = total*/ };
@@ -77,6 +82,5 @@ namespace tnda_fix.Controllers
             }
             return Json(list, JsonRequestBehavior.AllowGet);
         }
-
     }
 }

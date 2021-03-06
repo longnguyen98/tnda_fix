@@ -13,17 +13,19 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="~/Content/landing-page.min.css" rel="stylesheet">
-    <link href="~/Content/dashboard.css" rel="stylesheet">
+    <link href="~/Content/custom.css" rel="stylesheet">
     <link href="~/Content/simple-line-icons.css" />
-    <!-- Bootstrap core JavaScript -->
+    <!-- Bootstrap core JavaScript, Jquery -->
     <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+    <script src="~/Scripts/jquery.dialog.js"></script>
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
-    @*Vue*@
+    <script src="~/Scripts/internal.js"></script>
+    <!--VueJs-->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    @*Datatables*@
+    <!--Datatables-->
     <link href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet" />
     <script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
-    @*Loading Overlay*@
+    <!--Loading Overlay-->
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -39,7 +41,7 @@
                             glv: glv,
                             glv_name: glv.ch_name.trim() + ' ' + glv.fname.trim() + ' ' + glv.name.trim()
                         }
-                    });        	       
+                    });
                     $("#display_name_glv").LoadingOverlay("hide");
                 }
             });
@@ -51,14 +53,14 @@
 </head>
 <body>
     <nav class="navbar navbar-dark sticky-top bg-info flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#"><i class="fa fa-church mr-3"></i>GLV GX Dĩ An</a>
+        <a class="navbar-brand col-md-3 col-lg-3 mr-0 px-3" href="#"><i class="fa fa-church mr-3"></i>GLV GX Dĩ An</a>
         <button class="navbar-toggler position-absolute d-md-none collapsed mt-1 text-white" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fa fa-bars mr-2"></i> Menu
         </button>
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-3 d-md-block bg-light sidebar collapse">
                 <div class="sidebar-sticky pt-3">
                     <ul id="display_name_glv" class="nav flex-column">
                         <li class="nav-item bg-success rounded m-2">
@@ -70,10 +72,23 @@
                             </h6>
                         </li>
                         <li class="nav-item m-2">
+                            <form action="~/Internal/listingWithQuery">
+                                <div class="d-flex flex-column">
+                                    <div class="">
+                                        <input type="text" required name="query" class="form-control" placeholder="Tra cứu thông tin">
+                                    </div>
+                                    <div class="mt-2">
+                                        <button type="submit" class="btn font-weight-bold w-100 text-left btn-secondary"><i class="fa fa-search mr-2"></i>Tìm kiếm</button>
+                                    </div>
+                                </div>                
+                            </form>
+                        </li>
+                        <li class="nav-item m-2">
                             <a class="btn btn-info font-weight-bold w-100 text-left" :href="'/internal/index?id='+glv.id">
                                 <i class="fa fa-home mr-2"></i>Trang chính
                             </a>
                         </li>
+
                         <li class="nav-item m-2">
                             <a class="btn btn-info font-weight-bold w-100 text-left" :href="'/internal/listbyclass?id_class=' + glv.id_class">
                                 <i class="fa fa-list mr-2"></i>Danh sách thiếu nhi
@@ -92,7 +107,7 @@
                     </ul>
                 </div>
             </nav>
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-19 px-md-4">
                 <br />
                 @RenderBody()
             </main>

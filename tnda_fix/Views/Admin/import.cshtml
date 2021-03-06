@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "import";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
@@ -7,7 +6,7 @@
     function displayFileName() {
         $('#file_name').html($('#file_input').val());
         console.log($('#file_input').val());
-    }   
+    }
 </script>
 <form action="/admin/uploadXlsAsync" method="post" enctype="multipart/form-data">
     <h6>
@@ -23,4 +22,3 @@
         </div>
     </div>
 </form>
-

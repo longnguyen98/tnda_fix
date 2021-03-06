@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "dashBoard";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
@@ -9,13 +8,10 @@
         $.ajax({
             url: "/dashboard/allTN",
             success: function (result) {
-                console.log(result);                
+                console.log(result);
             }
         });
         $.LoadingOverlay("hide");
     });
 </script>
 <h2>THỐNG KÊ</h2>
-
-
-
