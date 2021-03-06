@@ -237,19 +237,26 @@ namespace tnda_fix.Controllers
         }
 
         [HttpPost]
-        public ActionResult setImg(FormCollection form, HttpPostedFileBase file)
+        public JsonResult setImg(FormCollection form, HttpPostedFileBase file)
         {
-            int id = int.Parse(form["id"]);
+            try
+            {
+                int id = int.Parse(form["id"]);
+                //
+                string _FileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                string _path = Path.Combine(Server.MapPath("~/img/upload"), _FileName);
+                string result = Tools.uploadAndResizeImg(file, _path, _FileName);
+                //
+                tndaEntities db = new tndaEntities();
+                db.People.Find(id).Image = result;
+                db.SaveChanges();
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+            }
             //
-            string _FileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            string _path = Path.Combine(Server.MapPath("~/img/upload"), _FileName);
-            string result = Tools.uploadAndResizeImg(file, _path, _FileName);
-            //
-            tndaEntities db = new tndaEntities();
-            db.People.Find(id).Image = result;
-            db.SaveChanges();
-            //
-            return Redirect("~/internal/index?id=" + id);
         }
 
         //
