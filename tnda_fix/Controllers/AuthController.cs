@@ -83,7 +83,7 @@ namespace tnda_fix.Controllers
             ACC account = null;
             using (tndaEntities db = new tndaEntities())
             {
-                account = db.ACCs.Where(acc => acc.UserName.Equals(username)).FirstOrDefault();
+                account = db.ACCs.Where(acc => acc.UserName.ToUpper().Equals(username.ToUpper())).FirstOrDefault();
                 if (account != null)
                 {
                     if (account.Pwd.Trim().Equals(Tools.encodeBase64(password)))
