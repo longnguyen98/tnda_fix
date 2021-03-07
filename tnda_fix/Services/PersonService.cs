@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Web.Mvc;
 using tnda_fix.Models;
 
@@ -13,9 +14,70 @@ namespace tnda_fix.Services
             db.Dispose();
         }
 
+        public Response editPerson(FormCollection form)
+        {
+            int id = int.Parse(form["child-id"]);
+            using (DbContextTransaction trans = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    Person p = db.People.Find(id);
+                    p.Name = form.Get("child-name");
+                    p.ChristianName = form.Get("child-ch-name");
+                    try
+                    {
+                        p.Birth = Convert.ToDateTime(form.Get("child-birth"));
+                    }
+                    catch (Exception)
+                    {
+                        p.Birth = null;
+                    }
+                    p.FirstName = form.Get("child-fname");
+                    p.Address = form.Get("child-address");
+                    p.Gender = bool.Parse(form["child-gender"]);
+
+                    if (p.ID_role == 4 || p.ID_role == 7)
+                    {
+                        int fa_id = int.Parse(form["fa-id"]);
+                        int mo_id = int.Parse(form["mo-id"]);
+                        //
+                        Person fP = db.People.Find(fa_id);
+                        Person mP = db.People.Find(mo_id);
+                        //
+                        //fa
+                        fP.ChristianName = form.Get("fa-ch-name");
+                        fP.FirstName = form.Get("fa-fname");
+                        fP.Name = form.Get("fa-name");
+                        fP.Phone = form.Get("fa-phone");
+                        //mo
+                        mP.ChristianName = form.Get("mo-ch-name");
+                        mP.FirstName = form.Get("mo-fname");
+                        mP.Name = form.Get("mo-name");
+                        mP.Phone = form.Get("mo-phone");
+                    }
+                    //save
+                    db.SaveChanges();
+                    trans.Commit();
+                }
+                catch (Exception e)
+                {
+                    trans.Rollback();
+                    return new Response()
+                    {
+                        success = false,
+                        message = e.Message
+                    };
+                }
+                return new Response()
+                {
+                    success = true,
+                };
+            }
+        }
+
         public Response addPerson(FormCollection form)
         {
-            using (System.Data.Entity.DbContextTransaction trans = db.Database.BeginTransaction())
+            using (DbContextTransaction trans = db.Database.BeginTransaction())
             {
                 try
                 {

@@ -42,7 +42,7 @@ namespace tnda_fix.Controllers
                         img = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                     }
 
-                    string birthString = child.Birth != null ? child.Birth.Value.ToString("dd.MM.yyy") : "";
+                    string birthString = child.Birth != null ? child.Birth.Value.ToString("yyyy-MM-dd") : "";
                     string classString = child.Class != null
                         ? (child.Class.Grade.GradeName + " " + child.Class.ClassName)
                         : "";
@@ -97,7 +97,7 @@ namespace tnda_fix.Controllers
                         image = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                     }
 
-                    string birthString = child.Birth != null ? child.Birth.Value.ToString("dd.MM.yyy") : "";
+                    string birthString = child.Birth != null ? child.Birth.Value.ToString("yyyy-MM-dd") : "";
                     string classString = child.Class != null
                         ? (child.Class.Grade.GradeName + " " + child.Class.ClassName)
                         : "";
@@ -137,7 +137,7 @@ namespace tnda_fix.Controllers
                 List<object> objects = new List<object>();
                 foreach (Person p in list)
                 {
-                    string birthString = p.Birth != null ? p.Birth.Value.ToString("dd.MM.yyy") : "";
+                    string birthString = p.Birth != null ? p.Birth.Value.ToString("yyyy-MM-dd") : "";
                     string classString = p.Class != null ? (p.Class.Grade.GradeName + " " + p.Class.ClassName) : "";
                     var ob = new
                     {
@@ -172,7 +172,7 @@ namespace tnda_fix.Controllers
                     fname = p.FirstName,
                     name = p.Name,
                     pclass = p.Class.Grade.GradeName + " " + p.Class.ClassName,
-                    birth = p.Birth != null ? p.Birth.Value.ToShortDateString() : "",
+                    birth = p.Birth != null ? p.Birth.Value.ToString("yyyy-MM-dd") : "",
                     role = p.Role.RoleName
                 };
                 //
@@ -196,7 +196,7 @@ namespace tnda_fix.Controllers
                     img = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
                 }
 
-                string birthString = child.Birth != null ? child.Birth.Value.ToString("dd.MM.yyy") : "";
+                string birthString = child.Birth != null ? child.Birth.Value.ToString("yyyy-MM-dd") : "";
                 var ob = new
                 {
                     id = child.ID,
@@ -218,7 +218,7 @@ namespace tnda_fix.Controllers
             List<Person> people = db.People.Where(p => p.ID_role == 1).ToList();
             foreach (Person p in people)
             {
-                string birthString = p.Birth != null ? p.Birth.Value.ToString("dd.MM.yyy") : "";
+                string birthString = p.Birth != null ? p.Birth.Value.ToString("yyyy-MM-dd") : "";
                 string classString = p.Class != null ? (p.Class.Grade.GradeName + " " + p.Class.ClassName) : "";
                 var ob = new
                 {
@@ -273,58 +273,15 @@ namespace tnda_fix.Controllers
         }
 
         //Edit Person
-        [HttpPost]
+        [HttpPut]
         public ActionResult EditPerson(FormCollection form)
         {
-            int id = int.Parse(form["child-id"]);
-
-            using (tndaEntities db = new tndaEntities())
+            using (PersonService personService = new PersonService())
             {
-                using (DbContextTransaction trans = db.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        Person p = db.People.Find(id);
-                        p.Name = form.Get("child-name");
-                        p.ChristianName = form.Get("child-ch-name");
-                        p.Birth = DateTime.Parse(form["child-birth"]);
-                        p.FirstName = form.Get("child-fname");
-                        p.Address = form.Get("child-address");
-                        p.Gender = bool.Parse(form["child-gender"]);
-
-                        if (p.ID_role == 4 || p.ID_role == 7)
-                        {
-                            int fa_id = int.Parse(form["fa-id"]);
-                            int mo_id = int.Parse(form["mo-id"]);
-                            //
-                            Person fP = db.People.Find(fa_id);
-                            Person mP = db.People.Find(mo_id);
-                            //
-                            //fa
-                            fP.ChristianName = form.Get("fa-ch-name");
-                            fP.FirstName = form.Get("fa-fname");
-                            fP.Name = form.Get("fa-name");
-                            fP.Phone = form.Get("fa-phone");
-                            //mo
-                            mP.ChristianName = form.Get("mo-ch-name");
-                            mP.FirstName = form.Get("mo-fname");
-                            mP.Name = form.Get("mo-name");
-                            mP.Phone = form.Get("mo-phone");
-                        }
-
-                        //save
-                        db.SaveChanges();
-                        trans.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        trans.Rollback();
-                        throw new Exception();
-                    }
-                }
-            }
-
-            return Redirect(form["current_location"].ToString());
+                Response response = personService.editPerson(form);
+                return Json(new { success = response.success, message = response.message },
+                    JsonRequestBehavior.AllowGet);
+            }          
         }
 
         [HttpPost]
