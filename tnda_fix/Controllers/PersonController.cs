@@ -273,7 +273,7 @@ namespace tnda_fix.Controllers
         }
 
         //Edit Person
-        [HttpPut]
+        [HttpPost]
         public ActionResult EditPerson(FormCollection form)
         {
             using (PersonService personService = new PersonService())

@@ -79,7 +79,7 @@
         var data = $('#editForm').serialize();
         $.ajax({
             url: "/person/editPerson",
-            method: "PUT",
+            method: "POST",
             data: data,
             success: function (response) {
                 console.log(response);
