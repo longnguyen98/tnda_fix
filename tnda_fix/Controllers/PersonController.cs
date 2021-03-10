@@ -288,25 +288,20 @@ namespace tnda_fix.Controllers
         public ActionResult EditClass(FormCollection form)
         {
             tndaEntities db = new tndaEntities();
-            List<Person> list = db.People.ToList();
-            int id = int.Parse(form["child-id"]);
-            foreach (Person p in list)
-            {
-                if (p.ID == id)
+            Person p = db.People.Find(int.Parse(form["child-id"]));
+                if (p != null)
                 {
                     p.ID_Class = int.Parse(form["child-class"]);
                     if (form["child-role"] != null)
                     {
                         p.ID_role = int.Parse(form["child-role"]);
                     }
-
                     db.SaveChanges();
                 }
             }
 
             return Redirect(form["current_location"].ToString());
         }
-
         [HttpPost]
         public void EditImage()
         {
