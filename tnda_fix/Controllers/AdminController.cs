@@ -1,7 +1,7 @@
-﻿using IronXL;
+﻿using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using tnda_fix.Models;
@@ -47,18 +47,17 @@ namespace tnda_fix.Controllers
 
         //import from excel
         [HttpPost]
-        public async System.Threading.Tasks.Task<string> UploadXlsAsync(HttpPostedFileBase file)
+        public string processExcel(HttpPostedFileBase file)
         {
-            string errorString = "";
-            string readData = "";
+            int readData = 0;
             //data for service
             FormCollection formCollection = new FormCollection();
 
             //process
             try
             {
-                WorkBook wb = WorkBook.Load(file.InputStream);
-                WorkSheet ws = wb.WorkSheets.First();
+                IWorkbook wb = new XSSFWorkbook(file.InputStream);
+                ISheet sheet = wb.GetSheetAt(wb.ActiveSheetIndex);
                 List<string> keys = new List<string>
                 {
                     "child-ch-name",
@@ -79,37 +78,32 @@ namespace tnda_fix.Controllers
                 };
                 //
                 int count = 0;
-                bool firstRow = true;
-                foreach (RangeRow row in ws.Rows)
+                IRow row;
+                ICell cell;
+                for (int rowIndex = 1; rowIndex <= sheet.LastRowNum; rowIndex++)
                 {
-                    if (firstRow)
+                    row = sheet.GetRow(rowIndex);
+                    for (int cellIndex = 0; cellIndex < row.LastCellNum; cellIndex++)
                     {
-                        firstRow = false;
-                        continue;
-                    }
-                    if (row.IsEmpty)
-                    {
-                        break;
-                    }
-                    foreach (RangeColumn col in row.Columns)
-                    {
-                        //logging for error
-                        errorString = col.RangeAddressAsString;
-
-                        //add value to form
-                        readData += col.RangeAddressAsString + ": " + col.StringValue + "\n";
-                        formCollection.Set(keys[count], col.StringValue);
+                        try
+                        {
+                            cell = row.GetCell(cellIndex);
+                            cell.SetCellType(CellType.String);
+                            formCollection.Set(keys[count], cell.StringCellValue);
+                        }
+                        catch (Exception)
+                        {
+                            formCollection.Set(keys[count], "");
+                        }
                         count++;
                     }
                     formCollection.Set("child-role", "4");
-                    //call service
-
                     using (PersonService personService = new PersonService())
                     {
                         Response res = personService.addPerson(formCollection);
-                        if (!res.success)
+                        if (res.success)
                         {
-                            readData += "---" + res.message + "---";
+                            readData++;
                         }
                     }
                     //clear before add new record
@@ -119,9 +113,9 @@ namespace tnda_fix.Controllers
             }
             catch (Exception e)
             {
-                return e.Message + "\n" + errorString;
+                return "ERROR" + e.Message;
             }
-            return "Processed" + readData;
+            return "Processed " + readData + " records";
         }
     }
 }

@@ -29,6 +29,7 @@
                         getClasses();
                     }
                 });
+                console.log(result);
                 new Vue({
                     el: '#vue-app',
                     data: {
@@ -70,6 +71,26 @@
                     $("#classes").append(new Option(result[i].className, result[i].ID));
                 }
                 $.LoadingOverlay("hide");
+            }
+        });
+    }
+    function editPerson() {
+        $.LoadingOverlay('show');
+        var data = $('#editForm').serialize();
+        $.ajax({
+            url: "/person/editPerson",
+            method: "POST",
+            data: data,
+            success: function (response) {
+                console.log(response);
+                if (response.success) {
+                    window.alert('Cập nhật thành công');
+                    window.location.reload();
+                } else {
+                    window.alert('Lỗi! Cập nhật thất bại');
+                    window.alert(response.message);
+                }
+                $.LoadingOverlay('hide');
             }
         });
     }
@@ -130,7 +151,7 @@
                         <input type="text" hidden name="id" :value="detail.id"/>
                         <div class="input-group">
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-outline-success" onclick="updateAvatar()">Cập nhật</button>
+                                <button type="button" class="btn btn-outline-success" style="text-align: start" onclick="updateAvatar()">Cập nhật</button>
                             </div>
                             <div class="custom-file">
                                 <label for="file_input" class="custom-file-label btn"> ảnh đại diện</label>
@@ -146,8 +167,7 @@
 <div class="modal fade bd-example-modal-lg vue-app" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content p-5">
-            <form action="/person/EditPerson" method="post">
-                <input name="current_location" id="current_location" type="hidden" />
+            <form id="editForm">                
                 <div class="form-group">
                     <input hidden type="text" class="form-control" :value=detail.id name="child-id">
                 </div>
@@ -165,7 +185,7 @@
                 </div>
                 <div class="form-group">
                     <label>Ngày tháng năm sinh</label>
-                    <input type="date" class="form-control" :value=detail.birth name="child-birth" >
+                    <input type="date" class="form-control" :value=detail.birth name="child-birth">
                 </div>
                 <div class="form-group">
                     <label>Giới tính</label>
@@ -181,47 +201,48 @@
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ</label>
-                    <input type="text" class="form-control" :value=detail.address name="child-address" >
+                    <input type="text" class="form-control" :value=detail.address name="child-address">
                 </div>
                 <br />
                 <h4 class="font-weight-bold">Bố</h4>
                 <div class="form-group">
                     <input hidden type="text" class="form-control" :value=detail.father.fa_id name="fa-id" readonly>
                     <label>Tên Thánh</label>
-                    <input type="text" class="form-control" :value=detail.father.ch_name name="fa-ch-name"  pattern="\S+.*">
+                    <input type="text" class="form-control" :value=detail.father.ch_name name="fa-ch-name" pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Họ và đệm</label>
-                    <input type="text" class="form-control" :value=detail.father.fname name="fa-fname"  pattern="\S+.*">
+                    <input type="text" class="form-control" :value=detail.father.fname name="fa-fname" pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Tên</label>
-                    <input type="text" class="form-control" :value=detail.father.name name="fa-name"  pattern="\S+.*">
+                    <input type="text" class="form-control" :value=detail.father.name name="fa-name" pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>SDT</label>
-                    <input type="text" class="form-control" :value=detail.father.phone name="fa-phone" >
+                    <input type="text" class="form-control" :value=detail.father.phone name="fa-phone">
                 </div>
                 <br />
                 <h4 class="font-weight-bold">Mẹ</h4>
                 <div class="form-group">
                     <input hidden type="text" class="form-control" :value=detail.mother.mo_id name="mo-id" readonly>
                     <label>Tên Thánh</label>
-                    <input type="text" class="form-control" :value=detail.mother.ch_name name="mo-ch-name"  pattern="\S+.*">
+                    <input type="text" class="form-control" :value=detail.mother.ch_name name="mo-ch-name" pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Họ và đệm</label>
-                    <input type="text" class="form-control" :value=detail.mother.fname name="mo-fname"  pattern="\S+.*">
+                    <input type="text" class="form-control" :value=detail.mother.fname name="mo-fname" pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>Tên</label>
-                    <input type="text" class="form-control" :value=detail.mother.name name="mo-name"  pattern="\S+.*">
+                    <input type="text" class="form-control" :value=detail.mother.name name="mo-name" pattern="\S+.*">
                 </div>
                 <div class="form-group">
                     <label>SDT</label>
-                    <input type="text" class="form-control" :value=detail.mother.phone name="mo-phone" >
+                    <input type="text" class="form-control" :value=detail.mother.phone name="mo-phone">
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Lưu</button>
+                <button type="button" onclick="editPerson()" class="btn btn-primary w-100">Lưu</button>
+                <button type="button" data-dismiss="modal" class="btn btn-danger w-100 mt-1">Hủy</button>
             </form>
         </div>
     </div>
