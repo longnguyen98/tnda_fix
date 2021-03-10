@@ -277,13 +277,10 @@ namespace tnda_fix.Controllers
         public ActionResult EditPerson(FormCollection form)
         {
             int id = int.Parse(form["child-id"]);
-           
+
             using (tndaEntities db = new tndaEntities())
             {
-                Person child = db.People.Find(id);
-                Person dad = db.People.Find(int.Parse(form["fa-id"]));
-                Person mom = db.People.Find(int.Parse(form["mo-id"]));
-                if (child != null)
+                using (DbContextTransaction trans = db.Database.BeginTransaction())
                 {
                     try
                     {
@@ -326,6 +323,7 @@ namespace tnda_fix.Controllers
                     }
                 }
             }
+
             return Redirect(form["current_location"].ToString());
         }
 
@@ -333,17 +331,22 @@ namespace tnda_fix.Controllers
         public ActionResult EditClass(FormCollection form)
         {
             tndaEntities db = new tndaEntities();
-            Person p = db.People.Find(int.Parse(form["child-id"]));
-                if (p != null)
+            List<Person> list = db.People.ToList();
+            int id = int.Parse(form["child-id"]);
+            foreach (Person p in list)
+            {
+                if (p.ID == id)
                 {
                     p.ID_Class = int.Parse(form["child-class"]);
                     if (form["child-role"] != null)
                     {
                         p.ID_role = int.Parse(form["child-role"]);
                     }
+
                     db.SaveChanges();
                 }
             }
+
             return Redirect(form["current_location"].ToString());
         }
 
