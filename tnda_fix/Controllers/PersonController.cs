@@ -281,29 +281,41 @@ namespace tnda_fix.Controllers
                 Response response = personService.editPerson(form);
                 return Json(new { success = response.success, message = response.message },
                     JsonRequestBehavior.AllowGet);
-            }          
+            }
         }
 
         [HttpPost]
         public ActionResult EditClass(FormCollection form)
         {
             tndaEntities db = new tndaEntities();
-            List<Person> list = db.People.ToList();
             int id = int.Parse(form["child-id"]);
-            foreach (Person p in list)
+            Person p = db.People.Find(id);
+            if (p != null)
             {
-                if (p.ID == id)
+                Class newClass = db.Classes.Find(int.Parse(form["child-class"]));
+                Class oldClass = db.Classes.Find(int.Parse(form["child-old-class"]));
+                if (p.ID_role == 1 || p.ID_role == 2)
                 {
-                    p.ID_Class = int.Parse(form["child-class"]);
-                    if (form["child-role"] != null)
+                    if (newClass != null)
                     {
-                        p.ID_role = int.Parse(form["child-role"]);
+                        p.ID_Class = int.Parse(form["child-class"]);
+                        newClass.teacher_names = p.ChristianName + " " + p.FirstName + " " + p.Name;
+                        if (oldClass != null)
+                            oldClass.teacher_names = "";
                     }
-
-                    db.SaveChanges();
                 }
+                else if (p.ID_role == 4 || p.ID_role == 7)
+                {
+                    if (newClass != null)
+                    {
+                        p.ID_Class = int.Parse(form["child-class"]);
+                        newClass.students_count += 1;
+                        if (oldClass != null)
+                            oldClass.students_count -= 1;
+                    }
+                }
+                db.SaveChanges();
             }
-
             return Redirect(form["current_location"].ToString());
         }
 

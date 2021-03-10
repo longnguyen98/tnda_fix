@@ -44,7 +44,14 @@ namespace tnda_fix.Controllers
         {
             return View();
         }
-
+        public ActionResult listByClassAdminView()
+        {
+            return View();
+        }
+        public ActionResult detailAdminView()
+        {
+            return View();
+        }
         //import from excel
         [HttpPost]
         public string processExcel(HttpPostedFileBase file)
