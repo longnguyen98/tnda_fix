@@ -31,11 +31,11 @@
     <!--Loading Overlay-->
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $("#display_name_glv").LoadingOverlay("show");
+        $.LoadingOverlay("show");
+        $(document).ready(function () {           
             $.ajax({
                 url: '/auth/getPersonFromSession',
-                success: function (glv) {                    
+                success: function (glv) {
                     glv_name = glv.ch_name.trim() + ' ' + glv.fname.trim() + ' ' + glv.name.trim();
                     glv = glv;
                     new Vue({
@@ -44,8 +44,8 @@
                             glv: glv,
                             glv_name: glv.ch_name.trim() + ' ' + glv.fname.trim() + ' ' + glv.name.trim()
                         }
-                    });
-                    $("#display_name_glv").LoadingOverlay("hide");
+                    });                    
+                    $.LoadingOverlay("hide");
                 }
             });
         });
@@ -88,7 +88,7 @@
                         </li>
                         <li class="nav-item m-2">
                             <a class="btn btn-info font-weight-bold w-100 text-left" :href="'/internal/index?id='+glv.id">
-                                <i class="fa fa-home mr-2"></i>Trang chính
+                                <i class="fa fa-address-card mr-2"></i>Thông tin cá nhân
                             </a>
                         </li>
                         <li class="nav-item m-2">
