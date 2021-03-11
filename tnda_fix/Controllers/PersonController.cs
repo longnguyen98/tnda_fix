@@ -318,7 +318,6 @@ namespace tnda_fix.Controllers
             }
             return Redirect(form["current_location"].ToString());
         }
-
         [HttpPost]
         public void EditImage()
         {

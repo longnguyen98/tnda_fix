@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "allClasses";
-    Layout = ViewBag.layout !=null ? ViewBag.layout : "~/Views/Shared/InternalLayout.cshtml";
+    Layout = ViewBag.layout != null ? ViewBag.layout : "~/Views/Shared/InternalLayout.cshtml";
 }
 <script>
     var table;
@@ -38,6 +38,7 @@
     <table id="table" class="table table-striped" style="width:100%">
         <thead>
             <tr>
+                <th></th>
                 <th scope="col">Tên</th>
                 <th scope="col">GLV</th>
                 <th scope="col">Sỉ số</th>
@@ -46,7 +47,8 @@
         </thead>
         <tbody>
             <tr v-for="cl in list">
-                <th :style="'background-color:'+cl.color">{{cl.name}}</th>
+                <th :style="'background-color:'+cl.color"></th>
+                <th>{{cl.name}}</th>
                 <td>{{cl.glv}}</td>
                 <td>{{cl.total}}</td>
                 <td><a :href="'/internal/listByClass?id_class='+cl.id" class="btn btn-sm btn-info">Chi tiết</a></td>
