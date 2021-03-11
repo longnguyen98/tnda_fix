@@ -30,6 +30,7 @@ namespace tnda_fix.Controllers
         {
             int person_id = (int)Session["personId"];
             Person p = (Person)Session["person"];
+            ACC acc = (ACC)Session["acc"];
             var json = new
             {
                 id = p.ID,
@@ -40,7 +41,8 @@ namespace tnda_fix.Controllers
                 address = p.Address,
                 phone = p.Phone,
                 role_id = p.ID_role,
-                id_class = p.ID_Class
+                id_class = p.ID_Class,
+                accLevel = acc.accLevel
             };
             return Json(json, JsonRequestBehavior.AllowGet);
         }
@@ -55,15 +57,7 @@ namespace tnda_fix.Controllers
             {
                 Session.Add("accountName", username);
                 Session.Timeout = 1440;
-                //admin
-                if (username.EndsWith("admin"))
-                {
-                    return Redirect("~/Admin/index");
-                }
-                else
-                {
-                    return Redirect("~/internal/index?id=" + (int)Session["personId"]);
-                }
+                return Redirect("~/internal/index?id=" + (int)Session["personId"]);
             }
             //
             else
@@ -91,6 +85,7 @@ namespace tnda_fix.Controllers
                         Person p = account.Person;
                         Session.Add("personId", p.ID);
                         Session.Add("person", p);
+                        Session.Add("acc", account);
                         if (p.ID_Class != null)
                         {
                             Session.Add("classId", p.Class.ID);

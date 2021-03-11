@@ -27,7 +27,7 @@
     <link href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet" />
     <script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     @*<link href="~/Content/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"/>
-    <script src="~/Content/datatables/dataTables.bootstrap4.min.js"></script>*@
+        <script src="~/Content/datatables/dataTables.bootstrap4.min.js"></script>*@
     <!--Loading Overlay-->
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
     <script>
@@ -35,7 +35,7 @@
             $("#display_name_glv").LoadingOverlay("show");
             $.ajax({
                 url: '/auth/getPersonFromSession',
-                success: function (glv) {
+                success: function (glv) {                    
                     glv_name = glv.ch_name.trim() + ' ' + glv.fname.trim() + ' ' + glv.name.trim();
                     glv = glv;
                     new Vue({
@@ -64,8 +64,8 @@
     <div class="container-fluid">
         <div class="row">
             <nav id="sidebarMenu" class="col-md-3 col-lg-3 d-md-block bg-light sidebar collapse">
-                <div class="sidebar-sticky pt-3">
-                    <ul id="display_name_glv" class="nav flex-column">
+                <div id="display_name_glv" class="sidebar-sticky pt-3">
+                    <ul class="nav flex-column">
                         <li class="nav-item bg-success rounded m-2">
                             <span class="nav-link text-white pl-2">
                                 Xin Chào.
@@ -83,7 +83,7 @@
                                     <div class="mt-2">
                                         <button type="submit" class="btn font-weight-bold w-100 text-left btn-secondary"><i class="fa fa-search mr-2"></i>Tìm kiếm</button>
                                     </div>
-                                </div>                
+                                </div>
                             </form>
                         </li>
                         <li class="nav-item m-2">
@@ -91,7 +91,6 @@
                                 <i class="fa fa-home mr-2"></i>Trang chính
                             </a>
                         </li>
-
                         <li class="nav-item m-2">
                             <a class="btn btn-info font-weight-bold w-100 text-left" :href="'/internal/listbyclass?id_class=' + glv.id_class">
                                 <i class="fa fa-list mr-2"></i>Danh sách thiếu nhi
@@ -102,6 +101,30 @@
                                 <i class="fa fa-list mr-2"></i>Tất cả các lớp
                             </a>
                         </li>
+                    </ul>
+                    <ul class="nav flex-column" v-if="glv.accLevel == 0">
+                        <li class="nav-item m-2">
+                            <a class="btn btn-info font-weight-bold w-100 text-left" href="/admin/allGLV">
+                                <i class="fa fa-list mr-2"></i>Danh sách GLV
+                            </a>
+                        </li>
+                        <li class="nav-item m-2">
+                            <a class="btn btn-info font-weight-bold w-100 text-left" href="/admin/checknew">
+                                <i class="fa fa-list mr-2"></i>Duyệt đơn
+                            </a>
+                        </li>
+                        <li class="nav-item m-2">
+                            <a class="btn btn-info font-weight-bold w-100 text-left" href="/admin/dashboard">
+                                <i class="fa fa-list mr-2"></i>Thống kê
+                            </a>
+                        </li>
+                        <li class="nav-item m-2">
+                            <a class="btn btn-info font-weight-bold w-100 text-left" href="/admin/import">
+                                <i class="fa fa-table mr-2"></i>Nhập bằng Excel
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav flex-column">
                         <li class="nav-item m-2">
                             <a class="btn btn-danger font-weight-bold w-100 text-left" onclick="Loading('show')" href="/auth/logout">
                                 <i class="fa fa-power-off mr-2"></i>Đăng xuất
