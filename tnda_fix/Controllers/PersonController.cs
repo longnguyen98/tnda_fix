@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -381,13 +382,31 @@ namespace tnda_fix.Controllers
         public ActionResult EditClass(FormCollection form)
         {
             tndaEntities db = new tndaEntities();
-            Person p = db.People.Find(int.Parse(form["child-id"]));
+            int id = int.Parse(form["child-id"]);
+            Person p = db.People.Find(id);
             if (p != null)
             {
-                p.ID_Class = int.Parse(form["child-class"]);
-                if (form["child-role"] != null)
+                Class newClass = db.Classes.Find(int.Parse(form["child-class"]));
+                Class oldClass = db.Classes.Find(int.Parse(form["child-old-class"]));
+                if (p.ID_role == 1 || p.ID_role == 2)
                 {
-                    p.ID_role = int.Parse(form["child-role"]);
+                    if (newClass != null)
+                    {
+                        p.ID_Class = int.Parse(form["child-class"]);
+                        newClass.teacher_names = p.ChristianName + " " + p.FirstName + " " + p.Name;
+                        if (oldClass != null)
+                            oldClass.teacher_names = "";
+                    }
+                }
+                else if (p.ID_role == 4 || p.ID_role == 7)
+                {
+                    if (newClass != null)
+                    {
+                        p.ID_Class = int.Parse(form["child-class"]);
+                        newClass.students_count += 1;
+                        if (oldClass != null)
+                            oldClass.students_count -= 1;
+                    }
                 }
                 db.SaveChanges();
             }
