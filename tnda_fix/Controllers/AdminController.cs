@@ -32,7 +32,7 @@ namespace tnda_fix.Controllers
 
         public ActionResult allClasses()
         {
-            return View("Internal/allClasses");
+            return View("~/Views/Internal/allClasses.cshtml");
         }
 
         public ActionResult dashBoard()
@@ -41,14 +41,6 @@ namespace tnda_fix.Controllers
         }
 
         public ActionResult import()
-        {
-            return View();
-        }
-        public ActionResult listByClassAdminView()
-        {
-            return View();
-        }
-        public ActionResult detailAdminView()
         {
             return View();
         }
