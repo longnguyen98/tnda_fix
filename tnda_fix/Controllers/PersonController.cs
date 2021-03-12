@@ -274,6 +274,7 @@ namespace tnda_fix.Controllers
 
         //Edit Person
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult EditPerson(FormCollection form)
         {
             using (PersonService personService = new PersonService())
@@ -285,6 +286,7 @@ namespace tnda_fix.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult EditClass(FormCollection form)
         {
             tndaEntities db = new tndaEntities();
@@ -301,7 +303,7 @@ namespace tnda_fix.Controllers
                         p.ID_Class = int.Parse(form["child-class"]);
                         newClass.teacher_names = p.ChristianName + " " + p.FirstName + " " + p.Name;
                         if (oldClass != null)
-                            oldClass.teacher_names = "";
+                            oldClass.teacher_names = null;
                     }
                 }
                 else if (p.ID_role == 4 || p.ID_role == 7)
@@ -319,6 +321,7 @@ namespace tnda_fix.Controllers
             return Redirect(form["current_location"].ToString());
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public void EditImage()
         {
             tndaEntities db = new tndaEntities();
@@ -376,21 +379,42 @@ namespace tnda_fix.Controllers
         }
 
         [HttpPost]
-        public bool DelPerson(int id)
+        [ValidateAntiForgeryToken]
+        public ActionResult DelPerson(FormCollection form)
         {
             tndaEntities db = new tndaEntities();
-            Person ps = new Person();
-            List<Person> list = db.People.ToList();
-            foreach (Person p in list)
+            Person p = db.People.Find(int.Parse(form["child-id"]));
+            if (p != null)
             {
-                if (p.ID == id)
+                if (p.ID_role == 1 || p.ID_role == 2)
                 {
-                    p.Status = false;
-                    db.SaveChanges();
+                    if(p.ID_Class != null)
+                    {
+                        Class c = db.Classes.Find(p.ID_Class);
+                        c.teacher_names = null;
+                    }
                 }
+                if(p.ID_role == 4 || p.ID_role == 7)
+                {
+                    if(p.ID_Class != null)
+                    {
+                        Class c = db.Classes.Find(p.ID_Class);
+                        c.students_count -= 1;
+                    }
+                    if(p.ID_Farmily != null)
+                    {
+                        Family fam = db.Families.Find(p.ID_Farmily);
+                        Person father = db.People.Find(fam.ID_Dad);
+                        Person mother = db.People.FirstOrDefault(per =>per.ID_Farmily == fam.ID && per.ID != father.ID && per.ID != p.ID);
+                        db.Families.Remove(fam);
+                        db.People.Remove(father);
+                        db.People.Remove(mother);
+                    }
+                }
+                db.People.Remove(p);
+                db.SaveChanges();
             }
-
-            return true;
+            return Redirect(form["current_location"].ToString());
         }
 
         //test data
