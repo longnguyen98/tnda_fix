@@ -63,7 +63,7 @@
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <nav id="sidebarMenu" class="col-md-3 col-lg-3 d-md-block bg-light sidebar collapse">
+            <nav id="sidebarMenu" class="col-lg-3 d-md-block bg-light sidebar collapse">
                 <div id="display_name_glv" class="sidebar-sticky pt-3">
                     <ul class="nav flex-column">
                         <li class="nav-item bg-success rounded m-2">
@@ -133,11 +133,15 @@
                     </ul>
                 </div>
             </nav>
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-19 px-md-4">
+            <main role="main" class="ml-sm-auto col-lg-9 justify-content-center">
                 <br />
                 @RenderBody()
+                <div class="footer-copyright py-1 text-center bg-secondary text-white font-weight-bold">
+                    <i class="fas fa-laptop-code mr-1"></i> Phát triển bởi Long & Tuan - BUILD2211.110321
+                </div>
             </main>
         </div>
     </div>
+  
 </body>
 </html>
