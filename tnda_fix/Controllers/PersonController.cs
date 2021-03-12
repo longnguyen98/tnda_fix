@@ -13,6 +13,100 @@ namespace tnda_fix.Controllers
 {
     public class PersonController : Controller
     {
+        [HttpPost]
+        public void EditImage()
+        {
+            tndaEntities db = new tndaEntities();
+            List<Person> list = db.People.ToList();
+            string id = Request.QueryString["query"];
+            string img = Request.QueryString["query"];
+            foreach (Person p in list)
+            {
+                if (p.ID == int.Parse(id))
+                {
+                    p.Image = img;
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        //Report
+        [HttpPost]
+        public bool ReportPerson(FormCollection form)
+        {
+            int idOldPerson = int.Parse(Request.QueryString["query"]);
+            tndaEntities db = new tndaEntities();
+            Person p = new Person
+            {
+                ChristianName = form["child-ch-name"],
+                FirstName = form["fa-fname"],
+                Name = form["fa-name"],
+                Birth = Convert.ToDateTime(form["child-birth"]), //
+                Address = form["child-address"],
+                ID_Class = int.Parse(form["child-class"]),
+                //ID_Farmily = form["child-address"],
+                ID_role = 1,
+                //Image = "",
+                Note = "",
+                Phone = "",
+                Status = true,
+                Gender = bool.Parse(form["child-gender"]),
+                CreateDate = DateTime.Now
+            };
+            db.People.Add(p);
+            //return Json(form["child-class"], JsonRequestBehavior.AllowGet);
+            //db.People.Add(p);
+            //db.SaveChanges();
+
+            Report rp = new Report
+            {
+                ID_Person = idOldPerson,
+                ID_NewPerson = p.ID,
+                Date = DateTime.Now,
+                Status = 0
+            };
+            db.Reports.Add(rp);
+            db.SaveChanges();
+            return true;
+        }
+
+        [HttpPost]
+        public bool DelPerson(int id)
+        {
+            tndaEntities db = new tndaEntities();
+            Person ps = new Person();
+            List<Person> list = db.People.ToList();
+            foreach (Person p in list)
+            {
+                if (p.ID == id)
+                {
+                    p.Status = false;
+                    db.SaveChanges();
+                }
+            }
+
+            return true;
+        }
+
+        //test data
+        [HttpPost]
+        public JsonResult testData(FormCollection form)
+        {
+            Dictionary<string, object> map = new Dictionary<string, object>();
+            string[] keys = form.AllKeys;
+            foreach (string key in keys)
+            {
+                map.Add(key, form[key]);
+            }
+
+            return Json(map, JsonRequestBehavior.AllowGet);
+        }
+
+        public ViewResult successfullView()
+        {
+            return View();
+        }
+
         public JsonResult GetPersonDetail()
         {
             return getPersonDetailWithArg(int.Parse(Request.QueryString["id"]));
@@ -431,9 +525,5 @@ namespace tnda_fix.Controllers
             return Json(map, JsonRequestBehavior.AllowGet);
         }
 
-        public ViewResult successfullView()
-        {
-            return View();
-        }
-    }
+    }    
 }

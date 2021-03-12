@@ -13,6 +13,7 @@
           <Property Name="UserName" Type="nchar" MaxLength="20" />
           <Property Name="Pwd" Type="nchar" MaxLength="20" />
           <Property Name="ID_Person" Type="int" />
+          <Property Name="accLevel" Type="int" />
         </EntityType>
         <EntityType Name="Class">
           <Key>
@@ -23,7 +24,7 @@
           <Property Name="ID_Grade" Type="int" />
           <Property Name="Status" Type="bit" />
           <Property Name="students_count" Type="int" />
-          <Property Name="teacher_names" Type="varchar" MaxLength="100" />
+          <Property Name="teacher_names" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Family">
           <Key>
@@ -412,6 +413,7 @@
           <Property Name="ID_Person" Type="Int32" />
           <NavigationProperty Name="Person" Relationship="tndaModel.FK_ACC_Person" FromRole="ACC" ToRole="Person" />
           <NavigationProperty Name="PersonLogs" Relationship="tndaModel.FK_PersonLog_ACC" FromRole="ACC" ToRole="PersonLog" />
+          <Property Name="accLevel" Type="Int32" />
         </EntityType>
         <EntityType Name="Class">
           <Key>
@@ -424,7 +426,7 @@
           <NavigationProperty Name="Grade" Relationship="tndaModel.FK_Class_Grade" FromRole="Class" ToRole="Grade" />
           <NavigationProperty Name="People" Relationship="tndaModel.FK_Person_Class" FromRole="Class" ToRole="Person" />
           <Property Name="students_count" Type="Int32" />
-          <Property Name="teacher_names" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="teacher_names" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Family">
           <Key>
@@ -704,6 +706,7 @@
           <EntitySetMapping Name="ACCs">
             <EntityTypeMapping TypeName="tndaModel.ACC">
               <MappingFragment StoreEntitySet="ACC">
+                <ScalarProperty Name="accLevel" ColumnName="accLevel" />
                 <ScalarProperty Name="ID_Person" ColumnName="ID_Person" />
                 <ScalarProperty Name="Pwd" ColumnName="Pwd" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />

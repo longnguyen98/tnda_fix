@@ -113,16 +113,16 @@
     <div id="vue_app" class="row bg-light rounded p-3">
         <table id="table" class="table align-content-end hover" style="width:100%">
             <thead>
-                <tr>                    
+                <tr>
                     <th scope="col">Tên Thánh</th>
                     <th scope="col">Họ </th>
                     <th scope="col">Tên</th>
-                    <th scope="col">Ngày sinh <i>(năm- tháng - ngày)</i></th>
+                    <th scope="col">Ngày sinh <i class="d-none d-lg-block">(năm- tháng - ngày)</i></th>
                     <th scope="col">Chi tiết</th>
                 </tr>
             </thead>
             <tbody style="display:none" id="content">
-                <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">                    
+                <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
                     <td>{{p.ch_name}}</td>
                     <td>{{p.fname}} </td>
                     <td>{{p.name}}</td>

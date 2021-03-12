@@ -24,6 +24,7 @@ namespace tnda_fix.Models
         public string UserName { get; set; }
         public string Pwd { get; set; }
         public Nullable<int> ID_Person { get; set; }
+        public Nullable<int> accLevel { get; set; }
     
         public virtual Person Person { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
