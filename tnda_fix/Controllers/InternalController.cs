@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using tnda_fix.Models;
 using tnda_fix.Models.filters;
 
@@ -22,6 +23,12 @@ namespace tnda.Controllers
         public ActionResult detail()
         {
             return View();
+        }
+
+        [HttpGet]
+        public void alive()
+        {
+            return;
         }
 
         public ActionResult allClasses()

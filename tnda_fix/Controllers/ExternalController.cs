@@ -27,6 +27,10 @@ namespace tnda_fix.Controllers
         {
             return View();
         }
+        public object session()
+        {
+            return new {timeout= Session.Timeout};
+        }
 
         [HttpPost]
         public string upClass()

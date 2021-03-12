@@ -31,8 +31,11 @@
     <!--Loading Overlay-->
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
     <script>
+        setInterval(function () {
+            $.get('/internal/alive');
+        }, 30000 );
         $.LoadingOverlay("show");
-        $(document).ready(function () {           
+        $(document).ready(function () {
             $.ajax({
                 url: '/auth/getPersonFromSession',
                 success: function (glv) {
@@ -44,7 +47,7 @@
                             glv: glv,
                             glv_name: glv.ch_name.trim() + ' ' + glv.fname.trim() + ' ' + glv.name.trim()
                         }
-                    });                    
+                    });
                     $.LoadingOverlay("hide");
                 }
             });
@@ -142,6 +145,6 @@
             </main>
         </div>
     </div>
-  
+
 </body>
 </html>
