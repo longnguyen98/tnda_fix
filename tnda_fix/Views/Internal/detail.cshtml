@@ -12,10 +12,6 @@
             url: "/person/getPersonDetail",
             data: { id: id },
             success: function (result) {
-                $('.my-content').addClass("d-flex");
-                $('.my-content').addClass("justify-content-center");
-                $('.my-content').addClass("row");
-                $('.my-content').show();
                 $.ajax({
                     url: "/GradeAndClass/getAllGrades",
                     success: function (result2) {
@@ -29,13 +25,22 @@
                         getClasses();
                     }
                 });
-                console.log(result);
-                new Vue({
-                    el: '#vue-app',
-                    data: {
-                        detail: result,
-                        glvlink: '/external/detail?id=' + result.glv_id
-                    }
+                $.get('/internal/editable?personClassId=' + result.id_class, function (edt) {
+                    new Vue({
+                        el: '#vue-app',
+                        data: {
+                            detail: result,
+                            editable: edt,
+                            glvlink: '/external/detail?id=' + result.glv_id
+                        },
+                        mounted: function () {                            
+                            $('.my-content').addClass("d-flex");
+                            $('.my-content').addClass("justify-content-center");
+                            $('.my-content').addClass("row");
+                            $('.my-content').show();
+                            $.LoadingOverlay("hide");
+                        }
+                    });
                 });
                 new Vue({
                     el: '#edit-modal',
@@ -57,6 +62,7 @@
 
                     }
                 });
+
             }
         });
     });
@@ -70,7 +76,6 @@
                 for (var i = 0; i < result.length; i++) {
                     $("#classes").append(new Option(result[i].className, result[i].ID));
                 }
-                $.LoadingOverlay("hide");
             }
         });
     }
@@ -142,13 +147,13 @@
                 </div>
             </div>
         </div>
-        <div class="row mb-2 shadow" style="width:80%">
+        <div class="row mb-2 shadow" style="width:80%" v-if="editable == 'True'">
             <div class="col-lg-12 col-sm-12 mb-2">
                 <div class="card d-lg-flex flex-lg-row-reverse d-flex flex-column-reverse">
                     <button type="button" class="btn btn-info m-1" data-toggle="modal" data-target="#edit-modal">Sửa thông tin</button>
                     <button type="button" class="btn btn-info m-1" data-toggle="modal" data-target="#edit-class-modal">Sửa lớp</button>
                     <form class="m-1" action="/person/setimg" method="post" enctype="multipart/form-data">
-                        <input type="text" hidden name="id" :value="detail.id"/>
+                        <input type="text" hidden name="id" :value="detail.id" />
                         <div class="input-group">
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-outline-success" style="text-align: start" onclick="updateAvatar()">Cập nhật</button>
@@ -167,7 +172,7 @@
 <div class="modal fade bd-example-modal-lg vue-app" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content p-5">
-            <form id="editForm">                
+            <form id="editForm">
                 <div class="form-group">
                     <input hidden type="text" class="form-control" :value=detail.id name="child-id">
                 </div>

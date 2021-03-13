@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Web.Mvc;
+using tnda_fix.Constants;
 using tnda_fix.Models;
 
 namespace tnda_fix.Services
@@ -12,6 +13,19 @@ namespace tnda_fix.Services
         public void Dispose()
         {
             db.Dispose();
+        }
+
+        public Boolean isEditable(int personClassId, int accLevel, int loginClassId)
+        {
+            if (accLevel == AccLevel.ADMIN)
+            {
+                return true;
+            }
+            if (personClassId == loginClassId)
+            {
+                return true;
+            }
+            return false;
         }
 
         public Response editPerson(FormCollection form)
