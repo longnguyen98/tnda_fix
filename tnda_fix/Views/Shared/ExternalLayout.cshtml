@@ -27,11 +27,14 @@
     @*Loading Overlay*@
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
     <script>
+        setInterval(function () {
+            $.get('/internal/alive');
+        }, 30000);
         $(document).ready(function () {
             $('#login_btn').LoadingOverlay("show");
             $.ajax({
                 url: "/auth/getAuthStatus",
-                success: function (result) {                    
+                success: function (result) {
                     if (result == true) {
                         $.ajax({
                             url: "/auth/getPersonFromSession",
@@ -60,7 +63,7 @@
                 }
             });
         });
-        function Loading(el,attr) {
+        function Loading(el, attr) {
             $(el).LoadingOverlay(attr);
         }
     </script>
