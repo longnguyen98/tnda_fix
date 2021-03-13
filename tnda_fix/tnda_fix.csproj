@@ -209,6 +209,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Constants\AccLevel.cs" />
+    <Compile Include="Constants\BuildVersion.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\GradeAndClassController.cs" />

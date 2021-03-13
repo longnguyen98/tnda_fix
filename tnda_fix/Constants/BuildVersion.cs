@@ -5,10 +5,8 @@ using System.Web;
 
 namespace tnda_fix.Constants
 {
-    public static class AccLevel
+    public static class BuildVersion
     {
-        public static int ADMIN = 0;
-        public static int USER = 1;
+        public static string ver = "BUILD1231.130321";
     }
-  
 }
