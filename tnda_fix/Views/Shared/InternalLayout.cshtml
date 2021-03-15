@@ -34,7 +34,7 @@
     <script>
         setInterval(function () {
             $.get('/internal/alive');
-        }, 30000 );
+        }, 30000);
         $.LoadingOverlay("show");
         $(document).ready(function () {
             $.ajax({
@@ -59,15 +59,13 @@
     </script>
 </head>
 <body>
-    <nav class="navbar navbar-dark sticky-top bg-info flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-md-3 col-lg-3 mr-0 px-3" href="#"><i class="fa fa-church mr-3"></i>GLV GX Dĩ An</a>
-        <button class="navbar-toggler position-absolute d-md-none collapsed mt-1 text-white" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fa fa-bars mr-2"></i> Menu
-        </button>
-    </nav>
-    <div class="container-fluid">
-        <div class="row">
-            <nav id="sidebarMenu" class="col-lg-3 d-md-block bg-light sidebar collapse">
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-light border-right " id="sidebar-wrapper">
+            <div class="sidebar-heading bg-light text-white px-2 py-1">
+                <a class="btn btn-danger pl-4 pr-4 py-3 font-weight-bold d-flex" href="/external/index"><i class="fa fa-church mr-3"></i>GLV GX Dĩ An</a>
+            </div>
+            <div class="list-group list-group-flush">
                 <div id="display_name_glv" class="sidebar-sticky pt-3">
                     <ul class="nav flex-column">
                         <li class="nav-item bg-success rounded m-2">
@@ -136,16 +134,32 @@
                         </li>
                     </ul>
                 </div>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg bg-info border-bottom px-1 pl-2">
+                <button class="btn btn-sm border btn-light menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></button>
             </nav>
-            <main role="main" class="ml-sm-auto col-lg-9 justify-content-center">
-                <br />
+            <div class="container-fluid bg-light m-2">
                 @RenderBody()
+            </div>
+            <footer class="footer">
                 <div class="footer-copyright py-1 text-center bg-secondary text-white font-weight-bold">
                     <i class="fas fa-laptop-code mr-1"></i> Phát triển bởi Long & Tuan - @BuildVersion.ver
                 </div>
-            </main>
+            </footer>
         </div>
+        <!-- /#page-content-wrapper -->      
     </div>
-
+    <!-- /#wrapper -->
+    <!-- Menu Toggle Script -->
+    <script>
+        $(".menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>   
 </body>
 </html>
