@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -256,7 +255,7 @@ namespace tnda_fix.Controllers
             int id_class = int.Parse(Request.QueryString["id_class"]);
             tndaEntities db = new tndaEntities();
             List<object> json = new List<object>();
-            List<Person> people = db.People.Where(p => p.ID_role == 4 && p.ID_Class == id_class).ToList();
+            List<Person> people = db.People.Where(p => p.ID_role == 4 && p.ID_Class == id_class).OrderBy(p =>p.Name).ToList();
             foreach (Person p in people)
             {
                 var ob = new
@@ -395,7 +394,9 @@ namespace tnda_fix.Controllers
                         p.ID_Class = int.Parse(form["child-class"]);
                         newClass.teacher_names = p.ChristianName + " " + p.FirstName + " " + p.Name;
                         if (oldClass != null)
+                        {
                             oldClass.teacher_names = "";
+                        }
                     }
                 }
                 else if (p.ID_role == 4 || p.ID_role == 7)
@@ -405,7 +406,9 @@ namespace tnda_fix.Controllers
                         p.ID_Class = int.Parse(form["child-class"]);
                         newClass.students_count += 1;
                         if (oldClass != null)
+                        {
                             oldClass.students_count -= 1;
+                        }
                     }
                 }
                 db.SaveChanges();
@@ -413,5 +416,5 @@ namespace tnda_fix.Controllers
             return Redirect(form["current_location"].ToString());
         }
 
-    }    
+    }
 }

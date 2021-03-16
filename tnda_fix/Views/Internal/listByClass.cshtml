@@ -43,12 +43,13 @@
                                 el: "#vue_app"
                                 ,
                                 data: {
-                                    persons: result,
+                                    persons: result,                                    
                                     link: '/internal/detail?id='
                                 }
                                 , mounted: function () {
                                     $('#table').DataTable({
-                                        "order": [[2, "asc"]],
+                                        /* Disable initial sort */
+                                        "aaSorting": [],
                                         "pageLength": 50
                                     });
                                 }
@@ -116,6 +117,7 @@
         <table id="table" class="table align-content-end hover" style="width:100%">
             <thead>
                 <tr>
+                    <th scope="col">#</th>
                     <th scope="col">Tên Thánh</th>
                     <th scope="col">Họ </th>
                     <th scope="col">Tên</th>
@@ -124,7 +126,8 @@
                 </tr>
             </thead>
             <tbody style="display:none" id="content">
-                <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
+                <tr v-for="(p,index) in persons" v-bind:key="p.id" v-bind:person="p">
+                    <td>{{index +1 }}</td>
                     <td>{{p.ch_name}}</td>
                     <td>{{p.fname}} </td>
                     <td>{{p.name}}</td>
