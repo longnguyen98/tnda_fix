@@ -17,7 +17,7 @@ namespace tnda_fix.Services
 
         public Boolean isEditable(int personClassId, int accLevel, int loginClassId)
         {
-            if (accLevel == AccLevel.ADMIN)
+            if (accLevel == Constant.ADMIN)
             {
                 return true;
             }

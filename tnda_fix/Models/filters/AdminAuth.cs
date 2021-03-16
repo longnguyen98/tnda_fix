@@ -11,7 +11,7 @@ namespace tnda_fix.Models.filters
         public void OnAuthentication(AuthenticationContext filterContext)
         {
             ACC acc = (ACC)filterContext.HttpContext.Session["acc"];
-            if (acc.accLevel != AccLevel.ADMIN)
+            if (acc.accLevel != Constant.ADMIN)
             {
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary
                     {
