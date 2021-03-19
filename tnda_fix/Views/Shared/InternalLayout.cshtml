@@ -32,12 +32,14 @@
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
     <script>
         $.LoadingOverlay("show");
-        $(document).ready(function () {           
+        $(document).ready(function () {
+            
             $.ajax({
                 url: '/auth/getPersonFromSession',
                 success: function (glv) {
                     glv_name = glv.ch_name.trim() + ' ' + glv.fname.trim() + ' ' + glv.name.trim();
                     glv = glv;
+                    sessionStorage.setItem("accLevel", glv.accLevel);
                     new Vue({
                         el: '#display_name_glv',
                         data: {

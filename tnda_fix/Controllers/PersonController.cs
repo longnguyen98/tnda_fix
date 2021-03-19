@@ -69,24 +69,62 @@ namespace tnda_fix.Controllers
             db.SaveChanges();
             return true;
         }
-
         [HttpPost]
-        public bool DelPerson(int id)
+        //[ValidateAntiForgeryToken]
+        public ActionResult DelPerson(FormCollection form)
         {
             tndaEntities db = new tndaEntities();
-            Person ps = new Person();
-            List<Person> list = db.People.ToList();
-            foreach (Person p in list)
+            Person p = db.People.Find(int.Parse(form["child-id"]));
+            if (p != null)
             {
-                if (p.ID == id)
+                if (p.ID_role == 1 || p.ID_role == 2)
                 {
-                    p.Status = false;
-                    db.SaveChanges();
+                    if (p.ID_Class != null)
+                    {
+                        Class c = db.Classes.Find(p.ID_Class);
+                        c.teacher_names = null;
+                    }
                 }
+                if (p.ID_role == 4 || p.ID_role == 7)
+                {
+                    if (p.ID_Class != null)
+                    {
+                        Class c = db.Classes.Find(p.ID_Class);
+                        c.students_count -= 1;
+                    }
+                    if (p.ID_Farmily != null)
+                    {
+                        Family fam = db.Families.Find(p.ID_Farmily);
+                        Person father = db.People.Find(fam.ID_Dad);
+                        Person mother = db.People.FirstOrDefault(per => per.ID_Farmily == fam.ID && per.ID != father.ID && per.ID != p.ID);
+                        db.Families.Remove(fam);
+                        db.People.Remove(father);
+                        db.People.Remove(mother);
+                    }
+                }
+                db.People.Remove(p);
+                db.SaveChanges();
             }
-
-            return true;
+            return Redirect(form["current_location"].ToString());
         }
+
+        //[HttpPost]
+        //public bool DelPerson(int id)
+        //{
+        //    tndaEntities db = new tndaEntities();
+        //    Person ps = new Person();
+        //    List<Person> list = db.People.ToList();
+        //    foreach (Person p in list)
+        //    {
+        //        if (p.ID == id)
+        //        {
+        //            p.Status = false;
+        //            db.SaveChanges();
+        //        }
+        //    }
+
+        //    return true;
+        //}
 
         //test data
         [HttpPost]
@@ -414,6 +452,7 @@ namespace tnda_fix.Controllers
             }
             return Redirect(form["current_location"].ToString());
         }
+        /*
         [HttpPost]
         [ValidateAntiForgeryToken]
         public void EditImage()
@@ -523,7 +562,7 @@ namespace tnda_fix.Controllers
             }
 
             return Json(map, JsonRequestBehavior.AllowGet);
-        }
+        }*/
 
     }    
 }
