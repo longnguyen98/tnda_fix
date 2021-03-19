@@ -353,19 +353,6 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
-    <Content Include="Views\Template\404.html" />
-    <Content Include="Views\Template\blank.html" />
-    <Content Include="Views\Template\buttons.html" />
-    <Content Include="Views\Template\cards.html" />
-    <Content Include="Views\Template\charts.html" />
-    <Content Include="Views\Template\forgot-password.html" />
-    <Content Include="Views\Template\login.html" />
-    <Content Include="Views\Template\register.html" />
-    <Content Include="Views\Template\tables.html" />
-    <Content Include="Views\Template\utilities-animation.html" />
-    <Content Include="Views\Template\utilities-border.html" />
-    <Content Include="Views\Template\utilities-color.html" />
-    <Content Include="Views\Template\utilities-other.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -400,9 +387,6 @@
     <Content Include="Views\Internal\index.cshtml" />
     <Content Include="Views\Shared\ExternalLayout.cshtml" />
     <Content Include="Views\Shared\InternalLayout.cshtml" />
-    <Content Include="Views\Template\desktop.ini" />
-    <Content Include="Views\Template\index.cshtml" />
-    <Content Include="Views\Template\landing_index.cshtml" />
     <Content Include="Views\External\detail.cshtml" />
     <Content Include="Views\Internal\listByClass.cshtml" />
     <Content Include="Views\Internal\detail.cshtml" />

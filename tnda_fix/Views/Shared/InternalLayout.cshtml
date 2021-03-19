@@ -33,6 +33,10 @@
     <script src="~/Content/lightbox2/lightbox.min.js"></script>
     <!--Custom scripts-->
     <script>
+        lightbox.option({
+            'resizeDuration': 200,
+            'fadeDuration': 200
+        });
         setInterval(function () {
             $.get('/internal/alive');
         }, 30000);
