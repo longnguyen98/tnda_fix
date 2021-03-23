@@ -35,13 +35,14 @@
                 });
                 vue_edit = new Vue({
                     el: "#edit_modal",
-                    data: {detail:result[0]}
+                    data: { detail: result[0] }
                 });
                 $('#table_wrapper').addClass("w-100");
+                $('#table_length').addClass("text-right");                
+                $('#table_filter').addClass("text-right");                
                 $.LoadingOverlay("hide");
             }
         });
-
     });
 
     function load_modal(id) {
@@ -88,36 +89,38 @@
     }
 </script>
 <br />
+<div class="d-flex flex-row-reverse">
+    <btn class="btn btn-info font-weight-bold">+ Thêm GLV</btn>
+</div>
 <div id="vue_app" class="row bg-light rounded p-3">
-        <table id="table" class="table table-striped" style="width:100%">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Tên Thánh</th>
-                    <th scope="col">Họ & Tên</th>
-                    <th scope="col">Ngày sinh</th>
-                    <th scope="col">Lớp</th>
-                    <th scope="col">Chi tiết</th>
-                </tr>
-            </thead>
-
-            <tbody style="display:none" id="content">
-                <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
-                    <th scope="row">{{p.id}}</th>
-                    <td>{{p.ch_name}}</td>
-                    <td>{{p.fname}} {{p.name}}</td>
-                    <td>{{p.birth}}</td>
-                    <td>{{p.pclass}}</td>
-                    <td><button type="button" class="btn btn-info" :onclick="'load_modal('+p.id+')'">Chi tiết</button></td>
-                </tr>
-            </tbody>
-        </table>
-        <div style="display:none" id="notfound">
-            <h3>Không có dữ liệu!</h3>
-        </div>
+    <table id="table" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Tên Thánh</th>
+                <th scope="col">Họ & Tên</th>
+                <th scope="col">Ngày sinh</th>
+                <th scope="col">Lớp</th>
+                <th scope="col">Chi tiết</th>
+            </tr>
+        </thead>
+        <tbody style="display:none" id="content">
+            <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
+                <th scope="row">{{p.id}}</th>
+                <td>{{p.ch_name}}</td>
+                <td>{{p.fname}} {{p.name}}</td>
+                <td>{{p.birth}}</td>
+                <td>{{p.pclass}}</td>
+                <td><button type="button" class="btn btn-info" :onclick="'load_modal('+p.id+')'">Chi tiết</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="display:none" id="notfound">
+        <h3>Không có dữ liệu!</h3>
+    </div>
 </div>
 <div class="modal fade bd-example-modal-lg" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content p-5">
             <form action="/person/EditClass" method="post">
                 <input hidden name="current_location" type="text" value="/admin/allglv" />
@@ -163,7 +166,6 @@
                         </div>
                     </div>
                 </div>
-
                 <button type="submit" class="btn btn-primary w-100">Lưu</button>
             </form>
         </div>

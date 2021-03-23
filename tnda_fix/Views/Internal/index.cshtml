@@ -91,7 +91,7 @@
                     <div class="card d-flex">
                         <div class="card-body row d-flex justify-content-start">
                             <div class="col-lg-auto col-sm-6 mb-2">
-                                <img class="card-img-top rounded mb-1 w-100" style="max-width:200px" :src="detail.img" alt="Img" />
+                                <a :href="detail.img" data-lightbox="image-1" ><img class="card-img-top rounded mb-1 w-100" style="max-width:200px" :src="detail.img" alt="Img" /></a>                                 
                             </div>
                             <div class="col-lg-auto col-sm-12 mb-2">
                                 <p><h5 class="card-title">{{detail.ch_name}} {{detail.fname}} {{detail.name}}</h5></p>
