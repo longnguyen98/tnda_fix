@@ -169,3 +169,84 @@
         </div>
     </div>
 </div>
+<div class="modal fade bd-example-modal-lg" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content p-5">
+            <form id="addPersonForm">
+                <input hidden name="current_location" id="current_location" type="text" />
+                <div class="form-group">
+                    <label>Tên thánh</label>
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="child-ch-name" required pattern="\S+.*">
+                </div>
+                <div class="form-group">
+                    <label>Họ và đệm</label>
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="child-fname" required pattern="\S+.*">
+                </div>
+                <div class="form-group">
+                    <label>Tên</label>
+                    <input type="text" class="form-control" placeholder="A" name="child-name" required pattern="\S+.*">
+                </div>
+                <div class="form-group">
+                    <label>Ngày tháng năm sinh</label>
+                    <input type="date" class="form-control" name="child-birth">
+                </div>
+                <div class="form-group">
+                    <label>Giới tính</label>
+                    <select class="form-control" name="child-gender">
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display: none">
+                    <label>Lớp</label>
+                    <input id="classes" class="form-control" value="1" name="child-class" />
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ</label>
+                    <input type="text" class="form-control" placeholder="Địa chỉ" name="child-address" required>
+                </div>
+                <div class="form-group">
+                    <input hidden type="text" class="form-control" name="child-role" value="4">
+                </div>
+                <br />
+                <h4 class="font-weight-bold">Bố</h4>
+                <div class="form-group">
+                    <label>Tên Thánh</label>
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="fa-ch-name" pattern="\S+.*">
+                </div>
+                <div class="form-group">
+                    <label>Họ và đệm</label>
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="fa-fname" pattern="\S+.*">
+                </div>
+                <div class="form-group">
+                    <label>Tên</label>
+                    <input type="text" class="form-control" placeholder="A" name="fa-name" pattern="\S+.*">
+                </div>
+                <div class="form-group">
+                    <label>SDT</label>
+                    <input type="number" class="form-control" placeholder="Số điện thoại" name="fa-phone">
+                </div>
+                <br />
+                <h4 class="font-weight-bold">Mẹ</h4>
+                <div class="form-group">
+                    <label>Tên Thánh</label>
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="mo-ch-name" pattern="\S+.*">
+                </div>
+                <div class="form-group">
+                    <label>Họ và đệm</label>
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="mo-fname" pattern="\S+.*">
+                </div>
+                <div class="form-group">
+                    <label>Tên</label>
+                    <input type="text" class="form-control" placeholder="A" name="mo-name" pattern="\S+.*">
+                </div>
+                <div class="form-group">
+                    <label>SDT</label>
+                    <input type="number" class="form-control" placeholder="Số điện thoại" name="mo-phone">
+                </div>
+                <button type="button" onclick="addPerson()" class="btn btn-info w-100">Thêm</button>
+                <button data-dismiss="modal" class="btn btn-danger w-100 mt-2">Hủy</button>
+            </form>
+        </div>
+    </div>
+</div>

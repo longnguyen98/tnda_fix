@@ -108,23 +108,6 @@ namespace tnda_fix.Controllers
             return Redirect(form["current_location"].ToString());
         }
 
-        //[HttpPost]
-        //public bool DelPerson(int id)
-        //{
-        //    tndaEntities db = new tndaEntities();
-        //    Person ps = new Person();
-        //    List<Person> list = db.People.ToList();
-        //    foreach (Person p in list)
-        //    {
-        //        if (p.ID == id)
-        //        {
-        //            p.Status = false;
-        //            db.SaveChanges();
-        //        }
-        //    }
-
-        //    return true;
-        //}
 
         //test data
         [HttpPost]
