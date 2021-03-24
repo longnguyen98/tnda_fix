@@ -385,7 +385,16 @@ namespace tnda_fix.Controllers
                     JsonRequestBehavior.AllowGet);
             }
         }
-
+        [HttpPost]
+        public JsonResult addGLV(FormCollection form)
+        {
+            using (PersonService personService = new PersonService())
+            {
+                Response response = personService.addGLV(form);
+                return Json(new { success = response.success, message = response.message },
+                    JsonRequestBehavior.AllowGet);
+            }
+        }
         //Edit Person
         [HttpPost]
         [ValidateAntiForgeryToken]

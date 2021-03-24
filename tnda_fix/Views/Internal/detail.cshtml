@@ -30,6 +30,7 @@
                     new Vue({
                         el: '#vue-app',
                         data: {
+                            accLevel: sessionStorage.getItem("accLevel"),
                             detail: result,
                             editable: edt,
                             glvlink: '/external/detail?id=' + result.glv_id
@@ -290,7 +291,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content p-5">
             <form action="/person/DelPerson" method="post">
-                <input name="current_location" id="current_location" :value="'/internal/listbyclass?id_class='+detail.id_class" />
+                <input name="current_location" id="current_location" :value="'/internal/listbyclass?id_class='+detail.id_class" type="hidden" />
                 <div class="form-group">
                     <input hidden type="text" class="form-control" :value=detail.id name="child-id">
                 </div>
