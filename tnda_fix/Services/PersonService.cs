@@ -208,7 +208,6 @@ namespace tnda_fix.Services
                         FirstName = form["child-fname"],
                         Name = form["child-name"],
                         Address = form["child-address"],
-                        ID_Class = int.Parse(form["child-class"]),
                         ID_role = 1,
                         Status = true,
                         Gender = bool.Parse(form["child-gender"].ToUpper()),
@@ -228,7 +227,7 @@ namespace tnda_fix.Services
                 ACC acc = new ACC
                 {
                     UserName = form["acc-username"],
-                    Pwd = Tools.decodeBase64(form["acc-pwd"]),
+                    Pwd = Tools.encodeBase64(form["acc-pwd"]),
                     ID_Person = p.ID,
                     accLevel = 1
                 };
