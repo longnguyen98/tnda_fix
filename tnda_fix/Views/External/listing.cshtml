@@ -53,7 +53,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Tên Thánh</th>
                     <th scope="col">Họ & Tên</th>
-                    <th scope="col">Ngày sinh</th>
+                    @*<th scope="col">Ngày sinh</th>*@
                     <th scope="col">Lớp</th>
                     <th scope="col">Chi tiết</th>
                 </tr>
@@ -63,9 +63,9 @@
                     <th scope="row">{{p.role}}</th>
                     <td>{{p.ch_name}}</td>
                     <td>{{p.fname}} {{p.name}}</td>
-                    <td>{{p.birth}}</td>
+                    @*<td>{{p.birth}}</td>*@
                     <td>{{p.pclass}}</td>
-                    <td><a :href="link+p.id" class="btn btn-sm btn-info">chi tiết</a></td>
+                    <td><a :href="link+p.id" class="btn btn-sm btn-info">Chi tiết</a></td>
                 </tr>
             </tbody>
         </table>

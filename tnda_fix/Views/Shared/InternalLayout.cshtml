@@ -47,6 +47,7 @@
                 success: function (glv) {
                     glv_name = glv.ch_name.trim() + ' ' + glv.fname.trim() + ' ' + glv.name.trim();
                     glv = glv;
+                    sessionStorage.setItem("accLevel", glv.accLevel);
                     new Vue({
                         el: '#display_name_glv',
                         data: {
