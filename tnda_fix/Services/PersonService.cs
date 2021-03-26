@@ -198,5 +198,56 @@ namespace tnda_fix.Services
                 success = true,
             };
         }
+        public Response addGLV(FormCollection form)
+        {
+            using (DbContextTransaction trans = db.Database.BeginTransaction())
+            {
+                  Person p = new Person
+                    {
+                        ChristianName = form["child-ch-name"],
+                        FirstName = form["child-fname"],
+                        Name = form["child-name"],
+                        Address = form["child-address"],
+                        ID_role = 1,
+                        Status = true,
+                        Gender = bool.Parse(form["child-gender"].ToUpper()),
+                        Phone = form["child-phone"],
+                        CreateDate = DateTime.Now
+                    };
+                    try
+                    {
+                        p.Birth = Convert.ToDateTime(form["child-birth"]);
+                    }
+                    catch (Exception)
+                    {
+                        p.Birth = null;
+                    }
+                    p.for_search = Tools.convert(p.ChristianName.Trim() + p.FirstName.Trim() + p.Name.Trim()).ToUpper();
+                    db.People.Add(p);
+                ACC acc = new ACC
+                {
+                    UserName = form["acc-username"],
+                    Pwd = Tools.encodeBase64(form["acc-pwd"]),
+                    ID_Person = p.ID,
+                    accLevel = 1
+                };
+                db.ACCs.Add(acc);
+                    db.SaveChanges();
+                    trans.Commit();            
+                //catch (Exception e)
+                //{
+                //    trans.Rollback();
+                //    return new Response()
+                //    {
+                //        success = false,
+                //        message = e.Message
+                //    };
+                //}
+            }
+            return new Response()
+            {
+                success = true,
+            };
+        }
     }
 }

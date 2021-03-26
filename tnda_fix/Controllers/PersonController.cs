@@ -107,23 +107,6 @@ namespace tnda_fix.Controllers
             return Redirect(form["current_location"].ToString());
         }
 
-        //[HttpPost]
-        //public bool DelPerson(int id)
-        //{
-        //    tndaEntities db = new tndaEntities();
-        //    Person ps = new Person();
-        //    List<Person> list = db.People.ToList();
-        //    foreach (Person p in list)
-        //    {
-        //        if (p.ID == id)
-        //        {
-        //            p.Status = false;
-        //            db.SaveChanges();
-        //        }
-        //    }
-
-        //    return true;
-        //}
 
         //test data
         [HttpPost]
@@ -402,7 +385,16 @@ namespace tnda_fix.Controllers
                     JsonRequestBehavior.AllowGet);
             }
         }
-
+        [HttpPost]
+        public JsonResult addGLV(FormCollection form)
+        {
+            using (PersonService personService = new PersonService())
+            {
+                Response response = personService.addGLV(form);
+                return Json(new { success = response.success, message = response.message },
+                    JsonRequestBehavior.AllowGet);
+            }
+        }
         //Edit Person
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -455,117 +447,6 @@ namespace tnda_fix.Controllers
             }
             return Redirect(form["current_location"].ToString());
         }
-        /*
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public void EditImage()
-        {
-            tndaEntities db = new tndaEntities();
-            List<Person> list = db.People.ToList();
-            string id = Request.QueryString["query"];
-            string img = Request.QueryString["query"];
-            foreach (Person p in list)
-            {
-                if (p.ID == int.Parse(id))
-                {
-                    p.Image = img;
-                    db.SaveChanges();
-                }
-            }
-        }
 
-        //Report
-        [HttpPost]
-        public bool ReportPerson(FormCollection form)
-        {
-            int idOldPerson = int.Parse(Request.QueryString["query"]);
-            tndaEntities db = new tndaEntities();
-            Person p = new Person
-            {
-                ChristianName = form["child-ch-name"],
-                FirstName = form["fa-fname"],
-                Name = form["fa-name"],
-                Birth = Convert.ToDateTime(form["child-birth"]), //
-                Address = form["child-address"],
-                ID_Class = int.Parse(form["child-class"]),
-                //ID_Farmily = form["child-address"],
-                ID_role = 1,
-                //Image = "",
-                Note = "",
-                Phone = "",
-                Status = true,
-                Gender = bool.Parse(form["child-gender"]),
-                CreateDate = DateTime.Now
-            };
-            db.People.Add(p);
-            //return Json(form["child-class"], JsonRequestBehavior.AllowGet);
-            //db.People.Add(p);
-            //db.SaveChanges();
-
-            Report rp = new Report
-            {
-                ID_Person = idOldPerson,
-                ID_NewPerson = p.ID,
-                Date = DateTime.Now,
-                Status = 0
-            };
-            db.Reports.Add(rp);
-            db.SaveChanges();
-            return true;
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DelPerson(FormCollection form)
-        {
-            tndaEntities db = new tndaEntities();
-            Person p = db.People.Find(int.Parse(form["child-id"]));
-            if (p != null)
-            {
-                if (p.ID_role == 1 || p.ID_role == 2)
-                {
-                    if(p.ID_Class != null)
-                    {
-                        Class c = db.Classes.Find(p.ID_Class);
-                        c.teacher_names = null;
-                    }
-                }
-                if(p.ID_role == 4 || p.ID_role == 7)
-                {
-                    if(p.ID_Class != null)
-                    {
-                        Class c = db.Classes.Find(p.ID_Class);
-                        c.students_count -= 1;
-                    }
-                    if(p.ID_Farmily != null)
-                    {
-                        Family fam = db.Families.Find(p.ID_Farmily);
-                        Person father = db.People.Find(fam.ID_Dad);
-                        Person mother = db.People.FirstOrDefault(per =>per.ID_Farmily == fam.ID && per.ID != father.ID && per.ID != p.ID);
-                        db.Families.Remove(fam);
-                        db.People.Remove(father);
-                        db.People.Remove(mother);
-                    }
-                }
-                db.People.Remove(p);
-                db.SaveChanges();
-            }
-            return Redirect(form["current_location"].ToString());
-        }
-
-        //test data
-        [HttpPost]
-        public JsonResult testData(FormCollection form)
-        {
-            Dictionary<string, object> map = new Dictionary<string, object>();
-            string[] keys = form.AllKeys;
-            foreach (string key in keys)
-            {
-                map.Add(key, form[key]);
-            }
-
-            return Json(map, JsonRequestBehavior.AllowGet);
-        }*/
-
-    }
+    }    
 }

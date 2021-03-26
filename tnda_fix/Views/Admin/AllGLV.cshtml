@@ -87,10 +87,30 @@
             }
         });
     }
+    function addGLV() {
+        $.LoadingOverlay('show');
+        var data = $('#addGLVForm').serialize();
+        $.ajax({
+            url: "/person/addGLV",
+            method: "POST",
+            data: data,
+            success: function (response) {
+                console.log(response);
+                if (response.success) {
+                    jAlert('Thêm thành công');
+                    window.location.reload();
+                } else {
+                    jAlert('Lỗi! Thêm thất bại');
+                    jAlert(response.message);
+                }
+                $.LoadingOverlay('hide');
+            }
+        });
+    }
 </script>
 <br />
 <div class="d-flex flex-row-reverse">
-    <btn class="btn btn-info font-weight-bold">+ Thêm GLV</btn>
+    <btn class="btn btn-info font-weight-bold" data-toggle="modal" data-target="#add-modal">+ Thêm GLV</btn>
 </div>
 <div id="vue_app" class="row bg-light rounded p-3">
     <table id="table" class="table table-striped" style="width:100%">
@@ -167,6 +187,61 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Lưu</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content p-5">
+            <form id="addGLVForm">
+                <input hidden name="current_location" id="current_location" type="text" />
+                <div class="form-group">
+                    <label>Tên thánh</label>
+                    <input type="text" class="form-control" placeholder="Tên Thánh" name="child-ch-name" required pattern="\S+.*">
+                </div>
+                <div class="form-group">
+                    <label>Họ và đệm</label>
+                    <input type="text" class="form-control" placeholder="Nguyễn Văn" name="child-fname" required pattern="\S+.*">
+                </div>
+                <div class="form-group">
+                    <label>Tên</label>
+                    <input type="text" class="form-control" placeholder="A" name="child-name" required pattern="\S+.*">
+                </div>
+                <div class="form-group">
+                    <label>Ngày tháng năm sinh</label>
+                    <input type="date" class="form-control" name="child-birth">
+                </div>
+                <div class="form-group">
+                    <label>Giới tính</label>
+                    <select class="form-control" name="child-gender">
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display: none">
+                    <label>Lớp</label>
+                    <input id="classes" class="form-control" value="1" name="child-class" />
+                </div>
+                <div class="form-group">
+                    <label>SĐT</label>
+                    <input type="number" class="form-control" placeholder="SĐT" name="child-phone" required>
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ</label>
+                    <input type="text" class="form-control" placeholder="Địa chỉ" name="child-address" required>
+                </div>
+
+                <br />
+                <h6> Tài Khoản</h6>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Username" name="acc-username" />
+                </div>
+                <div class="form-group">
+                     <input type="password" class="form-control" placeholder="Password" name="acc-pwd"/>
+                </div>
+                <button type="button" onclick="addGLV()" class="btn btn-info w-100">Thêm</button>
+                <button data-dismiss="modal" class="btn btn-danger w-100 mt-2">Hủy</button>
             </form>
         </div>
     </div>
