@@ -276,7 +276,7 @@ namespace tnda_fix.Controllers
             int id_class = int.Parse(Request.QueryString["id_class"]);
             tndaEntities db = new tndaEntities();
             List<object> json = new List<object>();
-            List<Person> people = db.People.Where(p => p.ID_role == 4 && p.ID_Class == id_class).OrderBy(p =>p.Name).ToList();
+            List<Person> people = db.People.Where(p => p.ID_role == 4 && p.ID_Class == id_class).OrderBy(p => p.Name).ToList();
             foreach (Person p in people)
             {
                 var ob = new
@@ -409,7 +409,7 @@ namespace tnda_fix.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult EditClass(FormCollection form)
         {
             tndaEntities db = new tndaEntities();
@@ -418,29 +418,32 @@ namespace tnda_fix.Controllers
             if (p != null)
             {
                 Class newClass = db.Classes.Find(int.Parse(form["child-class"]));
-                Class oldClass = db.Classes.Find(int.Parse(form["child-old-class"]));
                 if (p.ID_role == 1 || p.ID_role == 2)
                 {
                     if (newClass != null)
-                    {
-                        p.ID_Class = int.Parse(form["child-class"]);
-                        newClass.teacher_names = p.ChristianName + " " + p.FirstName + " " + p.Name;
-                        if (oldClass != null)
+                    {                       
+                        string tName = p.ChristianName + " " + p.FirstName + " " + p.Name;
+                        newClass.teacher_names = tName;
+                        if (p.ID_Class.HasValue)
                         {
+                            Class oldClass = db.Classes.Find(p.ID_Class.Value);
                             oldClass.teacher_names = "";
                         }
+                        p.ID_Class = int.Parse(form["child-class"]);
                     }
                 }
                 else if (p.ID_role == 4 || p.ID_role == 7)
                 {
                     if (newClass != null)
                     {
-                        p.ID_Class = int.Parse(form["child-class"]);
+                       
                         newClass.students_count += 1;
-                        if (oldClass != null)
+                        if (p.ID_Class.HasValue)
                         {
+                            Class oldClass = db.Classes.Find(p.ID_Class.Value);
                             oldClass.students_count -= 1;
                         }
+                        p.ID_Class = int.Parse(form["child-class"]);
                     }
                 }
                 db.SaveChanges();
@@ -448,5 +451,5 @@ namespace tnda_fix.Controllers
             return Redirect(form["current_location"].ToString());
         }
 
-    }    
+    }
 }
