@@ -123,11 +123,10 @@
 <div class="d-flex flex-row-reverse">
     <btn class="btn btn-info font-weight-bold" data-toggle="modal" data-target="#add-modal">+ Thêm GLV</btn>
 </div>
-<div id="vue_app" class="row bg-light rounded p-3">
-    <table id="table" class="table table-striped" style="width:100%">
+<div id="vue_app" class="row bg-light rounded p-3 w-100 m-0">
+    <table id="table" class="table table-striped">
         <thead>
             <tr>
-                <th scope="col">ID</th>
                 <th scope="col">Tên Thánh</th>
                 <th scope="col">Họ & Tên</th>
                 <th scope="col">Ngày sinh</th>
@@ -137,7 +136,6 @@
         </thead>
         <tbody style="display:none" id="content">
             <tr v-for="p in persons" v-bind:key="p.id" v-bind:person="p">
-                <th scope="row">{{p.id}}</th>
                 <td>{{p.ch_name}}</td>
                 <td>{{p.fname}} {{p.name}}</td>
                 <td>{{p.birth}}</td>
@@ -198,6 +196,7 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Lưu</button>
+                <button data-dismiss="modal" class="btn btn-danger w-100 mt-2">Hủy</button>
             </form>
         </div>
     </div>

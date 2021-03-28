@@ -12,7 +12,7 @@ namespace tnda_fix.Constants
     }
     public static class BuildVersion
     {
-        public static string ver = "BUILD1231.130321";
+        public static string ver = "BUILD1556.280321";
     }
 
 }
