@@ -241,8 +241,7 @@ namespace tnda_fix.Controllers
         public JsonResult getPersonByQuery()
         {
             string query = Request.QueryString["query"];
-            query = Tools.convert(query).ToUpper();
-            query = query.Replace(" ", String.Empty);
+            query = Tools.convert(query).ToUpper().Replace(" ", String.Empty);
             //
             using (tndaEntities db = new tndaEntities())
             {
