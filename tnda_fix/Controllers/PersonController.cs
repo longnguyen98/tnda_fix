@@ -242,6 +242,7 @@ namespace tnda_fix.Controllers
         {
             string query = Request.QueryString["query"];
             query = Tools.convert(query).ToUpper();
+            query = query.Replace(" ", String.Empty);
             //
             using (tndaEntities db = new tndaEntities())
             {
@@ -421,7 +422,7 @@ namespace tnda_fix.Controllers
                 if (p.ID_role == 1 || p.ID_role == 2)
                 {
                     if (newClass != null)
-                    {                       
+                    {
                         string tName = p.ChristianName + " " + p.FirstName + " " + p.Name;
                         newClass.teacher_names = tName;
                         if (p.ID_Class.HasValue)
@@ -436,7 +437,7 @@ namespace tnda_fix.Controllers
                 {
                     if (newClass != null)
                     {
-                       
+
                         newClass.students_count += 1;
                         if (p.ID_Class.HasValue)
                         {

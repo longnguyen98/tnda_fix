@@ -49,6 +49,7 @@ namespace tnda_fix.Services
                     p.FirstName = form.Get("child-fname");
                     p.Address = form.Get("child-address");
                     p.Gender = bool.Parse(form["child-gender"]);
+                    p.for_search = Tools.convert(p.ChristianName.Trim() + p.FirstName.Trim() + p.Name.Trim()).ToUpper().Replace(" ", String.Empty);
 
                     if (p.ID_role == 4 || p.ID_role == 7)
                     {
@@ -178,7 +179,7 @@ namespace tnda_fix.Services
                         p.Note = form["child-gp"] + " " + form["child-gx"];
                     }
 
-                    p.for_search = Tools.convert(p.ChristianName.Trim() + p.FirstName.Trim() + p.Name.Trim()).ToUpper();
+                    p.for_search = Tools.convert(p.ChristianName.Trim() + p.FirstName.Trim() + p.Name.Trim()).ToUpper().Replace(" ", String.Empty);
                     db.People.Add(p);
                     db.SaveChanges();
                     trans.Commit();
