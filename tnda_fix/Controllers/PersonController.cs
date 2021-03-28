@@ -224,6 +224,7 @@ namespace tnda_fix.Controllers
                         name = child.Name,
                         pclass = classString,
                         id_class = child.ID_Class,
+                        id_grade = child.Class.ID_Grade,
                         role = child.Role.RoleName,
                         birth = birthString,
                         address = child.Address,

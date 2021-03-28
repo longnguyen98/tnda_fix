@@ -50,37 +50,41 @@
         $.ajax({
             url: "/Person/getPersonDetail?id=" + id,
             success: function (result) {
-                console.log(result);
-                Vue.set(vue_edit, 'detail', result);
-                $("#edit_modal").modal();
-                $.LoadingOverlay("hide");
+                $.ajax({
+                    url: "/GradeAndClass/getAllGrades",
+                    success: function (grades) {
+                        $("#grades")
+                            .find('option')
+                            .remove()
+                            .end();
+                        for (var i = 0; i < grades.length; i++) {
+                            if (result.id_grade == grades[i].ID) {
+                                $("#grades").append(new Option(grades[i].gradeName, grades[i].ID, true, true));
+                            } else {
+                                $("#grades").append(new Option(grades[i].gradeName, grades[i].ID));
+                            }
+                        }
+                        $.ajax({
+                            url: "/GradeAndClass/getClassByGrade",
+                            data: { id: result.id_grade },
+                            success: function (classes) {
+                                $("#classes")
+                                    .find('option')
+                                    .remove()
+                                    .end();
+                                for (var i = 0; i < classes.length; i++) {
+                                    $("#classes").append(new Option(classes[i].className, classes[i].ID));
+                                }
+                                Vue.set(vue_edit, 'detail', result);
+                                $("#edit_modal").modal();
+                                $.LoadingOverlay("hide");
+                            }
+                        });
+                    }
+                });
             }
         });
-        $.ajax({
-            url: "/GradeAndClass/getAllGrades",
-            success: function (result) {
-                $("#grades")
-                    .find('option')
-                    .remove()
-                    .end();
-                for (var i = 0; i < result.length; i++) {
-                    $("#grades").append(new Option(result[i].gradeName, result[i].ID));
-                }
-            }
-        });
-        $.ajax({
-            url: "/GradeAndClass/getClassByGrade",
-            data: { id: 1 },
-            success: function (result) {
-                $("#classes")
-                    .find('option')
-                    .remove()
-                    .end();
-                for (var i = 0; i < result.length; i++) {
-                    $("#classes").append(new Option(result[i].className, result[i].ID));
-                }
-            }
-        });
+
     }
     function getClasses() {
         var grade_id = $('#grades').val();
@@ -185,11 +189,11 @@
                                 <h6> Xếp lớp</h6>
                                 <div class="form-group">
                                     <label>Khối</label>
-                                    <select id="grades" onchange="getClasses()" class="form-control" name="child-grade"></select>
+                                    <select id="grades" onchange="getClasses()" class="form-control" name="child-grade"></select>                                    
                                 </div>
                                 <div class="form-group">
                                     <label>Lớp</label>
-                                    <select id="classes" class="form-control" name="child-class"></select>
+                                    <select id="classes" class="form-control" name="child-class" :value="detail.id_class"></select>
                                 </div>
                             </div>
                         </div>
