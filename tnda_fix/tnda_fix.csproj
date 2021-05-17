@@ -353,6 +353,9 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Scripts\vuejs\dist\bundle.js" />
+    <Content Include="Scripts\vuejs\src\app.js" />
+    <Content Include="Scripts\vuejs\webpack.config.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -403,6 +406,9 @@
     <Folder Include="App_Data\" />
     <Folder Include="fonts\" />
     <Folder Include="img\upload\" />
+    <Folder Include="Scripts\vuejs\src\components\" />
+    <Folder Include="Scripts\vuejs\src\layouts\" />
+    <Folder Include="Scripts\vuejs\src\pages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css.map" />

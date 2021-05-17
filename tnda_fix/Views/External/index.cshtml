@@ -4,7 +4,8 @@
 <!-- Masthead -->
 <script>
     $(document).ready(function () {
-        $('#loading').show();;
+
+        $('#loading').show();
         var url_string = window.location.href;
         var url = new URL(url_string);
         console.log(url_string);
@@ -155,6 +156,7 @@
 </div>
 <script>
     $(document).ready(function () {
+        this.helloWorld()
         console.log("check");
         $('#check-box').prop('checked', true);
     });

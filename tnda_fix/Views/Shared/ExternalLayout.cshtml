@@ -23,54 +23,122 @@
     <link href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet" />
     <script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     @*Vue*@
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
     @*Loading Overlay*@
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     <script>
-        setInterval(function () {
-            $.get('/internal/alive');
-        }, 30000);
-        $(document).ready(function () {
-            $('#login_btn').LoadingOverlay("show");
-            $.ajax({
-                url: "/auth/getAuthStatus",
-                success: function (result) {
-                    if (result == true) {
-                        $.ajax({
-                            url: "/auth/getPersonFromSession",
-                            success: function (person) {
-                                console.log(person);
-                                new Vue({
-                                    el: '#vue_app_layout',
-                                    data: {
-                                        status: result,
-                                        person: person
-                                    }
-                                });
-                                $('#glv_name').css("display", "inline");
-                            }
-                        });
-                    } else {
-                        new Vue({
-                            el: '#vue_app_layout',
-                            data: {
-                                status: result
-                            }
-                        });
-                        $('#login_btn').css("display", "inline");
-                    }
-                    $('#login_btn').LoadingOverlay("hide");
-                }
-            });
-        });
-        function Loading(el, attr) {
-            $(el).LoadingOverlay(attr);
-        }
+                //var app = new Vue({
+                //    el: "ex_app",
+                //    data: {
+                //        result: {},
+                //        person: {},
+                //        authStatus: false,
+                //    },
+                //    async created() {
+                //        setInterval(function () {
+                //            $.get('/internal/alive');
+                //        }, 30000);
+                //        $('#login_btn').LoadingOverlay("show");
+                //        await this.checkAuthUser()
+                //        $('#login_btn').LoadingOverlay("hide");
+                //    },
+                //    methods: {
+                //        helloWorld() {
+                //            console.log('hello world')
+                //        },
+                //        async checkAuthUser() {
+                //            await this.getAuthStatus().then((result) => {
+                //                if (result.status == 200) {
+                //                    this.authStatus = result.data
+                //                }
+                //            }).catch((err) => {
+                //                alert(err.message)
+                //            })
+                //            if (this.authStatus) {
+                //                await this.getPersonFromSession().then((result) => {
+                //                    if (result.status == 200) {
+                //                        this.person = result.data
+                //                        $('#glv_name').css("display", "inline");
+                //                    }
+                //                }).catch((err) => {
+                //                    alert(err.message)
+                //                })
+                //            } else {
+                //                $('#login_btn').css("display", "inline");
+                //            }
+                //        },
+                //        async getAuthStatus() {
+                //            return await axios.get("/auth/getAuthStatus").then((result) => {
+                //                return result
+                //            }).catch((err) => {
+                //                throw err
+                //            })
+                //        },
+                //        async getPersonFromSession() {
+                //            return await axios.get("/auth/getPersonFromSession").then((result) => {
+                //                return result
+                //            }).catch((err) => {
+                //                throw err
+                //            })
+                //        },
+                //        loading(el, attr) {
+                //            $(el).LoadingOverlay(attr);
+                //        }
+                //    }
+                //})
+
+                //$(document).ready(function () {
+
+                //    $.ajax({
+                //        url: "/auth/getAuthStatus",
+                //        success: function (result) {
+                //            if (result == true) {
+                //                $.ajax({
+                //                    url: "/auth/getPersonFromSession",
+                //                    success: function (person) {
+                //                        console.log(person);
+                //                        new Vue({
+                //                            el: '#vue_app_layout',
+                //                            data: {
+                //                                status: result,
+                //                                person: person
+                //                            }
+                //                        });
+                //                        $('#glv_name').css("display", "inline");
+                //                    }
+                //                });
+                //            } else {
+                //                new Vue({
+                //                    el: '#vue_app_layout',
+                //                    data: {
+                //                        status: result
+                //                    }
+                //                });
+                //                $('#login_btn').css("display", "inline");
+                //            }
+                //            $('#login_btn').LoadingOverlay("hide");
+                //        }
+                //    });
+                //});
+                //function Loading(el, attr) {
+                //    $(el).LoadingOverlay(attr);
+                //}
     </script>
 </head>
 <body>
+    @RenderBody()
+    <div id="app">
+        <v-app>
+            <external-layout></external-layout>
+        </v-app>
+    </div>
+    @Scripts.Render("~/bundles/vuejs")
+    <!--<div id="ex_app">-->
     <!-- Navigation -->
-    <nav class="navbar navbar-light bg-light static-top">
+    <!--<nav class="navbar navbar-light bg-light static-top">
         <div id="vue_app_layout" class="container d-lg-flex justify-content-lg-between d-flex justify-content-center flex-column flex-lg-row">
             <a class="navbar-brand" href="~/external/index"><i class="fas fa-church mr-1"></i>Thiếu nhi Giáo xứ Dĩ An</a>
             <button id="login_btn" v-if="!status" style="display:none" data-toggle="modal" data-target="#login_modal" class="btn btn-primary font-weight-bold">
@@ -80,10 +148,10 @@
         </div>
     </nav>
     <section class="features-icons bg-info" style="padding-top:0px;padding-bottom:2%">
-        @RenderBody()
-    </section>
+        @@RenderBody()
+    </section>-->
     <!-- Footer -->
-    <footer class="page-footer container font-small blue pt-4">
+    <!--<footer class="page-footer container font-small blue pt-4">
         <div class="container-fluid text-center text-md-left">
             <div class="row">
                 <div class="col-md-6 mt-md-0 mt-3">
@@ -107,35 +175,36 @@
     </footer>
     <div class="footer-copyright text-center py-3 bg-secondary text-white font-weight-bold">
         <i class="fas fa-laptop-code mr-1"></i> Phát triển bởi Long & Tuan - @BuildVersion.ver
-    </div>
+    </div>-->
     <!-- Footer -->
-    <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Đăng nhập GLV</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="/auth/login" method="post">
-                    <div class="modal-body">
+    <!--<div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Đăng nhập GLV</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/auth/login" method="post">
+                        <div class="modal-body">
 
-                        <div class="form-group">
-                            <label>Tài khoản</label>
-                            <input type="text" name="username" class="form-control" placeholder="username">
+                            <div class="form-group">
+                                <label>Tài khoản</label>
+                                <input type="text" name="username" class="form-control" placeholder="username">
+                            </div>
+                            <div class="form-group">
+                                <label>Mật khẩu</label>
+                                <input type="password" name="password" class="form-control" placeholder="password">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Mật khẩu</label>
-                            <input type="password" name="password" class="form-control" placeholder="password">
+                        <div class="modal-footer">
+                            <button type="submit" class="w-100 btn btn-primary" onclick="loading('.modal-content','show')">Đăng nhập</button>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="w-100 btn btn-primary" onclick="Loading('.modal-content','show')">Đăng nhập</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    </div>-->
 </body>
 </html>
