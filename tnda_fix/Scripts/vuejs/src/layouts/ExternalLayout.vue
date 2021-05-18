@@ -11,7 +11,6 @@
         <button
           id="login_btn"
           v-if="!status"
-          style="display: none"
           data-toggle="modal"
           data-target="#login_modal"
           class="btn btn-primary font-weight-bold"
@@ -32,7 +31,7 @@
       class="features-icons bg-info"
       style="padding-top: 0px; padding-bottom: 2%"
     >
-      <router-view :key="$route.fullPath"></router-view>
+      <index-page></index-page>
     </section>
     <!-- Footer -->
     <footer class="page-footer container font-small blue pt-4">
@@ -69,11 +68,17 @@
     <!-- Footer -->
   </div>
 </template>
+
 <script>
+import  IndexPage  from "../pages/external/IndexPage.vue";
 export default {
+  components: {
+    IndexPage,
+  },
   data() {
     return {
       person: {},
+      status: false,
     };
   },
 };

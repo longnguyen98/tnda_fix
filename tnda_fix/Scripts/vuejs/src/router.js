@@ -3,9 +3,20 @@ import VueRouter from 'vue-router';
 
 //vue router
 Vue.use(VueRouter)
+// Component Layout
+import ExternalLayout from "./layouts/ExternalLayout.vue";
 
 const routes = [
-    { path: '/', component: require('./pages/Home.vue').default },
+    {
+        path: '/', component: ExternalLayout.default, redirect: "Index Page", children: [
+            {
+                path: "/index",
+                name: "Index Page",
+                component: () =>
+                    import(/* webpackChunkName: "demo" */ "./pages/external/IndexPage.vue"),
+            },
+        ]
+    },
 ];
 
 const router = new VueRouter({

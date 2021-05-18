@@ -1,0 +1,313 @@
+<template>
+  <div>
+    <header
+      class="masthead text-white text-center"
+      style="background: url('../img/bg_ex_index.jpg'); background-size: cover"
+    >
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-12 mx-auto">
+            <h1 class="mb-5" style="text-shadow: 5px 5px 10px black">
+              Cổng thông tin<br />
+              thiếu nhi Giáo xứ Dĩ An
+            </h1>
+          </div>
+          <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+            <form action="/External/listingWithQuery">
+              <div class="form-row">
+                <div class="col-12 col-md-9 mb-2 mb-md-0">
+                  <input
+                    type="text"
+                    required
+                    name="query"
+                    class="form-control form-control-lg"
+                    placeholder="Tra cứu thông tin"
+                  />
+                </div>
+                <div class="col-12 col-md-3">
+                  <button type="submit" class="btn btn-block btn-lg btn-danger">
+                    Tìm kiếm
+                  </button>
+                </div>
+              </div>
+              <div class="mt-2">
+                <button
+                  type="button"
+                  class="btn btn-success btn btn-lg btn-block font-weight-bold"
+                  data-toggle="modal"
+                  data-target="#add-modal"
+                >
+                  Đăng ký học Giáo Lý
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div
+      class="modal fade bd-example-modal-lg"
+      id="add-modal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content p-5">
+          <form action="/person/AddPerson" method="post">
+            <h4 class="font-weight-bold">Thiếu nhi</h4>
+            <br />
+            <input
+              hidden
+              name="current_location"
+              id="current_location"
+              type="text"
+            />
+            <div class="form-group">
+              <label>Tên thánh</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Tên Thánh"
+                name="child-ch-name"
+                required
+                pattern="\S+.*"
+              />
+            </div>
+            <div class="form-group">
+              <label>Họ và đệm</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Nguyễn Văn"
+                name="child-fname"
+                required
+                pattern="\S+.*"
+              />
+            </div>
+            <div class="form-group">
+              <label>Tên</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="A"
+                name="child-name"
+                required
+                pattern="\S+.*"
+              />
+            </div>
+            <div class="form-group">
+              <label>Ngày tháng năm sinh</label>
+              <input
+                type="date"
+                class="form-control"
+                name="child-birth"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>Giới tính</label>
+              <select class="form-control" name="child-gender">
+                <option value="true">Nam</option>
+                <option value="false">Nữ</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <input
+                hidden
+                type="text"
+                class="form-control"
+                name="child-role"
+                value="7"
+              />
+            </div>
+            <div class="form-group">
+              <label>Địa chỉ</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Địa chỉ"
+                name="child-address"
+                required
+              />
+            </div>
+            <br />
+            <div class="form-check">
+              <input
+                id="check-box"
+                class="form-check-input mr-2"
+                onclick="myShow()"
+                type="checkbox"
+                name="check-box"
+                checked
+                value="true"
+              />
+              <label class="form-check-label" for="defaultCheck1">
+                Đang học Giáo lý ở xứ khác
+              </label>
+            </div>
+            <br />
+            <div id="to-show">
+              <div class="form-group">
+                <label>Giáo phận</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Giáo phận"
+                  name="child-gp"
+                />
+              </div>
+              <div class="form-group">
+                <label>Giáo xứ</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Giáo xứ"
+                  name="child-gx"
+                />
+              </div>
+              <div class="form-group">
+                <label>Khối hiện tại</label>
+                <select class="form-control" name="child-grade">
+                  <option value="KT">Khai tâm</option>
+                  <option value="RL">Rước lễ</option>
+                  <option value="TS">Thêm sức</option>
+                  <option value="SD">Sống đạo</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Lớp hiện tại</label>
+                <select class="form-control" name="child-class">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label
+                >Phụ huynh vui lòng mang theo Sổ gia đình công giáo và giấy xác
+                nhận học giáo lý (nếu có) vào 8h45 sáng Chúa Nhật.</label
+              >
+            </div>
+            <br />
+            <h4 class="font-weight-bold">Bố</h4>
+            <div class="form-group">
+              <label>Tên Thánh</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Tên Thánh"
+                name="fa-ch-name"
+                required
+                pattern="\S+.*"
+              />
+            </div>
+            <div class="form-group">
+              <label>Họ và đệm</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Nguyễn Văn"
+                name="fa-fname"
+                required
+                pattern="\S+.*"
+              />
+            </div>
+            <div class="form-group">
+              <label>Tên</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="A"
+                name="fa-name"
+                required
+                pattern="\S+.*"
+              />
+            </div>
+            <div class="form-group">
+              <label>SDT</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Số điện thoại"
+                name="fa-phone"
+                required
+              />
+            </div>
+            <br />
+            <h4 class="font-weight-bold">Mẹ</h4>
+            <div class="form-group">
+              <label>Tên Thánh</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Tên Thánh"
+                name="mo-ch-name"
+                required
+                pattern="\S+.*"
+              />
+            </div>
+            <div class="form-group">
+              <label>Họ và đệm</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Nguyễn Văn"
+                name="mo-fname"
+                required
+                pattern="\S+.*"
+              />
+            </div>
+            <div class="form-group">
+              <label>Tên</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="A"
+                name="mo-name"
+                required
+                pattern="\S+.*"
+              />
+            </div>
+            <div class="form-group">
+              <label>SDT</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Số điện thoại"
+                name="mo-phone"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-info w-100">Xác nhận</button>
+            <button
+              type="submit"
+              data-dismiss="modal"
+              class="btn btn-danger w-100 mt-2"
+            >
+              Hủy
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  name: "index-page",
+  created() {
+    this.getCurrentLocation();
+  },
+  methods: {
+    getCurrentLocation() {
+      $("#loading").show();
+      var url_string = window.location.href;
+      $("#current_location").val(url_string);
+    },
+  },
+};
+</script>
