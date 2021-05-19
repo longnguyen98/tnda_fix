@@ -30,8 +30,4 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "external-footer",
-};
-</script>
+<script src="./footer.js"></script>
